@@ -1,4 +1,7 @@
 import React from "react";
+import { Button, ButtonGroup } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+
 
 interface NewNoteInputProps {
     addNote(note: string): void;
@@ -20,7 +23,7 @@ export const NewNoteInput:React.FC<NewNoteInputProps> = ({ addNote }) => {
     return (
         <div>
             <input onChange={updateNote} value={note} type="text" name="note" placeholder="Note" />
-            <button onClick={onAddNoteClick}>Add note</button>
+            <Button onClick={onAddNoteClick}>Add note</Button>
         </div>
     );
 }

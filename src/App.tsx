@@ -4,6 +4,7 @@ import { NewNoteInput } from './NewNoteInput';
 import { NoteState } from './notesReducer';
 
 
+
 function App() {
   const notes = useSelector<NoteState, NoteState["notes"]>((state) => state.notes);
 

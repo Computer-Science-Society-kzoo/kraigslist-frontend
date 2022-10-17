@@ -7,9 +7,17 @@ import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 const config: ThemeConfig = {
 
   initialColorMode: 'system',
-  useSystemColorMode: false,
+  useSystemColorMode: true,
+}
+
+const colors = {
+  brand: {
+    900: '#1a365d',
+    800: '#153e75',
+    700: '#2a69ac',
+  },
 }
 
 // 3. extend the theme
-export const theme = extendTheme({ config })
+export const customTheme = extendTheme({  })
 

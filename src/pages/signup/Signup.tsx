@@ -1,48 +1,58 @@
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input
+} from '@chakra-ui/react'
+
 export function Signup(): JSX.Element {
     return(
       <div>
         <h1>Signup page</h1>
         <form>
-          <div className="class-container">
-            <label>
-               Email 
-              <input type="text" name="email" required/>
-            </label>
-          </div>
+          <FormControl isRequired>
+            <FormLabel> Email </FormLabel>
+            <Input type="text" name="email" required/>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>First name</FormLabel>
+            <Input placeholder='First name' />
+          </FormControl>
 
           <div>
-            <label>
+            <FormLabel>
               First Name 
-              <input type="text" name="fName" required/>
-            </label>
+              <Input type="text" name="fName" required/>
+            </FormLabel>
           </div>
 
           <div>
-            <label>
+            <FormLabel>
               Last Name 
-              <input type="text" name="lName" required/>
-            </label>
+              <Input type="text" name="lName" required/>
+            </FormLabel>
           </div>
 
           <div>
-            <label>
+            <FormLabel>
               Prefered Name 
-              <input type="text" name="pName" required/>
-            </label>
+              <Input type="text" name="pName" required/>
+            </FormLabel>
           </div>
 
           <div>
-            <label>
+            <FormLabel>
               Year 
-              <input type="text" name="fName" required/>
-            </label>
+              <Input type="text" name="fName" required/>
+            </FormLabel>
           </div>
 
           <div>
-            <label>
+            <FormLabel>
               Password 
-              <input type="text" name="pword" required/>
-            </label>
+              <Input type="text" name="pword" required/>
+            </FormLabel>
           </div>
         </form>
       </div>

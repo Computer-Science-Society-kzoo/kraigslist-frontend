@@ -1,22 +1,40 @@
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  Button,
+  ButtonGroup
+} from '@chakra-ui/react'
+
 export function Login(): JSX.Element {
   return(
     <div>
       <h1>Login page</h1>
 
       <form>
-          <div className="class-container">
-            <label>
-               Username 
-              <input type="text" name="uname" required/>
-            </label>
-          </div>
+          <FormControl isRequired>
+            <FormLabel> Email </FormLabel>
+            <Input placeholder="Email" required/>
+          </FormControl>
 
-          <div>
-            <label>
-              Password 
-              <input type="text" name="pword" required/>
-            </label>
-          </div>
+          <FormControl isRequired>
+            <FormLabel> Password </FormLabel>
+            <Input placeholder="Password" required/>
+          </FormControl>
+
+          <FormControl>
+            <Button 
+            colorScheme='orange'
+            type='submit'
+            variant='solid'
+            loadingText='Logging In'
+            >
+              Login
+            </Button>
+          </FormControl>
+
         </form>
         
     </div>

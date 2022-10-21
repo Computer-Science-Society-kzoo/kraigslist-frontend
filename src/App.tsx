@@ -6,6 +6,7 @@ import { addNoteREDUX, selectNotes } from './redux/notesReducer';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Login } from './pages/login/Login';
 import { Signup } from './pages/signup/Signup';
+import { MainPage } from './pages/main/MainPage';
 import { Button } from '@chakra-ui/react';
 
 function Home(props: {text: string}) {
@@ -43,6 +44,9 @@ function Header(): JSX.Element{
       <Link to='/signup'>
         <Button>SignUp</Button>
       </Link>
+      <Link to='/main'>
+        <Button>Main</Button>
+      </Link>
     </header>
   )
 }
@@ -66,6 +70,7 @@ function App(): JSX.Element {
         <Route path="/" element={<Home text="I am home"/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
+        <Route path="/main" element={<MainPage/>} />
       </Routes>
       <Footer/>
     </Router>

@@ -13,6 +13,7 @@ interface Post {
   type: string;
   categories: string[];
   img: string;
+  key: number;
 }
 
 function Post(post: Post): JSX.Element {
@@ -58,6 +59,7 @@ export function MainPage(): JSX.Element {
         type: post.type,
         categories: post.categories,
         img: post.img,
+        key: post.id,
       });
     });
     return parsedPosts;
@@ -85,6 +87,7 @@ export function MainPage(): JSX.Element {
     type: "Request",
     categories: [""],
     img: "/images/temp/dummyPost.png",
+    key: 0,
   };
 
   return (
@@ -97,6 +100,7 @@ export function MainPage(): JSX.Element {
         type={dummyPost.type}
         categories={dummyPost.categories}
         img={dummyPost.img}
+        key={dummyPost.key}
       ></Post>
 
       {posts.map((post) => (
@@ -108,6 +112,7 @@ export function MainPage(): JSX.Element {
           type={post.type}
           categories={post.categories}
           img={post.img}
+          key={post.key}
         ></Post>
       ))}
     </div>

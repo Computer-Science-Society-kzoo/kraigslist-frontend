@@ -7,6 +7,7 @@ import {
   Button,
   ButtonGroup,
   useToast,
+  Heading
 } from "@chakra-ui/react";
 
 import axios from "axios";
@@ -35,21 +36,9 @@ export function Login(): JSX.Element {
   async function login(email: string, password: string) {
     //alert("Email is: " + email + " Password is: " + password)
     if (email === "") {
-      toast({
-        title: "Missing information.",
-        description: "Please provide your email address.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
+      messageFailure("Missing information.", "Please provide your email address.")
     } else if (password === "") {
-      toast({
-        title: "Missing information.",
-        description: "Please provide your password.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
+      messageFailure("Missing infomration.", "Please provide your password.")
     } else {
       axios
         .post("http://localhost:3000/api/auth/login", {
@@ -58,37 +47,39 @@ export function Login(): JSX.Element {
         })
         .then((res) => {
           console.log(res);
-          setAuth(res.data)
-          toast({
-            title: "Success!",
-            description:
-              "You have successfully logged in. Your token: " + res.data,
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-          });
+          setAuth(res.data);
+          messageSuccess("Success!", "You have successfully logged in.")
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
-          if (err.response?.status === 401) {
-            toast({
-              title: "Incorrect login information.",
-              description: "Please check your email and password.",
-              status: "error",
-              duration: 9000,
-              isClosable: true,
-            });
-          } else if (err.response?.status === 404) {
-            toast({
-              title: "Error",
-              description: "The user does not exist.",
-              status: "error",
-              duration: 9000,
-              isClosable: true,
-            });
+          if (err.response.status === 401) {
+            messageFailure("Incorrect login information.", "Please check your email and password.")
+          } else if (err.response.status === 404) {
+            messageFailure("Error", "The user does not exist.");
           }
         });
     }
+  }
+
+  function messageSuccess(title: string, desc: string) {
+    toast({
+      title: title,
+      description: desc,
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  }
+
+  function messageFailure(title: string, desc: string) {
+    toast({
+      title: title,
+      description: desc,
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
   }
 
   return (

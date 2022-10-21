@@ -8,6 +8,7 @@ import { Login } from './pages/login/Login';
 import { Signup } from './pages/signup/Signup';
 import { MainPage } from './pages/main/MainPage';
 import { Button } from '@chakra-ui/react';
+import { useCookies } from 'react-cookie';
 
 function Home(props: {text: string}) {
   const notes = useSelector(selectNotes);
@@ -33,6 +34,7 @@ function Home(props: {text: string}) {
 }
 
 function Header(): JSX.Element{
+  const [token, setToken, removeToken] = useCookies(["auth"]);
   return(
     <header>
       <Link to='/'>
@@ -47,7 +49,11 @@ function Header(): JSX.Element{
       <Link to='/main'>
         <Button>Main</Button>
       </Link>
+      <Button onClick={() => { removeToken("auth")}}
+      colorScheme='orange'
+      >Sign Out</Button>
     </header>
+
   )
 }
 

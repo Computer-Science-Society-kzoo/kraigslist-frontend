@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import e from "express";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 import "./Login.css";
 
@@ -24,6 +25,12 @@ export function Login(): JSX.Element {
   //   setEmail(value)
   //   console.log(email)
   // }
+
+  const [token, setToken, removeToken] = useCookies(['auth']);
+
+  function setAuth(token: string){
+    setToken('auth', token, {secure: true, sameSite: 'strict'})
+  }
 
   async function login(email: string, password: string) {
     //alert("Email is: " + email + " Password is: " + password)
@@ -51,6 +58,7 @@ export function Login(): JSX.Element {
         })
         .then((res) => {
           console.log(res);
+          setAuth(res.data)
           toast({
             title: "Success!",
             description:
@@ -62,7 +70,7 @@ export function Login(): JSX.Element {
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.status === 401) {
+          if (err.response?.status === 401) {
             toast({
               title: "Incorrect login information.",
               description: "Please check your email and password.",
@@ -70,7 +78,7 @@ export function Login(): JSX.Element {
               duration: 9000,
               isClosable: true,
             });
-          } else if (err.response.status === 404) {
+          } else if (err.response?.status === 404) {
             toast({
               title: "Error",
               description: "The user does not exist.",

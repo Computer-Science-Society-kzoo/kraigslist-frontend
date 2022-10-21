@@ -1,6 +1,9 @@
 import { Container, Heading, Text } from "@chakra-ui/react";
 import './Post.css';
 import './MainPage.css'
+import axios from "axios";
+import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 interface Post {
   title: string;
@@ -13,6 +16,22 @@ interface Post {
 }
 
 function Post(post: Post): JSX.Element {
+
+  const [token, setToken, removeToken] = useCookies(['auth']);
+
+  async function getPosts(){
+    console.log(token.auth)
+    axios.get("http://localhost:3000/api/posts/all", {withCredentials: true })
+    .then((res) => {
+      console.log(res);
+    });
+  }
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
+
   return (
     <>
         <div className="PostContainer">

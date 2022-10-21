@@ -9,6 +9,7 @@ import { Signup } from './pages/signup/Signup';
 import { MainPage } from './pages/main/MainPage';
 import { Button, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
+import { Header } from './components/Header';
 
 function Home(props: {text: string}) {
   const notes = useSelector(selectNotes);
@@ -33,43 +34,42 @@ function Home(props: {text: string}) {
   );
 }
 
-function Header(): JSX.Element{
-  const [token, setToken, removeToken] = useCookies(["auth"]);
-  const toast = useToast()
-  return(
-    <header>
-      <Link to='/'>
-        <Button>Home</Button>
-      </Link>
-      <Link to='/login'>
-        <Button>Login</Button>
-      </Link>
-      <Link to='/signup'>
-        <Button>SignUp</Button>
-      </Link>
-      <Link to='/main'>
-        <Button>Main</Button>
-      </Link>
-      <Button onClick={() => { removeToken("auth"); 
-      toast({
-        title: "Warning",
-        description:"You are now logged out.",
-        status: "warning",
-        duration: 9000,
-        isClosable: true,
-      });
-    }}
-      colorScheme='orange'
-      >Sign Out</Button>
-    </header>
+// function Header(): JSX.Element{
+//   const [token, setToken, removeToken] = useCookies(["auth"]);
+//   const toast = useToast()
+//   return(
+//     <header>
+//       <Link to='/'>
+//         <Button>Home</Button>
+//       </Link>
+//       <Link to='/login'>
+//         <Button>Login</Button>
+//       </Link>
+//       <Link to='/signup'>
+//         <Button>SignUp</Button>
+//       </Link>
+//       <Link to='/main'>
+//         <Button>Main</Button>
+//       </Link>
+//       <Button onClick={() => { removeToken("auth"); 
+//       toast({
+//         title: "Warning",
+//         description:"You are now logged out.",
+//         status: "warning",
+//         duration: 9000,
+//         isClosable: true,
+//       });
+//     }}
+//       colorScheme='orange'
+//       >Sign Out</Button>
+//     </header>
 
-  )
-}
+//   )
+// }
 
 function Footer(): JSX.Element{
   return(
     <footer>
-      <p>I will be a footer at one point</p>
     </footer>
   )
 }

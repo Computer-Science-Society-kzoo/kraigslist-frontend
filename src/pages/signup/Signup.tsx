@@ -13,7 +13,7 @@ export function Signup(): JSX.Element {
     return(
       <div>
         <h1>Signup page</h1>
-        <form>
+        <form className='LoginSignupForm'>
           
           <FormControl isRequired>
             <FormLabel> Email </FormLabel>

@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Login } from './pages/login/Login';
 import { Signup } from './pages/signup/Signup';
 import { MainPage } from './pages/main/MainPage';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 
 function Home(props: {text: string}) {
@@ -35,6 +35,7 @@ function Home(props: {text: string}) {
 
 function Header(): JSX.Element{
   const [token, setToken, removeToken] = useCookies(["auth"]);
+  const toast = useToast()
   return(
     <header>
       <Link to='/'>
@@ -92,7 +93,4 @@ function App(): JSX.Element {
 }
 
 export default App;
-function toast(arg0: { title: any; description: any; status: string; duration: number; isClosable: boolean; }) {
-  throw new Error('Function not implemented.');
-}
 

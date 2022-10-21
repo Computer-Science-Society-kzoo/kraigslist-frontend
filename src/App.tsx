@@ -49,7 +49,15 @@ function Header(): JSX.Element{
       <Link to='/main'>
         <Button>Main</Button>
       </Link>
-      <Button onClick={() => { removeToken("auth")}}
+      <Button onClick={() => { removeToken("auth"); 
+      toast({
+        title: "Warning",
+        description:"You are now logged out.",
+        status: "warning",
+        duration: 9000,
+        isClosable: true,
+      });
+    }}
       colorScheme='orange'
       >Sign Out</Button>
     </header>
@@ -84,3 +92,7 @@ function App(): JSX.Element {
 }
 
 export default App;
+function toast(arg0: { title: any; description: any; status: string; duration: number; isClosable: boolean; }) {
+  throw new Error('Function not implemented.');
+}
+

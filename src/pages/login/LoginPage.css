@@ -1,0 +1,17 @@
+.LoginSignupForm{
+    width: 400px;
+    margin: 80px auto;   
+    background-color: white;
+    padding: 16px;
+    border-radius: 12px;
+    transition: all 0.2s ease-out;
+}
+
+.LoginSignupForm > div > * {
+    margin: 20px 0;
+}
+
+.LoginSignupForm-Inline{
+    display: flex;
+    gap: 16px;
+}

@@ -15,8 +15,6 @@ import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 
-import "./Login.css";
-
 export function Login(): JSX.Element {
   const toast = useToast();
   const [email, setEmail] = useState("");
@@ -83,9 +81,8 @@ export function Login(): JSX.Element {
   }
 
   return (
-    <div>
 
-      <div className="LoginSignupForm">
+      <div>
         <FormControl isRequired>
           <FormLabel> Email </FormLabel>
           <Input
@@ -117,6 +114,5 @@ export function Login(): JSX.Element {
           </Button>
         </FormControl>
       </div>
-    </div>
   );
 }

@@ -4,8 +4,9 @@ import { NewNoteInput } from './NewNoteInput';
 import { noteSlice, NoteState } from './redux/notesReducer';
 import { addNoteREDUX, selectNotes } from './redux/notesReducer';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { LoginPage } from './pages/login/LoginPage';
 import { Login } from './pages/login/Login';
-import { Signup } from './pages/signup/Signup';
+import { Signup } from './pages/login/Signup';
 import { MainPage } from './pages/main/MainPage';
 import { Button, useToast } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
@@ -82,7 +83,7 @@ function App(): JSX.Element {
        /* Load different components depending on the current URL */
       }
       <Routes>
-        <Route path="/" element={<Home text="I am home"/>} />
+        <Route path="/" element={<LoginPage/>} />
         <Route path="/login" element={<Login/>} />
         <Route path="/signup" element={<Signup/>} />
         <Route path="/main" element={<MainPage/>} />

@@ -2,12 +2,25 @@
     width: 400px;
     margin: 80px auto;   
     background-color: white;
-    padding: 16px;
+    padding: 16px 16px 16px 16px;
     border-radius: 12px;
+    transition: all 0.2s ease-out;
+    overflow: hidden;
+}
+
+.height-336{
+    min-height: 336px;
+    height: 336px;
+    transition: all 0.2s ease-out;
+
+}
+.height-520{
+    min-height: 520px;
+    height: 520px;
     transition: all 0.2s ease-out;
 }
 
-.LoginSignupForm > div > * {
+.LoginSignupForm-Container > * {
     margin: 20px 0;
 }
 

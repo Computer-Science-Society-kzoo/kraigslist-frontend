@@ -11,7 +11,7 @@ import {
 
 export function Signup(): JSX.Element {
   return (
-    <div>
+    <div className="LoginSignupForm-Container">
         <span className="LoginSignupForm-Inline">
           <FormControl isRequired>
             <FormLabel>First name</FormLabel>
@@ -62,7 +62,7 @@ export function Signup(): JSX.Element {
             variant="solid"
             loadingText="Signing Up"
           >
-            Sign Up
+            Create New Account
           </Button>
         </FormControl>
     </div>

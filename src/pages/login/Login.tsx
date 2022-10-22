@@ -7,7 +7,7 @@ import {
   Button,
   ButtonGroup,
   useToast,
-  Heading
+  Heading,
 } from "@chakra-ui/react";
 
 import axios from "axios";
@@ -15,7 +15,11 @@ import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 
-export function Login(): JSX.Element {
+interface LoginProps {
+  switchPage: () => void;
+}
+
+export function Login(props: LoginProps): JSX.Element {
   const toast = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,18 +29,21 @@ export function Login(): JSX.Element {
   //   console.log(email)
   // }
 
-  const [token, setToken, removeToken] = useCookies(['auth']);
+  const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  function setAuth(token: string){
-    setToken('auth', token, {secure: true, sameSite: 'strict'})
+  function setAuth(token: string) {
+    setToken("auth", token, { secure: true, sameSite: "strict" });
   }
 
   async function login(email: string, password: string) {
     //alert("Email is: " + email + " Password is: " + password)
     if (email === "") {
-      messageFailure("Missing information.", "Please provide your email address.")
+      messageFailure(
+        "Missing information.",
+        "Please provide your email address."
+      );
     } else if (password === "") {
-      messageFailure("Missing infomration.", "Please provide your password.")
+      messageFailure("Missing infomration.", "Please provide your password.");
     } else {
       axios
         .post("http://localhost:3000/api/auth/login", {
@@ -46,13 +53,16 @@ export function Login(): JSX.Element {
         .then((res) => {
           console.log(res);
           setAuth(res.data);
-          messageSuccess("Success!", "You have successfully logged in.")
+          messageSuccess("Success!", "You have successfully logged in.");
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
           if (err.response.status === 401) {
-            messageFailure("Incorrect login information.", "Please check your email and password.")
+            messageFailure(
+              "Incorrect login information.",
+              "Please check your email and password."
+            );
           } else if (err.response.status === 404) {
             messageFailure("Error", "The user does not exist.");
           }
@@ -81,28 +91,28 @@ export function Login(): JSX.Element {
   }
 
   return (
+    <div className="LoginSignupForm-Container">
+      <FormControl isRequired>
+        <FormLabel> Email </FormLabel>
+        <Input
+          onChange={(el) => setEmail(el.target.value)}
+          placeholder="Email"
+          required
+        />
+      </FormControl>
 
-      <div>
-        <FormControl isRequired>
-          <FormLabel> Email </FormLabel>
-          <Input
-            onChange={(el) => setEmail(el.target.value)}
-            placeholder="Email"
-            required
-          />
-        </FormControl>
+      <FormControl isRequired>
+        <FormLabel> Password </FormLabel>
+        <Input
+          type={"password"}
+          onChange={(el) => setPassword(el.target.value)}
+          placeholder="Password"
+          required
+        />
+      </FormControl>
 
-        <FormControl isRequired>
-          <FormLabel> Password </FormLabel>
-          <Input
-            type={"password"}
-            onChange={(el) => setPassword(el.target.value)}
-            placeholder="Password"
-            required
-          />
-        </FormControl>
-
-        <FormControl>
+      <FormControl>
+        <span className="LoginSignupForm-Inline">
           <Button
             colorScheme="orange"
             type="submit"
@@ -112,7 +122,17 @@ export function Login(): JSX.Element {
           >
             Login
           </Button>
-        </FormControl>
-      </div>
+          <Button
+            colorScheme="gray"
+            type="submit"
+            variant="solid"
+            loadingText="Logging In"
+            onClick={() => props.switchPage()}
+          >
+            Create New Account
+          </Button>
+        </span>
+      </FormControl>
+    </div>
   );
 }

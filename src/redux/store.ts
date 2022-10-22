@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import notesReducer, { addNoteREDUX } from "./notesReducer";
-import animationsReducer, { setHeaderFull } from "./animationsReducer";
+import notesReducer from "./notesReducer";
+import coreReducer from './coreReducer';
 
 export const store = configureStore({
     reducer: {
         notes: notesReducer,
-        animations: animationsReducer
+        core: coreReducer
     }
 })
 

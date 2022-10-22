@@ -1,27 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store';
 
-export interface AnimationState {
-    headerFull: boolean;
+export interface coreState {
+    auth: boolean;
 }
 
-const initialState: AnimationState = {
-    headerFull: false,
+const initialState: coreState = {
+    auth: false,
 };
 
-export const animationsSlice = createSlice({
-    name: 'animationsSlice',
+export const coresSlice = createSlice({
+    name: 'coresSlice',
     initialState: initialState,
     reducers: {
-        setHeaderFull: (state, action) => {
-        state.headerFull = action.payload;
+        setAuthRedux: (state, action) => {
+        state.auth = action.payload;
       }
     }
   })
   
-export const { setHeaderFull } = animationsSlice.actions
-export const selectHeaderState = (state: RootState) => state.animations.headerFull;
-export default animationsSlice.reducer
+export const { setAuthRedux } = coresSlice.actions
+export const selectHeaderState = (state: RootState) => state.core.auth;
+export default coresSlice.reducer
 
 
 // type Action = { type: 'ADD_NOTE', payload: string };

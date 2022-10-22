@@ -2,10 +2,12 @@ import { Button, useToast, Heading, Divider } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
-import { selectHeaderState } from "../redux/animationsReducer";
+import { selectHeaderState } from "../redux/coreReducer";
 import { useSelector } from "react-redux";
-import { animate, AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { AnimateHeight } from "./animations/height/AnimateHeight";
+import { setAuthRedux } from '../redux/coreReducer'
+
 
 export function Header(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
@@ -21,6 +23,7 @@ export function Header(): JSX.Element {
   };
 
   function testSignOut() {
+    setAuthRedux(false)
     removeToken("auth");
     toast({
       title: "Warning",

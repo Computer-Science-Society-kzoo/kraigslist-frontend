@@ -15,7 +15,7 @@ import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
-import { setHeaderFull } from '../../redux/animationsReducer'
+import { setAuthRedux } from '../../redux/coreReducer'
 
 interface LoginProps {
   switchPage: () => void;
@@ -35,7 +35,7 @@ export function Login(props: LoginProps): JSX.Element {
   const dispatch = useDispatch();
   function setAuth(token: string) {
     setToken("auth", token, { secure: true, sameSite: "strict" });
-    dispatch(setHeaderFull(true))
+    dispatch(setAuthRedux(true))
   }
 
   async function login(email: string, password: string) {

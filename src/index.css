@@ -3,6 +3,7 @@
 :root{
  --k-orange: #D96D1F;
  --background-color: #EDEEF0;
+ --header-height: 96px;
 }
 
 body {

@@ -11,13 +11,11 @@
 .height-336{
     min-height: 336px;
     height: 336px;
-    transition: all 0.2s ease-out;
 
 }
 .height-520{
     min-height: 520px;
     height: 520px;
-    transition: all 0.2s ease-out;
 }
 
 .LoginSignupForm-Container > * {

@@ -4,7 +4,6 @@
     font-weight: 400;
     line-height: 64px;
     letter-spacing: 0em;
-    text-align: center;
 }
 
 #KRAIGSLIST-TEXT > span {
@@ -19,6 +18,19 @@
     justify-content: space-between;
     gap: 16px;
     background-color: white;
+    overflow: hidden;
+    transition: all 0.2s ease-out;
+}
+
+.Header-Logout{
+    min-height: 96px;
+    height: 96px;
+}
+
+.Header-Login{
+    min-height: 154px;
+    height: 154px;
+
 }
 
 .Header-ButtonsContainer{

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import notesReducer, { addNoteREDUX } from "./notesReducer";
+import animationsReducer, { changeHeaderClass } from "./animationsReducer";
 
 export const store = configureStore({
     reducer: {
-        notes: notesReducer
+        notes: notesReducer,
+        animations: animationsReducer
     }
 })
 

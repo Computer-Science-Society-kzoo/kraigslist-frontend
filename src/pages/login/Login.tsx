@@ -121,7 +121,7 @@ export function Login(props: LoginProps): JSX.Element {
             type="submit"
             variant="solid"
             loadingText="Logging In"
-            onClick={() => setAuth("d")}
+            onClick={() => login(email, password)}
           >
             Login
           </Button>

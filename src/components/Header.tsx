@@ -2,7 +2,7 @@ import { Button, useToast, Heading, Divider } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
-import { selectHeaderState } from "../redux/coreReducer";
+import { selectAuthState } from "../redux/coreReducer";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { AnimateHeight } from "./animations/height/AnimateHeight";
@@ -40,7 +40,7 @@ export function Header(): JSX.Element {
         </Heading>
         <AnimateHeight
           variants={variants}
-          isVisible={useSelector(selectHeaderState)}
+          isVisible={useSelector(selectAuthState)}
           duration={0.2}
           ease={"easeOut"}
         >
@@ -56,19 +56,24 @@ export function Header(): JSX.Element {
                 Home
               </Button>
             </Link>
-            <Link to="/login">
+            <Link to="/yours">
               <Button className="Header-Button" variant={"link"}>
-                Login
+                Your Posts
               </Button>
             </Link>
-            <Link to="/signup">
+            <Link to="/messages">
               <Button className="Header-Button" variant={"link"}>
-                SignUp
+                Messages
               </Button>
             </Link>
-            <Link to="/main">
+            <Link to="/profile">
               <Button className="Header-Button" variant={"link"}>
-                Main
+                Your Profile
+              </Button>
+            </Link>
+            <Link to="/guidelines">
+              <Button className="Header-Button" variant={"link"}>
+                Guidelines
               </Button>
             </Link>
             <Button onClick={testSignOut} colorScheme="orange">

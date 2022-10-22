@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useCookies } from 'react-cookie';
 import { RootState } from './store';
 
 export interface coreState {
     auth: boolean;
 }
+
 
 const initialState: coreState = {
     auth: false,
@@ -20,7 +22,7 @@ export const coresSlice = createSlice({
   })
   
 export const { setAuthRedux } = coresSlice.actions
-export const selectHeaderState = (state: RootState) => state.core.auth;
+export const selectAuthState = (state: RootState) => state.core.auth;
 export default coresSlice.reducer
 
 

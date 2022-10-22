@@ -22,22 +22,11 @@
     transition: all 0.2s ease-out;
 }
 
-.Header-Logout{
-    min-height: 96px;
-    height: 96px;
-}
-
-.Header-Login{
-    min-height: 154px;
-    height: 154px;
-
-}
-
 .Header-ButtonsContainer{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 540px;
+    width: 768px;
     align-items: center;
     margin: 0 20px;
 }

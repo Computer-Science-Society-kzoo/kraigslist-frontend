@@ -2,13 +2,23 @@ import { Button, useToast, Heading, Divider } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
-import { selectHeaderClass } from "../redux/animationsReducer";
+import { selectHeaderState } from "../redux/animationsReducer";
 import { useSelector } from "react-redux";
-import { AnimatePresence, motion } from "framer-motion";
+import { animate, AnimatePresence, motion } from "framer-motion";
+import { AnimateHeight } from "./animations/height/AnimateHeight";
 
 export function Header(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
+
+  const variants = {
+    open: {
+      opacity: 1,
+      height: "auto",
+      x: 0,
+    },
+    collapsed: { opacity: 0, height: 0, x: 0 },
+  };
 
   function testSignOut() {
     removeToken("auth");
@@ -21,12 +31,16 @@ export function Header(): JSX.Element {
     });
   }
   return (
-    <AnimatePresence>
       <header className={"Header"}>
         <Heading id="KRAIGSLIST-TEXT">
           <span>K</span>raigslist
         </Heading>
-        {useSelector(selectHeaderClass) === "Header-LoggedIn" && (
+        <AnimateHeight
+          variants={variants}
+          isVisible={useSelector(selectHeaderState)}
+          duration={0.2}
+          ease={"easeOut"}
+        >
           <motion.div
             key="header"
             initial={{ opacity: 0 }}
@@ -58,9 +72,8 @@ export function Header(): JSX.Element {
               Sign Out
             </Button>
           </motion.div>
-        )}
+        </AnimateHeight>
         <Divider />
       </header>
-    </AnimatePresence>
   );
 }

@@ -2,25 +2,25 @@ import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store';
 
 export interface AnimationState {
-    headerClass: string;
+    headerFull: boolean;
 }
 
 const initialState: AnimationState = {
-    headerClass: "Header-Logout",
+    headerFull: false,
 };
 
 export const animationsSlice = createSlice({
     name: 'animationsSlice',
     initialState: initialState,
     reducers: {
-      changeHeaderClass: (state, action) => {
-        state.headerClass = action.payload;
+        setHeaderFull: (state, action) => {
+        state.headerFull = action.payload;
       }
     }
   })
   
-export const { changeHeaderClass } = animationsSlice.actions
-export const selectHeaderClass = (state: RootState) => state.animations.headerClass;
+export const { setHeaderFull } = animationsSlice.actions
+export const selectHeaderState = (state: RootState) => state.animations.headerFull;
 export default animationsSlice.reducer
 
 

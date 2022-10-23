@@ -26,6 +26,30 @@ export function Login(props: LoginProps): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
+  const [validEmail, setValidEmail] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
+
+  const [shakeEmailStyle, setShakeEmailStyle] = useState("");
+  function shakeEmail(){
+    setValidEmail(false);
+    setShakeEmailStyle("jello-vertical")
+    setTimeout(() => {
+      setShakeEmailStyle("")
+    }, 800);
+  }
+
+  const [shakePasswordStyle, setShakePasswordStyle] = useState("");
+  function shakePassword(){
+    setValidPassword(false);
+    setShakePasswordStyle("jello-vertical")
+    setTimeout(() => {
+      setShakePasswordStyle("")
+    }, 800);
+  }
+
+
+
   // function test(value: string){
   //   setEmail(value)
   //   console.log(email)
@@ -40,13 +64,19 @@ export function Login(props: LoginProps): JSX.Element {
 
   async function login(email: string, password: string) {
     //alert("Email is: " + email + " Password is: " + password)
-    if (email === "") {
+    if (email === "" && password === "") {
       messageFailure(
-        "Missing information.",
-        "Please provide your email address."
+        "Missing information",
+        "Please provide your credentials to login"
       );
+      shakePassword()
+      shakeEmail()
+    } else if (email === "") {
+      messageFailure("Missing infomration", "Please provide your email address");
+      shakeEmail()
     } else if (password === "") {
-      messageFailure("Missing infomration.", "Please provide your password.");
+      messageFailure("Missing infomration", "Please provide your password");
+      shakePassword()
     } else {
       axios
         .post("http://localhost:3000/api/auth/login", {
@@ -56,18 +86,23 @@ export function Login(props: LoginProps): JSX.Element {
         .then((res) => {
           console.log(res);
           setAuth(res.data);
-          messageSuccess("Success!", "You have successfully logged in.");
+          messageSuccess("Success!", "You have successfully logged in");
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
           if (err.response.status === 401) {
             messageFailure(
-              "Incorrect login information.",
-              "Please check your email and password."
+              "Incorrect login information",
+              "Please check your email and password"
             );
-          } else if (err.response.status === 404) {
-            messageFailure("Error", "The user does not exist.");
+            shakePassword()
+          } else if (err.response.status === 400) {
+            messageFailure("Error", "The user does not exist");
+            shakeEmail()
+            shakePassword()
+          } else {
+            messageFailure("Error", "Something went wrong. Please try again later");
           }
         });
     }
@@ -80,6 +115,7 @@ export function Login(props: LoginProps): JSX.Element {
       status: "success",
       duration: 9000,
       isClosable: true,
+      position: "bottom"
     });
   }
 
@@ -90,6 +126,7 @@ export function Login(props: LoginProps): JSX.Element {
       status: "error",
       duration: 9000,
       isClosable: true,
+      position: "bottom"
     });
   }
 
@@ -98,7 +135,9 @@ export function Login(props: LoginProps): JSX.Element {
       <FormControl isRequired>
         <FormLabel> Email </FormLabel>
         <Input
-          onChange={(el) => setEmail(el.target.value)}
+          isInvalid={!validEmail}
+          className={"default-transition " + shakeEmailStyle}
+          onChange={(el) => {setEmail(el.target.value); setValidEmail(true)}}
           placeholder="Email"
           required
         />
@@ -107,8 +146,10 @@ export function Login(props: LoginProps): JSX.Element {
       <FormControl isRequired>
         <FormLabel> Password </FormLabel>
         <Input
+          isInvalid={!validPassword}
+          className={shakePasswordStyle}
           type={"password"}
-          onChange={(el) => setPassword(el.target.value)}
+          onChange={(el) => {setPassword(el.target.value); ; setValidPassword(true)}}
           placeholder="Password"
           required
         />

@@ -35,7 +35,7 @@ export function Header(): JSX.Element {
   }
   return (
       <header className={"Header"}>
-        <Heading id="KRAIGSLIST-TEXT">
+        <Heading className="tracking-in-expand-fwd-top " id="KRAIGSLIST-TEXT">
           <span>K</span>raigslist
         </Heading>
         <AnimateHeight

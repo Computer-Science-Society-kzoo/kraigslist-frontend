@@ -1,0 +1,24 @@
+.FiltersContainer {
+    background-color: white;
+    height: 100%;
+}
+
+.FiltersContainer-InnerContainer{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+}
+
+.FiltersContainer-InnerContainer-Category > *:first-child {
+    padding-bottom: 16px;
+    width: 100%;
+    text-align: center;
+}
+
+.FiltersContainer-InnerContainer-Category > *:last-child {
+    padding-top: 16px;
+    width: 100%;
+    text-align: center;
+}

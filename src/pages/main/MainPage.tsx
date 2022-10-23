@@ -4,6 +4,9 @@ import "./MainPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { FiltersMenu } from "./Filters";
+import Split from 'react-split'
+import './Split.css';
 
 interface Post {
   title: string;
@@ -91,19 +94,21 @@ export function MainPage(): JSX.Element {
   };
 
   return (
-    <div className="MainPageContainer">
-      <Post
-        title={dummyPost.title}
-        username={dummyPost.username}
-        text={dummyPost.text}
-        date={dummyPost.date}
-        type={dummyPost.type}
-        categories={dummyPost.categories}
-        img={dummyPost.img}
-        key={dummyPost.key}
-      ></Post>
+    <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
+      <FiltersMenu />
+      <div className="MainPageContainer-PostsContainer">
+        <Post
+          title={dummyPost.title}
+          username={dummyPost.username}
+          text={dummyPost.text}
+          date={dummyPost.date}
+          type={dummyPost.type}
+          categories={dummyPost.categories}
+          img={dummyPost.img}
+          key={dummyPost.key}
+        ></Post>
 
-      {posts.map((post) => (
+        {/* {posts.map((post) => (
         <Post
           title={post.title}
           username={post.username}
@@ -114,7 +119,8 @@ export function MainPage(): JSX.Element {
           img={post.img}
           key={post.key}
         ></Post>
-      ))}
-    </div>
+      ))} */}
+      </div>
+    </Split>
   );
 }

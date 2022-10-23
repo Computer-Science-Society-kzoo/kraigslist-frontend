@@ -42,11 +42,11 @@ export function Login(props: LoginProps): JSX.Element {
     //alert("Email is: " + email + " Password is: " + password)
     if (email === "") {
       messageFailure(
-        "Missing information.",
-        "Please provide your email address."
+        "Missing information",
+        "Please provide your email address"
       );
     } else if (password === "") {
-      messageFailure("Missing infomration.", "Please provide your password.");
+      messageFailure("Missing infomration", "Please provide your password");
     } else {
       axios
         .post("http://localhost:3000/api/auth/login", {
@@ -56,18 +56,18 @@ export function Login(props: LoginProps): JSX.Element {
         .then((res) => {
           console.log(res);
           setAuth(res.data);
-          messageSuccess("Success!", "You have successfully logged in.");
+          messageSuccess("Success!", "You have successfully logged in");
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
           if (err.response.status === 401) {
             messageFailure(
-              "Incorrect login information.",
-              "Please check your email and password."
+              "Incorrect login information",
+              "Please check your email and password"
             );
           } else if (err.response.status === 404) {
-            messageFailure("Error", "The user does not exist.");
+            messageFailure("Error", "The user does not exist");
           }
         });
     }
@@ -80,6 +80,7 @@ export function Login(props: LoginProps): JSX.Element {
       status: "success",
       duration: 9000,
       isClosable: true,
+      position: "bottom"
     });
   }
 
@@ -90,6 +91,7 @@ export function Login(props: LoginProps): JSX.Element {
       status: "error",
       duration: 9000,
       isClosable: true,
+      position: "bottom"
     });
   }
 

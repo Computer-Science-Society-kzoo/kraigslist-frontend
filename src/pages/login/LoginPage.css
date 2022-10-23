@@ -6,6 +6,7 @@
     border-radius: 12px;
     transition: all 0.2s ease-out;
     overflow: hidden;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
 }
 
 .height-336{

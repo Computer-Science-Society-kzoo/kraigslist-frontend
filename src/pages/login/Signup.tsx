@@ -27,6 +27,58 @@ export function Signup(): JSX.Element {
   const [year, setYear] = useState(0);
   const [preferredname, setPreferredname] = useState("");
 
+  const [validEmail, setValidEmail] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
+  const [validFirstname, setValidFirstname] = useState(true);
+  const [validLastname, setValidLastname] = useState(true);
+  const [validYear, setValidYear] = useState(true);
+
+  const [shakeEmailStyle, setShakeEmailStyle] = useState("");
+  function shakeEmail(){
+    setValidEmail(false);
+    setShakeEmailStyle("jello-vertical")
+    setTimeout(() => {
+      setShakeEmailStyle("")
+    }, 800);
+  }
+
+  const [shakePasswordStyle, setShakePasswordStyle] = useState("");
+  function shakePassword(){
+    setValidPassword(false);
+    setShakePasswordStyle("jello-vertical")
+    setTimeout(() => {
+      setShakePasswordStyle("")
+    }, 800);
+  }
+
+  const [shakeFirstnameStyle, setShakeFirstnameStyle] = useState("");
+  function shakeFirstname(){
+    setValidFirstname(false);
+    setShakeFirstnameStyle("jello-vertical")
+    setTimeout(() => {
+      setShakeFirstnameStyle("")
+    }, 800);
+  }
+
+  const [shakeLastnameStyle, setShakeLastnameStyle] = useState("");
+  function shakeLastname(){
+    setValidLastname(false);
+    setShakeLastnameStyle("jello-vertical")
+    setTimeout(() => {
+      setShakeLastnameStyle("")
+    }, 800);
+  }
+
+  const [shakeYearStyle, setShakeYearStyle] = useState("");
+  function shakeYear(){
+    setValidYear(false);
+    setShakeYearStyle("jello-vertical")
+    setTimeout(() => {
+      setShakeYearStyle("")
+    }, 800);
+  }
+
+
   // function test(value: string){
   //   setEmail(value)
   //   console.log(email)
@@ -42,13 +94,47 @@ export function Signup(): JSX.Element {
   async function signup(email: string, password: string, firstname: string, lastname: string, preferredname: string, year: Number) {
     //alert("Email is: " + email + " Password is: " + password)
     if (email === "") {
+
+      shakeEmail();
+      // messageFailure(
+      //   "Missing information.",
+      //   "Please provide your email address."
+      // );
+    } if (firstname === "") {
+      
+      shakeFirstname();
+      // messageFailure(
+      //   "Blank field.",
+      //   "Please provide a first name."
+      // );
+    } if (lastname === "") {
+      
+      shakeLastname();
+      // messageFailure(
+      //   "Blank field.",
+      //   "Please provide a last name."
+      // );
+    } if (!year) {
+      
+      shakeYear();
+      // messageFailure(
+      //   "Blank field.",
+      //   "Please provide a year."
+      // );
+    } if (! email.includes("@kzoo.edu")) {
+      
+      shakeEmail();
       messageFailure(
-        "Missing information.",
-        "Please provide your email address."
+        "Invalid email address.",
+        "Please provide a valid email address."
       );
-    } else if (password === "") {
-      messageFailure("Missing infomration.", "Please provide your password.");
-    } else {
+    
+    } if (password === "") {
+      
+      shakePassword();
+      // messageFailure("Missing infomration.", "Please provide your password.");
+    } 
+    else {
       axios
         .post("http://localhost:3000/api/auth/signup", {
           email: email,
@@ -104,19 +190,19 @@ export function Signup(): JSX.Element {
 
         <FormControl isRequired>
           <FormLabel>First name</FormLabel>
-          <Input onChange={(el) => setFirstname(el.target.value)} autoComplete="off" placeholder="First Name" required />
+          <Input isInvalid = {!validFirstname} className={"default-transition " + shakeFirstnameStyle} onChange={(el) => {setFirstname(el.target.value); setValidFirstname(true)}} autoComplete="off" placeholder="First Name" required />
         </FormControl>
 
         <FormControl isRequired>
           <FormLabel> Last Name </FormLabel>
-          <Input onChange={(el) => setLastname(el.target.value)} autoComplete="off" placeholder="Last Name" required />
+          <Input isInvalid = {!validLastname} className={"default-transition " + shakeLastnameStyle} onChange={(el) => {setLastname(el.target.value); setValidLastname(true)}} autoComplete="off" placeholder="Last Name" required />
         </FormControl>
       </span>
 
       <span className="LoginSignupForm-Inline">
         <FormControl isRequired>
           <FormLabel> Class Year </FormLabel>
-          <Select onChange={(el) => setYear(Number(el.target.value))} placeholder="Select Year">
+          <Select isInvalid = {!validYear} className={"default-transition " + shakeYearStyle} onChange={(el) => {setYear(Number(el.target.value)); setValidYear(true)}} placeholder="Select Year">
             <option>{1}</option>
             <option>{2}</option>
             <option>{3}</option>
@@ -132,12 +218,12 @@ export function Signup(): JSX.Element {
 
       <FormControl isRequired>
         <FormLabel> Email </FormLabel>
-        <Input onChange={(el) => setEmail(el.target.value)} placeholder="Email" required />
+        <Input isInvalid = {!validEmail} className={"default-transition " + shakeEmailStyle} onChange={(el) => {setEmail(el.target.value); setValidEmail(true)}} placeholder="Email" required />
       </FormControl>
 
       <FormControl isRequired>
         <FormLabel> Password </FormLabel>
-        <Input onChange={(el) => setPassword(el.target.value)} placeholder="Password" required />
+        <Input isInvalid = {!validPassword} className={"default-transition " + shakePasswordStyle} onChange={(el) => {setPassword(el.target.value); setValidPassword(true)}} placeholder="Password" required />
       </FormControl>
 
       <FormControl>

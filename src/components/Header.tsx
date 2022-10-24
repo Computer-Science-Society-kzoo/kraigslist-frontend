@@ -72,7 +72,7 @@ export function Header(): JSX.Element {
                 Home
               </Button>
             </Link>
-            <Link to="/yours">
+            <Link to="/YourPostsPage">
               <Button className="Header-Button" variant={"link"}>
                 Your Posts
               </Button>

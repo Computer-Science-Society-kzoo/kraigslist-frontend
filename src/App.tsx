@@ -6,6 +6,7 @@ import { MainPage } from "./pages/main/MainPage";
 import { Header } from "./components/Header";
 import { selectAuthState, setAuthRedux } from "./redux/coreReducer";
 import { useCookies } from "react-cookie";
+import { YourPostsPage } from "./pages/main/YourPosts";
 
 function Footer(): JSX.Element {
   return <footer></footer>;
@@ -24,6 +25,7 @@ function HomePage(): JSX.Element {
     <>
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<YourPostsPage />} />
       </Routes>
       <Footer />
     </>

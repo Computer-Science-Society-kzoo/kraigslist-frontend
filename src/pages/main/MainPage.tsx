@@ -71,7 +71,7 @@ export function MainPage(): JSX.Element {
   async function getPosts() {
     console.log(token.auth);
     axios
-      .get("http://localhost:3000/api/posts/all", { withCredentials: true })
+      .get("http://localhost:3000/api/posts", { withCredentials: true })
       .then((res) => {
         console.log(res.data);
         setPosts(parsePosts(res.data));
@@ -97,29 +97,29 @@ export function MainPage(): JSX.Element {
     <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
       <FiltersMenu />
       <div className="MainPageContainer-PostsContainer">
-        <Post
-          title={dummyPost.title}
-          username={dummyPost.username}
-          text={dummyPost.text}
-          date={dummyPost.date}
-          type={dummyPost.type}
-          categories={dummyPost.categories}
-          img={dummyPost.img}
-          key={dummyPost.key}
-        ></Post>
+          <Post
+            title={dummyPost.title}
+            username={dummyPost.username}
+            text={dummyPost.text}
+            date={dummyPost.date}
+            type={dummyPost.type}
+            categories={dummyPost.categories}
+            img={dummyPost.img}
+            key={dummyPost.key}
+          ></Post>
 
-        {/* {posts.map((post) => (
-        <Post
-          title={post.title}
-          username={post.username}
-          text={post.text}
-          date={post.date}
-          type={post.type}
-          categories={post.categories}
-          img={post.img}
-          key={post.key}
-        ></Post>
-      ))} */}
+          {posts.map((post) => (
+          <Post
+            title={post.title}
+            username={post.username}
+            text={post.text}
+            date={post.date}
+            type={post.type}
+            categories={post.categories}
+            img={post.img}
+            key={post.key}
+          ></Post>
+        ))}
       </div>
     </Split>
   );

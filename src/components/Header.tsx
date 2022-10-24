@@ -7,9 +7,25 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { setAuthRedux } from '../redux/coreReducer'
+import { useEffect, useRef, useState } from "react";
 
 
 export function Header(): JSX.Element {
+  // const [height, setHeight] = useState<number>(0)
+  // const [heightButtons, setHeightButtons] = useState<number>(0)
+  // const ref = useRef<HTMLDivElement>(null);
+  // const refButtons = useRef<HTMLDivElement>(null);
+
+
+  useEffect(() => {
+    // setHeight(Number(ref.current?.clientHeight))
+    // setHeightButtons(Number(refButtons.current?.clientHeight))
+    // console.log(height + " " + heightButtons)
+    // let total = height + heightButtons
+    document.documentElement.style.setProperty("--header-height", 152 + "px");
+  }, [])
+
+
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
 
@@ -80,7 +96,7 @@ export function Header(): JSX.Element {
               Sign Out
             </Button>
           </motion.div>
-        </AnimateHeight>
+          </AnimateHeight>
         <Divider />
       </header>
   );

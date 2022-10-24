@@ -27,7 +27,7 @@ export function LoginPage(): JSX.Element {
   }
 
   return (
-    <div className={"LoginSignupForm " + toggleHeight()}>
+    <div className={"LoginSignupForm"}>
       <AnimatePresence>
         <Tabs
           index={tabIndex}

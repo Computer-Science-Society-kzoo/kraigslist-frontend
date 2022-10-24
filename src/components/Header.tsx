@@ -1,4 +1,4 @@
-import { Button, useToast, Heading, Divider } from "@chakra-ui/react";
+import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
@@ -25,6 +25,9 @@ export function Header(): JSX.Element {
     document.documentElement.style.setProperty("--header-height", 152 + "px");
   }, [])
 
+
+  //Modal const
+  const {isOpen, onOpen, onClose} = useDisclosure();
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
@@ -92,6 +95,34 @@ export function Header(): JSX.Element {
                 Guidelines
               </Button>
             </Link>
+            <Button onClick={onOpen} colorScheme="gray">
+              Create Post
+            </Button>
+
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Create Post</ModalHeader>
+                  <ModalCloseButton/>
+                  <ModalBody>
+                    <FormControl>
+                      <FormLabel>Post Title</FormLabel>
+                      <Input
+                      type="Title"
+                      />
+                    </FormControl>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button colorScheme="blue" type="submit">
+                      Submit
+                    </Button>
+                    <Button onClick={onClose} mr={3} colorScheme="orange">
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+
             <Button onClick={testSignOut} colorScheme="orange">
               Sign Out
             </Button>

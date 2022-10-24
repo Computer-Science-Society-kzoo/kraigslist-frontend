@@ -39,7 +39,7 @@ export function Signup(): JSX.Element {
     dispatch(setAuthRedux(true))
   }
 
-  async function signup(username: string, email: string, password: string, firstname: string, lastname: string, preferredname: string, year: Number) {
+  async function signup(email: string, password: string, firstname: string, lastname: string, preferredname: string, year: Number) {
     //alert("Email is: " + email + " Password is: " + password)
     if (email === "") {
       messageFailure(
@@ -51,7 +51,6 @@ export function Signup(): JSX.Element {
     } else {
       axios
         .post("http://localhost:3000/api/auth/signup", {
-          username: username,
           email: email,
           password: password,
           first_name: firstname,
@@ -129,24 +128,15 @@ export function Signup(): JSX.Element {
           <Input onChange={(el) => setPreferredname(el.target.value)} autoComplete="off" placeholder="Preferred Name" required />
         </FormControl>
 
-        {/* <FormControl isRequired>
-            <FormLabel> Userame </FormLabel>
-            <Input placeholder="Username" required />
-          </FormControl> */}
       </span>
 
       <FormControl isRequired>
-        {/* <FormLabel>Username</FormLabel> */}
-        <Input onChange={(el) => setUsername(el.target.value)} autoComplete="off" placeholder="Username" required />
-      </FormControl>
-
-      <FormControl isRequired>
-        {/* <FormLabel> Email </FormLabel> */}
+        <FormLabel> Email </FormLabel>
         <Input onChange={(el) => setEmail(el.target.value)} placeholder="Email" required />
       </FormControl>
 
       <FormControl isRequired>
-        {/* <FormLabel> Password </FormLabel> */}
+        <FormLabel> Password </FormLabel>
         <Input onChange={(el) => setPassword(el.target.value)} placeholder="Password" required />
       </FormControl>
 
@@ -156,7 +146,7 @@ export function Signup(): JSX.Element {
           type="submit"
           variant="solid"
           loadingText="Signing Up"
-          onClick={() => signup(username, email, password, firstname, lastname, preferredname, year)}
+          onClick={() => signup(email, password, firstname, lastname, preferredname, year)}
         >
           Create New Account
         </Button>

@@ -25,7 +25,7 @@ function HomePage(): JSX.Element {
     <>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/" element={<YourPostsPage />} />
+        <Route path="/YourPostsPage" element={<YourPostsPage />} />
       </Routes>
       <Footer />
     </>

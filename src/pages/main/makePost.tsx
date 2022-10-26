@@ -99,12 +99,12 @@ export function MakePost(): JSX.Element {
 
     async function makePost(title: string, text: string, type: string, category: string, picture: File | null) {
         //alert("Email is: " + email + " Password is: " + password)
-        var r = new global.FileReader();
-        //r.onload = function(){ alert(r.result); };
-        if (picture) {
-            r.readAsArrayBuffer(picture);
-            console.log(r);
-        }
+        // var r = new global.FileReader();
+        // //r.onload = function(){ alert(r.result); };
+        // if (picture) {
+        //     r.readAsArrayBuffer(picture);
+        //     console.log(r);
+        // }
         if (title === "") {
             messageFailure("Missing infomration", "Please provide your email address");
             shakeTitle()
@@ -124,7 +124,7 @@ export function MakePost(): JSX.Element {
                     text: text,
                     type: type,
                     category: category,
-                    img: r.result,
+                    img: picture,
                 })
                 .then((res) => {
                     console.log(res);

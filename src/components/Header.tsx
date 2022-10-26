@@ -95,11 +95,13 @@ export function Header(): JSX.Element {
                 Guidelines
               </Button>
             </Link>
+            <Link to="/makePostPage">
             <Button onClick={onOpen} colorScheme="gray">
               Create Post
             </Button>
+            </Link>
 
-              <Modal isOpen={isOpen} onClose={onClose}>
+              {/* <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
                   <ModalHeader>Create Post</ModalHeader>
@@ -121,7 +123,7 @@ export function Header(): JSX.Element {
                     </Button>
                   </ModalFooter>
                 </ModalContent>
-              </Modal>
+              </Modal> */}
 
             <Button onClick={testSignOut} colorScheme="orange">
               Sign Out

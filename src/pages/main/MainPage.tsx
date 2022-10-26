@@ -7,6 +7,7 @@ import { useCookies } from "react-cookie";
 import { FiltersMenu } from "./Filters";
 import Split from 'react-split'
 import './Split.css';
+import { MakePost } from "./makePost";
 
 interface Post {
   title: string;

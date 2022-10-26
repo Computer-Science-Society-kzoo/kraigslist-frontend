@@ -8,6 +8,14 @@ import {
     ButtonGroup,
     useToast,
     Heading,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure,
 } from "@chakra-ui/react";
 
 import axios from "axios";
@@ -15,8 +23,10 @@ import imageCompression from "browser-image-compression";
 import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { useDispatch } from "react-redux";
-import { setAuthRedux } from '../../redux/coreReducer'
+import { setAuthRedux, setCreatePost } from '../../redux/coreReducer'
+import { selectCreatePostSate } from "../../redux/coreReducer";
+import { useSelector, useDispatch} from "react-redux";
+import React from "react";
 
 
 export function MakePost(): JSX.Element {
@@ -162,68 +172,86 @@ export function MakePost(): JSX.Element {
         });
     }
 
+
+    const isOpenRedux = useSelector(selectCreatePostSate)
+
     return (
-        <div className="LoginSignupForm-Container">
-            <FormControl isRequired>
-                <FormLabel> Title </FormLabel>
-                <Input
-                    isInvalid={!validTitle}
-                    className={"default-transition " + shakeTitleStyle}
-                    onChange={(el) => { setTitle(el.target.value); setValidTitle(true) }}
-                    placeholder="Title"
-                    required
-                />
-            </FormControl>
-            <FormControl isRequired>
-                <FormLabel> Text </FormLabel>
-                <Input
-                    isInvalid={!validText}
-                    className={"default-transition " + shakeTextStyle}
-                    onChange={(el) => { setText(el.target.value); setValidText(true) }}
-                    placeholder="Text"
-                    required
-                />
-            </FormControl>
+        <div>
+            <Modal isOpen={isOpenRedux} onClose={() => {dispatch(setCreatePost(false))}} >
+                <ModalOverlay />
+                <ModalContent>
+                        <ModalHeader>Create Post</ModalHeader>
+                        <ModalBody pb={6}>
+                        <FormControl isRequired>
+                        <FormLabel> Post Title </FormLabel>
+                        <Input
+                            isInvalid={!validTitle}
+                            className={"default-transition " + shakeTitleStyle}
+                            onChange={(el) => { setTitle(el.target.value); setValidTitle(true) }}
+                            placeholder="Title"
+                            required
+                        />
+                    </FormControl>
+                    <FormControl isRequired>
+                        <FormLabel> Post Description </FormLabel>
+                        <Input
+                            isInvalid={!validText}
+                            className={"default-transition " + shakeTextStyle}
+                            onChange={(el) => { setText(el.target.value); setValidText(true) }}
+                            placeholder="Text"
+                            required
+                        />
+                    </FormControl>
 
-            <FormControl isRequired>
-                <span className="LoginSignupForm-Inline">
-                    {/* <FormLabel> Category </FormLabel> */}
-                    <Input
-                        isInvalid={!validType}
-                        //className={shakeTypeStyle}
-                        onChange={(el) => { setType(el.target.value); setValidType(true) }}
-                        placeholder="Type"
-                        required
-                    />
-                    <Input
-                        isInvalid={!validCategory}
-                        //className={shakeCategoryStyle}
-                        onChange={(el) => { setCategory(el.target.value); setValidCategory(true) }}
-                        placeholder="Category"
-                        required
-                    />
-                </span>
-            </FormControl>
+                    <FormControl isRequired>
+                        <span className="LoginSignupForm-Inline">
+                            {/* <FormLabel> Category </FormLabel> */}
+                            <Input
+                                isInvalid={!validType}
+                                //className={shakeTypeStyle}
+                                onChange={(el) => { setType(el.target.value); setValidType(true) }}
+                                placeholder="Type"
+                                required
+                            />
+                            <Input
+                                isInvalid={!validCategory}
+                                //className={shakeCategoryStyle}
+                                onChange={(el) => { setCategory(el.target.value); setValidCategory(true) }}
+                                placeholder="Category"
+                                required
+                            />
+                        </span>
+                    </FormControl>
 
 
-            <FormControl>
-                <FormLabel> Add image </FormLabel>
-                <span className="LoginSignupForm-Inline">
+                    <FormControl>
+                        <FormLabel> Add image </FormLabel>
+                        <span className="LoginSignupForm-Inline">
 
-                    <Input
-                        type="file" accept=".jpg, .jpeg, .png" onChange={(el) => handleImageUpload(el)}
-                    />
-                    <Button
-                        colorScheme="orange"
-                        type="submit"
-                        variant="solid"
-                        loadingText="Logging In"
-                        onClick={() => {makePost(title, text, type, category, picture)}}
-                    >
-                        Create Post
-                    </Button>
-                </span>
-            </FormControl>
+                            <Input
+                                type="file" accept=".jpg, .jpeg, .png" onChange={(el) => handleImageUpload(el)}
+                            />
+
+                        </span>
+                    </FormControl>
+                        </ModalBody>
+                    <ModalFooter>
+                        <Button 
+                            colorScheme="gray"
+                            type="submit"
+                            loadingText="Creating Post"
+                            onClick={() => {makePost(title, text, type, category, picture)}}
+                            mr={3}
+                        >
+                            Create Post
+                        </Button>
+                        <Button colorScheme='orange' onClick={() => {dispatch(setCreatePost(false))}}>
+                        Close
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
+            
         </div>
     );
 }

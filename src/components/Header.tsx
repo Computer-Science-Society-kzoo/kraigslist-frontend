@@ -1,4 +1,4 @@
-import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, InputGroup, InputLeftAddon } from "@chakra-ui/react";
+import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, IconButton } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
@@ -9,7 +9,7 @@ import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { setAuthRedux } from '../redux/coreReducer'
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Search2Icon } from "@chakra-ui/icons";
+import { Search2Icon, SearchIcon } from "@chakra-ui/icons";
 
 
 export function Header(): JSX.Element {
@@ -112,7 +112,7 @@ export function Header(): JSX.Element {
           </AnimateHeight>
           <Heading as='h2' size='xs' variant='outlined'>
             <InputGroup size='sm'>
-              <InputLeftAddon children={<Search2Icon/>}/>
+              <IconButton aria-label='Search database' icon={<SearchIcon />} />
               <Input placeholder="Search" />
             </InputGroup>
           </Heading>

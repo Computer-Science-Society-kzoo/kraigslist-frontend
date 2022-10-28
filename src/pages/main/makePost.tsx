@@ -16,6 +16,10 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
+    Select,
+    InputRightElement,
+    InputLeftElement,
+    InputGroup,
 } from "@chakra-ui/react";
 
 import axios from "axios";
@@ -173,7 +177,8 @@ export function MakePost(): JSX.Element {
     }
 
 
-    const isOpenRedux = useSelector(selectCreatePostSate)
+    const isOpenRedux = useSelector(selectCreatePostSate);
+
 
     return (
         <div>
@@ -201,26 +206,57 @@ export function MakePost(): JSX.Element {
                             placeholder="Text"
                             required
                         />
-                    </FormControl>
+                    </FormControl>  
 
                     <FormControl isRequired>
+                        <FormLabel> Post Type </FormLabel>
                         <span className="LoginSignupForm-Inline">
                             {/* <FormLabel> Category </FormLabel> */}
-                            <Input
+                            
+                            <Select 
+                                placeholder='Select Type'
                                 isInvalid={!validType}
-                                //className={shakeTypeStyle}
                                 onChange={(el) => { setType(el.target.value); setValidType(true) }}
-                                placeholder="Type"
                                 required
-                            />
-                            <Input
+                            >
+                                <option value='option 1'>Request</option>
+                                <option value='option 2'>Offer</option>
+                            </Select>
+                            
+                            
+                            <Select
+                                placeholder='Select Category'
                                 isInvalid={!validCategory}
-                                //className={shakeCategoryStyle}
                                 onChange={(el) => { setCategory(el.target.value); setValidCategory(true) }}
-                                placeholder="Category"
                                 required
-                            />
+                            >
+                                <option value='option 1'>Category 1</option>
+                                <option value='option 2'>Category 2</option>
+                                <option value='option 3'>Category 3</option>
+                            </Select>
                         </span>
+                    </FormControl>
+
+                    <FormControl>
+                        <FormLabel>Price</FormLabel>
+                            <InputGroup>
+                                <InputLeftElement
+                                pointerEvents='none'
+                                color='gray.300'
+                                fontSize='1.2em'
+                                children='$'
+                                />
+                                <Input placeholder='Enter Price' />
+                            </InputGroup>
+                    </FormControl>
+
+                    <FormControl>
+                        <FormLabel>Offer/Request Deadline</FormLabel>
+                            <Input
+                            placeholder="Select Date and Time"
+                            size="md"
+                            type="datetime-local"
+                            />
                     </FormControl>
 
 

@@ -20,7 +20,13 @@ import {
     InputRightElement,
     InputLeftElement,
     InputGroup,
+    Textarea,
+    IconButton,
+    InputLeftAddon,
+    Icon,
 } from "@chakra-ui/react";
+
+import {AttachmentIcon} from "@chakra-ui/icons";
 
 import axios from "axios";
 import imageCompression from "browser-image-compression";
@@ -199,11 +205,11 @@ export function MakePost(): JSX.Element {
                     </FormControl>
                     <FormControl isRequired>
                         <FormLabel> Post Description </FormLabel>
-                        <Input
+                        <Textarea
                             isInvalid={!validText}
                             className={"default-transition " + shakeTextStyle}
                             onChange={(el) => { setText(el.target.value); setValidText(true) }}
-                            placeholder="Text"
+                            placeholder="Description"
                             required
                         />
                     </FormControl>  
@@ -259,11 +265,9 @@ export function MakePost(): JSX.Element {
                             />
                     </FormControl>
 
-
                     <FormControl>
                         <FormLabel> Add image </FormLabel>
                         <span className="LoginSignupForm-Inline">
-
                             <Input
                                 type="file" accept=".jpg, .jpeg, .png" onChange={(el) => handleImageUpload(el)}
                             />

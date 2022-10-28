@@ -1,4 +1,4 @@
-import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, InputGroup, InputLeftAddon } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
@@ -9,6 +9,7 @@ import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { setAuthRedux } from '../redux/coreReducer'
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Search2Icon } from "@chakra-ui/icons";
 
 
 export function Header(): JSX.Element {
@@ -103,37 +104,18 @@ export function Header(): JSX.Element {
             <Button onClick={() => {dispatch(setCreatePost(true))}} colorScheme="gray">
               Create Post
             </Button>
-        
-
-              {/* <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Create Post</ModalHeader>
-                  <ModalCloseButton/>
-                  <ModalBody>
-                    <FormControl>
-                      <FormLabel>Post Title</FormLabel>
-                      <Input
-                      type="Title"
-                      />
-                    </FormControl>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" type="submit">
-                      Submit
-                    </Button>
-                    <Button onClick={onClose} mr={3} colorScheme="orange">
-                      Cancel
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal> */}
 
             <Button onClick={testSignOut} colorScheme="orange">
               Sign Out
             </Button>
           </motion.div>
           </AnimateHeight>
+          <Heading as='h2' size='xs' variant='outlined'>
+            <InputGroup size='sm'>
+              <InputLeftAddon children={<Search2Icon/>}/>
+              <Input placeholder="Search" />
+            </InputGroup>
+          </Heading>
         <Divider />
       </header>
   );

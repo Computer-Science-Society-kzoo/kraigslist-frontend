@@ -87,7 +87,6 @@ export function Login(props: LoginProps): JSX.Element {
           console.log(res);
           setAuth(res.data);
           messageSuccess("Success!", "You have successfully logged in");
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);

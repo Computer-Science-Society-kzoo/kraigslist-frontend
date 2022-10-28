@@ -2,12 +2,13 @@ import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay,
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
-import { selectAuthState } from "../redux/coreReducer";
+import { selectAuthState, setCreatePost } from "../redux/coreReducer";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { setAuthRedux } from '../redux/coreReducer'
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 
 
 export function Header(): JSX.Element {
@@ -52,6 +53,9 @@ export function Header(): JSX.Element {
       isClosable: true,
     });
   }
+
+  const dispatch = useDispatch()
+
   return (
       <header className={"Header"}>
         <Heading className="tracking-in-expand-fwd-top " id="KRAIGSLIST-TEXT">
@@ -95,11 +99,13 @@ export function Header(): JSX.Element {
                 Guidelines
               </Button>
             </Link>
-            <Button onClick={onOpen} colorScheme="gray">
+           
+            <Button onClick={() => {dispatch(setCreatePost(true))}} colorScheme="gray">
               Create Post
             </Button>
+        
 
-              <Modal isOpen={isOpen} onClose={onClose}>
+              {/* <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
                   <ModalHeader>Create Post</ModalHeader>
@@ -121,7 +127,7 @@ export function Header(): JSX.Element {
                     </Button>
                   </ModalFooter>
                 </ModalContent>
-              </Modal>
+              </Modal> */}
 
             <Button onClick={testSignOut} colorScheme="orange">
               Sign Out

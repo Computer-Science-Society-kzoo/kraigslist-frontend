@@ -145,7 +145,7 @@ export function MakePost(): JSX.Element {
                     type: type,
                     category: category,
                     img: picture,
-                })
+                }, { withCredentials: true })
                 .then((res) => {
                     console.log(res);
                     setAuth(res.data);

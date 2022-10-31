@@ -37,6 +37,7 @@ import { setAuthRedux, setCreatePost } from '../../redux/coreReducer'
 import { selectCreatePostSate } from "../../redux/coreReducer";
 import { useSelector, useDispatch} from "react-redux";
 import React from "react";
+import { isNullOrUndefined } from "util";
 
 
 export function MakePost(): JSX.Element {
@@ -49,6 +50,8 @@ export function MakePost(): JSX.Element {
     const [text, setText] = useState("");
     const [type, setType] = useState("");
     const [category, setCategory] = useState("");
+    const [offer_deadline, setOfferDeadline] = useState<Date | null>(null);
+    const [price, setPrice] = useState("");
     const [image, setImage] = useState<FileList | null>(null);
     const [image1, setImage1] = useState<File | null>(null);
 
@@ -116,7 +119,7 @@ export function MakePost(): JSX.Element {
 
     }
 
-    async function makePost(title: string, text: string, type: string, category: string, picture: File | null) {
+    async function makePost(title: string, text: string, type: string, category: string, offer_deadline:Date | null, price: number, picture: File | null) {
         //alert("Email is: " + email + " Password is: " + password)
         // var r = new global.FileReader();
         // //r.onload = function(){ alert(r.result); };
@@ -124,6 +127,15 @@ export function MakePost(): JSX.Element {
         //     r.readAsArrayBuffer(picture);
         //     console.log(r);
         // }
+        
+        console.log(picture);
+        console.log(title);
+        console.log(text);
+        console.log(type);
+        console.log(price);
+        console.log(category);
+        console.log(offer_deadline);
+
         console.log(token.auth);
         if (title === "") {
             messageFailure("Missing infomration", "Please provide a title for your post.");
@@ -144,7 +156,9 @@ export function MakePost(): JSX.Element {
                     text: text,
                     type: type,
                     category: category,
-                    picture: picture,
+                    img: picture,
+                    offer_deadline: offer_deadline,
+                    price: price,
                 }, {
                     headers: {
                         "Authorization": "Bearer " + token.auth
@@ -228,8 +242,8 @@ export function MakePost(): JSX.Element {
                                 onChange={(el) => { setType(el.target.value); setValidType(true) }}
                                 required
                             >
-                                <option value='option 1'>Request</option>
-                                <option value='option 2'>Offer</option>
+                                <option value='Request'>Request</option>
+                                <option value='Offer'>Offer</option>
                             </Select>
                             
                             
@@ -239,9 +253,9 @@ export function MakePost(): JSX.Element {
                                 onChange={(el) => { setCategory(el.target.value); setValidCategory(true) }}
                                 required
                             >
-                                <option value='option 1'>Category 1</option>
-                                <option value='option 2'>Category 2</option>
-                                <option value='option 3'>Category 3</option>
+                                <option value='Tutor'>Tutor</option>
+                                <option value='Category 2'>Category 2</option>
+                                <option value='Category 3'>Category 3</option>
                             </Select>
                         </span>
                     </FormControl>
@@ -255,7 +269,8 @@ export function MakePost(): JSX.Element {
                                 fontSize='1.2em'
                                 children='$'
                                 />
-                                <Input placeholder='Enter Price' />
+                                <Input placeholder='Enter Price'
+                                onChange={(el) => { setPrice(el.target.value); }} />
                             </InputGroup>
                     </FormControl>
 
@@ -265,6 +280,7 @@ export function MakePost(): JSX.Element {
                             placeholder="Select Date and Time"
                             size="md"
                             type="datetime-local"
+                            onChange={(el) => { setOfferDeadline(el.target.valueAsDate); }}
                             />
                     </FormControl>
 
@@ -283,7 +299,7 @@ export function MakePost(): JSX.Element {
                             colorScheme="gray"
                             type="submit"
                             loadingText="Creating Post"
-                            onClick={() => {makePost(title, text, type, category, picture)}}
+                            onClick={() => {makePost(title, text, type, category, offer_deadline, parseInt(price), picture)}}
                             mr={3}
                         >
                             Create Post

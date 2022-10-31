@@ -9,7 +9,6 @@ import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { setAuthRedux } from '../redux/coreReducer'
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Search2Icon, SearchIcon } from "@chakra-ui/icons";
 
 
 export function Header(): JSX.Element {
@@ -110,12 +109,6 @@ export function Header(): JSX.Element {
             </Button>
           </motion.div>
           </AnimateHeight>
-          <Heading as='h2' size='xs' variant='outlined'>
-            <InputGroup size='sm'>
-              <IconButton aria-label='Search database' icon={<SearchIcon />} />
-              <Input placeholder="Search" />
-            </InputGroup>
-          </Heading>
         <Divider />
       </header>
   );

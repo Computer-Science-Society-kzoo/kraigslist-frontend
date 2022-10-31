@@ -126,16 +126,16 @@ export function MakePost(): JSX.Element {
         //     console.log(r);
         // }
         if (title === "") {
-            messageFailure("Missing infomration", "Please provide your email address");
+            messageFailure("Missing infomration", "Please provide a title for your post.");
             shakeTitle()
         } else if (text === "") {
-            messageFailure("Missing infomration", "Please provide your password");
+            messageFailure("Missing infomration", "Please provide a description for your post.");
             shakePassword()
         } else if (type === "") {
-            messageFailure("Missing infomration", "Please provide your password");
+            messageFailure("Missing infomration", "Please select an offer or request type.");
             shakePassword()
         } else if (category === "") {
-            messageFailure("Missing infomration", "Please provide your password");
+            messageFailure("Missing infomration", "Please select a category for your post.");
             shakePassword()
         } else {
             axios

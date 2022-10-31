@@ -40,6 +40,10 @@ import React from "react";
 
 
 export function MakePost(): JSX.Element {
+
+    const [token, setToken, removeToken] = useCookies(["auth"]);
+
+
     const toast = useToast();
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
@@ -80,12 +84,7 @@ export function MakePost(): JSX.Element {
     // }
 
     var picture: File | null = null;
-    const [token, setToken, removeToken] = useCookies(["auth"]);
     const dispatch = useDispatch();
-    function setAuth(token: string) {
-        setToken("auth", token, { secure: true, sameSite: "strict" });
-        dispatch(setAuthRedux(true))
-    }
 
     //Image compression function
     async function handleImageUpload(e: any) {
@@ -125,6 +124,7 @@ export function MakePost(): JSX.Element {
         //     r.readAsArrayBuffer(picture);
         //     console.log(r);
         // }
+        console.log(token.auth);
         if (title === "") {
             messageFailure("Missing infomration", "Please provide a title for your post.");
             shakeTitle()
@@ -144,11 +144,14 @@ export function MakePost(): JSX.Element {
                     text: text,
                     type: type,
                     category: category,
-                    img: picture,
-                }, { withCredentials: true })
+                    picture: picture,
+                }, {
+                    headers: {
+                        "Authorization": "Bearer " + token.auth
+                    }
+                })
                 .then((res) => {
                     console.log(res);
-                    setAuth(res.data);
                     messageSuccess("Success!", "You have successfully made a post");
 
                 })

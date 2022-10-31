@@ -71,7 +71,7 @@ export function YourPostsPage(): JSX.Element {
   async function getMyPosts() {
     console.log(token.auth);
     axios
-      .get("http://localhost:3000/api/posts/YourPosts", { withCredentials: true })
+      .get("http://localhost:3000/api/posts", { withCredentials: true })
       .then((res) => {
         console.log(res.data);
         setPosts(parsePosts(res.data));

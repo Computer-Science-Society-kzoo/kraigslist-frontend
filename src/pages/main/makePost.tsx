@@ -279,7 +279,7 @@ export function MakePost(): JSX.Element {
                             <Input
                             placeholder="Select Date and Time"
                             size="md"
-                            type="datetime-local"
+                            type="date"
                             onChange={(el) => { setOfferDeadline(el.target.valueAsDate); }}
                             />
                     </FormControl>

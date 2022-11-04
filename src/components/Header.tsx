@@ -94,7 +94,7 @@ export function Header(): JSX.Element {
                 Your Profile
               </Button>
             </Link>
-            <Link to="/guidelines">
+            <Link to="/Guidelines">
               <Button className="Header-Button" variant={"link"}>
                 Guidelines
               </Button>

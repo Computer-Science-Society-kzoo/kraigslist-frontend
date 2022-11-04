@@ -10,6 +10,7 @@ import { YourPostsPage } from "./pages/main/YourPosts";
 import { MakePost } from "./pages/main/makePost";
 import { MessagesPage } from "./pages/messages/MessagesPage";
 import { Profile } from "./pages/main/Profile";
+import { Guidelines } from "./pages/main/Guidelines";
 
 function Footer(): JSX.Element {
   return <footer></footer>;
@@ -31,8 +32,9 @@ function HomePage(): JSX.Element {
         <Route path="/YourPostsPage" element={<YourPostsPage />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/messages" element={<MessagesPage />} />
+        <Route path="/Guidelines" element={<Guidelines />} />
       </Routes>
-      <MakePost/>
+      <MakePost />
       <Footer />
     </>
   );

@@ -1,0 +1,26 @@
+.Profile-Container {
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 75%;
+    max-width: 750px;
+    border : 1px solid #e2e8f0;
+    border-radius : 12px;
+    gap: 16px;
+    background-color: white;
+    margin: auto;
+    padding: 10px;
+    margin-top: 30px;
+}
+
+.Profile-Header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+}

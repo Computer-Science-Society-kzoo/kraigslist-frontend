@@ -3,9 +3,83 @@ import { Divider, Text, Heading, Avatar, Input, InputGroup, InputRightElement, B
 import { ChatIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion"
 import axios from "axios";
+import Moment from "react-moment";
 
-export function SendMessage(props: {id: number}): JSX.Element {
+
+
+interface Message {
+  message: string;
+  yours: boolean;
+  date: string;
+}
+
+interface MessageDetails{
+  name: string;
+  conID: number;
+  comID: number;
+  postID: number;
+}
+
+interface BoottomMessageContainerProps {
+  id: number;
+  addNewMessage: (message: string) => void;
+}
+
+interface Converstaion extends MessageDetails {
+  lastMessage: string;
+}
+
+interface ConservationWithUpdateFunction extends MessageDetails {
+  updateLastMessage: (conID: number, message: string) => void;
+}
+
+function ConversationItem(props: Converstaion): JSX.Element {
+
+    return (
+        <div className="ConversationItem">
+              <Avatar size='lg' name={props.name}/>
+              <div>
+                <Heading as='h2' size='md' noOfLines={1}>
+                  {props.name}
+                </Heading>
+                <Text fontSize='md'>{props.lastMessage}</Text>
+              </div>
+        </div>
+    )
+}
+
+function TopMessageContainer(props: MessageDetails): JSX.Element {
+  return (
+      <div className="TopMessageContainer">
+        {/* <Heading as='h1' size='lg'>
+          Conversation ID: {props.conID}, Comrade ID: {props.comID}, Post ID: {props.postID}, Name: {props.name}
+        </Heading> */}
+        <Heading as='h1' size='lg'>
+          {props.name}
+        </Heading>
+  
+      </div>
+  );
+}
+
+function Message(props: Message): JSX.Element {
+    return (
+      <div className="MessageFullContainer">
+        <div className={props.yours ? "MessageItem YourMessage" : "MessageItem"}>
+            <Text fontSize='md'>{props.message}</Text>
+        </div>
+        <div className={props.yours ? "MessageFullContainer-Date" : "MessageFullContainer-Date-Reversed"}>
+              <Text fontSize='xs'><Moment format="LT">{props.date}</Moment></Text>
+        </div>
+      </div>
+
+    )
+}
+
+
+export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX.Element {
 
   function messageFailure(title: string, desc: string) {
     toast({
@@ -34,7 +108,8 @@ export function SendMessage(props: {id: number}): JSX.Element {
           })
           .then((res) => {
               console.log(res);
-
+              props.addNewMessage(message);
+              setMessage("");
           })
           .catch((err) => {
               messageFailure("Error", "Something went wrong.");
@@ -47,6 +122,7 @@ export function SendMessage(props: {id: number}): JSX.Element {
     <div className="SendMessageContainer">
      <InputGroup size='md'>
       <Input
+        borderRadius={"10px 10px 10px 10px"}
         pr='4.5rem'
         type="text"
         placeholder='Enter message...'
@@ -62,58 +138,29 @@ export function SendMessage(props: {id: number}): JSX.Element {
     </div>
   );
 }
-
-
-interface Converstaion {
-  conID: number;
-  comID: number;
-  name: string;
-  lastMessage: string;
-}
-
-function ConversationItem(props: Converstaion): JSX.Element {
-
-    return (
-        <div className="ConversationItem">
-              <Avatar size='lg' name={props.name}/>
-              <div>
-                <Heading as='h2' size='md' noOfLines={1}>
-                  {props.name}
-                </Heading>
-                <Text fontSize='md'>{props.lastMessage}</Text>
-              </div>
-        </div>
-    )
-}
-
-interface Message {
-  message: string;
-  yours: boolean;
-}
-
-function Message(props: Message): JSX.Element {
-    return (
-        <div className={props.yours ? "MessageItem YourMessage" : "MessageItem"}>
-            <Text fontSize='md'>{props.message}</Text>
-        </div>
-    )
-}
-
-function MessageContainer(props: {conID: number, comID: number}): JSX.Element {
+function MessageContainer(props: ConservationWithUpdateFunction): JSX.Element {
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const [messages, setMessages] = useState<Message[]>([]);
+
+  const [trigger, setTrigger] = useState<boolean>(false);
 
   function parseMessages(newMessages: any) {
     let parsedMessages: Message[] = [];
     newMessages.forEach((con: any) => {
       parsedMessages.push({
         message: con.message,
-        yours: (con.receiverUID === props.comID) ? true : false
+        yours: (con.receiverUID === props.comID) ? true : false,
+        date: con.date
       });
     });
     return parsedMessages;
+  }
+
+  function addNewMessage(message: string) {
+    setMessages([{message: message, yours: true, date: ""}, ...messages]);
+    props.updateLastMessage(props.conID, message);
   }
 
   async function getMessages() {
@@ -129,12 +176,30 @@ function MessageContainer(props: {conID: number, comID: number}): JSX.Element {
       .then((res) => {
         console.log(res.data);
         setMessages(parseMessages(res.data));
+        props.updateLastMessage(props.conID, res.data[0].message);
       });
+  }
+
+  function updateAfterDelay(delay: number) {
+    setTimeout(() => {
+      if (props.conID !== -1) {
+        setTrigger(!trigger);
+        console.log("Checking for new messages");
+      }
+    }, 2500);
   }
 
     useEffect(() => {
       getMessages();
     }, [props.comID])
+
+    useEffect(() => {
+      getMessages();
+      updateAfterDelay(2500);
+    }, [trigger])
+  
+    updateAfterDelay(2500);
+
 
     return (
         <div className="MessageContainer">
@@ -148,17 +213,22 @@ function MessageContainer(props: {conID: number, comID: number}): JSX.Element {
             }
             { props.conID !== -1 &&
               <div className="MessageContainer-Selected">
-                <div>
-                  <Heading as='h1' size='lg'>
-                    Conversation ID: {props.conID}, Comrade ID: {props.comID}
-                  </Heading>
-                </div>
+                <TopMessageContainer {...props}/>
                 <div className="MessageContainer-Selected-Messages" id="MessagesContainer">
-                {messages.map((message) => (
-                  <Message message={message.message} yours={message.yours} />
-                ))}
+                  <AnimatePresence>
+                    {messages.map((message) => (
+                        <motion.div
+                          key={message.message}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Message message={message.message} yours={message.yours} date={message.date} />
+                        </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>  
-                <SendMessage id={props.conID}/>
+                <BottomMessageContainer id={props.conID} addNewMessage={addNewMessage}/>
               </div>
             }
         </div>
@@ -171,7 +241,10 @@ export function MessagesPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const [conversations, setConversations] = useState<Converstaion[]>([]);
+  const [conservationsTrigger, setConservationsTrigger] = useState<boolean>(false);
   const [comradeID, setComradeID] = useState<number>(-1);
+  const [comradeName, setComradeName] = useState<string>("");
+  const [postID , setPostID] = useState<number>(-1);
   const [selectedConversation, setSelectedConversation] = useState<number>(-1);
 
   function parsePosts(newConversations: any) {
@@ -182,7 +255,8 @@ export function MessagesPage(): JSX.Element {
         comID: con.comID,
         name: con.name,
         lastMessage: con.lastMessage,
-      });
+        postID: con.postID
+       });
     });
     return parsedConversations;
   }
@@ -202,22 +276,44 @@ export function MessagesPage(): JSX.Element {
       });
   }
 
+  function selectConversation(conID: number, comID: number, name: string, postID: number) {
+    setComradeID(comID);
+    setComradeName(name);
+    setPostID(postID);
+    setSelectedConversation(conID);
+  }
+
+  function updateLastMessage(conID: number, message: string) {
+    let newConversations = conversations;
+    newConversations.forEach((con) => {
+      if (con.conID === conID) {
+        con.lastMessage = message;
+      }
+    });
+    setConversations(newConversations);
+    setConservationsTrigger(!conservationsTrigger);
+  }
+
   useEffect(() => {
     getConversations();
   }, []);
+
+  useEffect(() => {
+    console.log("Conversations updated");
+  },[conservationsTrigger]);
 
   return (
     <div className="MessagesPageContainer">
       <div className="MessagesPageContainer-Main">
         <div className="ConversationContainer">
           {conversations.map((con) => (
-            <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {setSelectedConversation(con.conID); setComradeID(con.comID)} }>
-              <ConversationItem conID={con.conID} comID={con.comID} name={con.name} lastMessage={con.lastMessage}  />
+            <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {selectConversation(con.conID, con.comID, con.name, con.postID)} }>
+              <ConversationItem {...con}/>
             </a>
           ))}
         </div>
         <Divider orientation='vertical'/>
-          <MessageContainer comID={comradeID} conID={selectedConversation}/>
+          <MessageContainer comID={comradeID} conID={selectedConversation} name={comradeName} postID={postID} updateLastMessage={updateLastMessage}/>
       </div>
     </div>
   );

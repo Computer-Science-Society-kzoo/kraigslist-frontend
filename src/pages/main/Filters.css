@@ -1,6 +1,7 @@
 .FiltersContainer {
     background-color: white;
-    height: 100%;
+    height: calc(100vh - var(--header-height-full));
+
 }
 
 .FiltersContainer-InnerContainer{

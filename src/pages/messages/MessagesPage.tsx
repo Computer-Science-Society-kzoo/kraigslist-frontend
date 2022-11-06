@@ -4,6 +4,7 @@ import { ChatIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ClassNames } from "@emotion/react";
 
 function Conversation(): JSX.Element {
     return (
@@ -153,9 +154,10 @@ export function MessagesPage(): JSX.Element {
       <div className="MessagesPageContainer-Main">
         <div className="ConversationContainer">
           {conversations.map((con) => (
-            <a onClick={() => setSelectedConversation(con.comID) }>
+            <a className={selectedConversation === con.comID ? "SelectedMessage" : ""} onClick={() => setSelectedConversation(con.comID) }>
               <ConversationItem comID={con.comID} name={con.name} lastMessage={con.lastMessage} />
             </a>
+            
           ))}
         </div>
         <Divider orientation='vertical'/>

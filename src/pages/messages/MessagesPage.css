@@ -139,6 +139,14 @@
     border-radius: 20px 20px 5px 20px;
 }
 
+.MessageContainer-Selected-Messages-Date{
+    width: fit-content;
+    margin: 24px auto;
+    background-color: #b1c4d572;
+    border-radius: 20px;
+    padding: 0px 10px;
+}
+
 @media screen and (max-width: 1080px) {
     .MessagesPageContainer-Main{
         width: 100%;

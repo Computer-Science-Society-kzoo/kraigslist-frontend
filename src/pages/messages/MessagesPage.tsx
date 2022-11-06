@@ -118,6 +118,12 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
     }
   }
 
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  }
+
   return (
     <div className="SendMessageContainer">
      <InputGroup size='md'>
@@ -128,6 +134,7 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
         placeholder='Enter message...'
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={(e) => {handleKeyDown(e)}}
       />
       <InputRightElement width='4.5rem'>
         <Button colorScheme="orange" h='1.75rem' size='sm' onClick={sendMessage}>
@@ -145,10 +152,14 @@ function MessageContainer(props: ConservationWithUpdateFunction): JSX.Element {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const [trigger, setTrigger] = useState<boolean>(false);
+  
+  let date = new Date();
 
   function parseMessages(newMessages: any) {
     let parsedMessages: Message[] = [];
     newMessages.forEach((con: any) => {
+      date = new Date(con.date);
+      console.log(date);
       parsedMessages.push({
         message: con.message,
         yours: (con.receiverUID === props.comID) ? true : false,
@@ -156,6 +167,36 @@ function MessageContainer(props: ConservationWithUpdateFunction): JSX.Element {
       });
     });
     return parsedMessages;
+  }
+
+
+  //check if two dates share the same day
+  function sameDay(date1: Date, date2: Date) {
+    return date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate();
+  }
+
+  //check if the date is today
+  function isToday(date: Date) {
+    return sameDay(date, new Date());
+  }
+
+  //check if the date is yesterday
+  function isYesterday(date: Date) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return sameDay(date, yesterday);
+  }
+  
+  //return Today or Yesterday or the date
+  function formatDate(date: Date) {
+    if (isToday(date)) {
+      return "Today";
+    } else if (isYesterday(date)) {
+      return "Yesterday";
+    }
+    return date.toLocaleDateString();
   }
 
   function addNewMessage(message: string) {
@@ -216,16 +257,50 @@ function MessageContainer(props: ConservationWithUpdateFunction): JSX.Element {
                 <TopMessageContainer {...props}/>
                 <div className="MessageContainer-Selected-Messages" id="MessagesContainer">
                   <AnimatePresence>
-                    {messages.map((message) => (
-                        <motion.div
-                          key={message.message}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Message message={message.message} yours={message.yours} date={message.date} />
-                        </motion.div>
-                    ))}
+                    {messages.map((message) => {
+
+                      let showDate = false;
+                      let showFirstDate = false;
+                      if (messages.indexOf(message) !== 0) {
+                        if (!sameDay(new Date(message.date), new Date(messages[messages.indexOf(message) - 1].date))) {
+                          showDate = true;
+                        }
+                      }
+                      if (messages.indexOf(message) === messages.length - 1) {
+                        showFirstDate = true;
+                      }  
+
+                   
+                      console.log(message.date);
+                      console.log(message.message)
+                      return(
+                              <motion.div
+                                key={message.message}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                {showFirstDate && 
+                                <div className="MessageContainer-Selected-Messages-Date">
+                                  <Text fontSize='md'>
+                                    <Moment format="LL">
+                                      {messages[messages.length - 1].date}
+                                    </Moment>
+                                  </Text>
+                                </div>}
+                                  
+                                <Message message={message.message} yours={message.yours} date={message.date} />
+                                
+                                {showDate && 
+                                <div className="MessageContainer-Selected-Messages-Date">
+                                  <Text fontSize='md'>
+                                    <Moment format="LL">
+                                      {messages[messages.indexOf(message) - 1].date}
+                                    </Moment>
+                                  </Text>
+                                </div>}
+                              </motion.div>
+                     )})}
                   </AnimatePresence>
                 </div>  
                 <BottomMessageContainer id={props.conID} addNewMessage={addNewMessage}/>

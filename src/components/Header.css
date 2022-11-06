@@ -24,6 +24,7 @@
 }
 
 .Header-ButtonsContainer{
+    height: fit-content !important;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

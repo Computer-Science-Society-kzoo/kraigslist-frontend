@@ -1,20 +1,71 @@
 import "./MessagesPage.css";
-import { Divider, Text, Heading, Avatar, Input } from "@chakra-ui/react";
+import { Divider, Text, Heading, Avatar, Input, InputGroup, InputRightElement, Button} from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { ClassNames } from "@emotion/react";
 
-function Conversation(): JSX.Element {
-    return (
-        <div className="Conversation">
-            
-        </div>
-    )
+export function SendMessage(props: {id: number}): JSX.Element {
+
+  function messageFailure(title: string, desc: string) {
+    toast({
+      title: title,
+      description: desc,
+      status: "error",
+      duration: 9000,
+      isClosable: true,
+    });
+  }
+  
+  const [token, setToken, removeToken] = useCookies(["auth"]);
+  const [message, setMessage] = useState<string>("");
+  
+  async function sendMessage() {
+
+    if (message !== "") {
+      axios
+          .post("http://localhost:3000/api/messages/send", {
+              conversationID: props.id,
+              message: message
+          }, {
+              headers: {
+                  "Authorization": "Bearer " + token.auth
+              }
+          })
+          .then((res) => {
+              console.log(res);
+
+          })
+          .catch((err) => {
+              messageFailure("Error", "Something went wrong.");
+              }
+          );
+    }
+  }
+
+  return (
+    <div className="SendMessageContainer">
+     <InputGroup size='md'>
+      <Input
+        pr='4.5rem'
+        type="text"
+        placeholder='Enter message...'
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
+      <InputRightElement width='4.5rem'>
+        <Button colorScheme="orange" h='1.75rem' size='sm' onClick={sendMessage}>
+          Send
+        </Button>
+      </InputRightElement>
+    </InputGroup>
+    </div>
+  );
 }
 
+
 interface Converstaion {
+  conID: number;
   comID: number;
   name: string;
   lastMessage: string;
@@ -37,17 +88,18 @@ function ConversationItem(props: Converstaion): JSX.Element {
 
 interface Message {
   message: string;
+  yours: boolean;
 }
 
 function Message(props: Message): JSX.Element {
     return (
-        <div className="MessageItem">
-            <Text className="imessage" fontSize='md'>{props.message}</Text>
+        <div className={props.yours ? "MessageItem YourMessage" : "MessageItem"}>
+            <Text fontSize='md'>{props.message}</Text>
         </div>
     )
 }
 
-function MessageContainer(props: {id: number}): JSX.Element {
+function MessageContainer(props: {conID: number, comID: number}): JSX.Element {
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
@@ -58,6 +110,7 @@ function MessageContainer(props: {id: number}): JSX.Element {
     newMessages.forEach((con: any) => {
       parsedMessages.push({
         message: con.message,
+        yours: (con.receiverUID === props.comID) ? true : false
       });
     });
     return parsedMessages;
@@ -70,7 +123,7 @@ function MessageContainer(props: {id: number}): JSX.Element {
         "headers":
         {
           "Authorization": `Bearer ${token.auth}`,
-          "Comradeid": props.id,
+          "Comradeid": props.comID,
         }
       })
       .then((res) => {
@@ -79,14 +132,13 @@ function MessageContainer(props: {id: number}): JSX.Element {
       });
   }
 
-
     useEffect(() => {
       getMessages();
-    }, [props])
+    }, [props.comID])
 
     return (
         <div className="MessageContainer">
-            {props.id === -1 && 
+            {props.conID === -1 && 
               <div className="MessageContainer-NoSelection">
                 <ChatIcon/>
                 <Text fontSize='xl' noOfLines={3}>
@@ -94,16 +146,19 @@ function MessageContainer(props: {id: number}): JSX.Element {
                 </Text>
               </div>
             }
-            { props.id !== -1 &&
+            { props.conID !== -1 &&
               <div className="MessageContainer-Selected">
-                <Heading as='h1' size='lg'>
-                  {props.id}
-                </Heading>
+                <div>
+                  <Heading as='h1' size='lg'>
+                    Conversation ID: {props.conID}, Comrade ID: {props.comID}
+                  </Heading>
+                </div>
+                <div className="MessageContainer-Selected-Messages" id="MessagesContainer">
                 {messages.map((message) => (
-                  <Message message={message.message}/>
+                  <Message message={message.message} yours={message.yours} />
                 ))}
-
-                <Input placeholder='Your message...' />
+                </div>  
+                <SendMessage id={props.conID}/>
               </div>
             }
         </div>
@@ -116,12 +171,14 @@ export function MessagesPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const [conversations, setConversations] = useState<Converstaion[]>([]);
+  const [comradeID, setComradeID] = useState<number>(-1);
   const [selectedConversation, setSelectedConversation] = useState<number>(-1);
 
   function parsePosts(newConversations: any) {
     let parsedConversations: Converstaion[] = [];
     newConversations.forEach((con: any) => {
       parsedConversations.push({
+        conID: con.conversationID,
         comID: con.comID,
         name: con.name,
         lastMessage: con.lastMessage,
@@ -154,15 +211,18 @@ export function MessagesPage(): JSX.Element {
       <div className="MessagesPageContainer-Main">
         <div className="ConversationContainer">
           {conversations.map((con) => (
-            <a className={selectedConversation === con.comID ? "SelectedMessage" : ""} onClick={() => setSelectedConversation(con.comID) }>
-              <ConversationItem comID={con.comID} name={con.name} lastMessage={con.lastMessage} />
+            <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {setSelectedConversation(con.conID); setComradeID(con.comID)} }>
+              <ConversationItem conID={con.conID} comID={con.comID} name={con.name} lastMessage={con.lastMessage}  />
             </a>
-            
           ))}
         </div>
         <Divider orientation='vertical'/>
-          <MessageContainer id={selectedConversation}/>
+          <MessageContainer comID={comradeID} conID={selectedConversation}/>
       </div>
     </div>
   );
 }
+function toast(arg0: { title: string; description: string; status: string; duration: number; isClosable: boolean; }) {
+  throw new Error("Function not implemented.");
+}
+

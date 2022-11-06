@@ -61,12 +61,24 @@
 .MessageContainer-Selected{
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: space-between;
     height: 100%;
+    overflow: scroll;
+}
+
+.MessageContainer-Selected-Messages{
+    margin-top: auto;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .SelectedMessage > * {
     background-color: var(--orange-selection);
+}
+
+.SendMessageContainer{
+    margin: 10px;
 }
 
 .MessageItem{
@@ -78,6 +90,11 @@
     border: 1px solid #e2e8f0;
     border-radius: 25px;
     margin: 10px;
+}
+
+.YourMessage{
+    margin-left: auto;
+    background-color: var(--k-orange);
 }
 
 @media screen and (max-width: 1080px) {

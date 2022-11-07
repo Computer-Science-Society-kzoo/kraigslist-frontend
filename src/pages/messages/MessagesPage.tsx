@@ -1,5 +1,5 @@
 import "./MessagesPage.css";
-import { Divider, Text, Heading, Avatar, Input, InputGroup, InputRightElement, Button} from "@chakra-ui/react";
+import { Divider, Text, Heading, Avatar, Input, InputGroup, InputRightElement, Button, Spinner} from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
@@ -31,7 +31,7 @@ interface Converstaion extends MessageDetails {
   lastMessage: string;
 }
 
-interface ConservationWithUpdateFunction extends MessageDetails {
+interface conversationWithUpdateFunction extends MessageDetails {
   updateLastMessage: (conID: number, message: string) => void;
 }
 
@@ -145,7 +145,7 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
     </div>
   );
 }
-function MessageContainer(props: ConservationWithUpdateFunction): JSX.Element {
+function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
@@ -316,11 +316,12 @@ export function MessagesPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const [conversations, setConversations] = useState<Converstaion[]>([]);
-  const [conservationsTrigger, setConservationsTrigger] = useState<boolean>(false);
+  const [conversationsTrigger, setconversationsTrigger] = useState<boolean>(false);
   const [comradeID, setComradeID] = useState<number>(-1);
   const [comradeName, setComradeName] = useState<string>("");
   const [postID , setPostID] = useState<number>(-1);
   const [selectedConversation, setSelectedConversation] = useState<number>(-1);
+  const [loading, setLoading] = useState<boolean>(true);
 
   function parsePosts(newConversations: any) {
     let parsedConversations: Converstaion[] = [];
@@ -338,6 +339,7 @@ export function MessagesPage(): JSX.Element {
 
   async function getConversations() {
     console.log(token.auth);
+    setLoading(true);
     axios
       .get("http://localhost:3000/api/messages/allconversations", { 
         "headers":
@@ -348,6 +350,11 @@ export function MessagesPage(): JSX.Element {
       .then((res) => {
         console.log(res.data);
         setConversations(parsePosts(res.data));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
       });
   }
 
@@ -366,7 +373,7 @@ export function MessagesPage(): JSX.Element {
       }
     });
     setConversations(newConversations);
-    setConservationsTrigger(!conservationsTrigger);
+    setconversationsTrigger(!conversationsTrigger);
   }
 
   useEffect(() => {
@@ -375,17 +382,50 @@ export function MessagesPage(): JSX.Element {
 
   useEffect(() => {
     console.log("Conversations updated");
-  },[conservationsTrigger]);
+  },[conversationsTrigger]);
 
   return (
     <div className="MessagesPageContainer">
       <div className="MessagesPageContainer-Main">
         <div className="ConversationContainer">
+          {(conversations.length === 0 && loading === true) &&
+            <div className="ConversationContainer-Loading">
+              <Text fontSize='xl' noOfLines={3}>
+                Loading...
+              </Text>
+              <Spinner
+                thickness='4px'
+                speed='0.65s'
+                emptyColor='gray.200'
+                color="orange.500"
+                size='xl'
+              />
+            </div>
+          }
+           {(conversations.length === 0 && loading === false) &&
+            <div className="ConversationContainer-NoConversations">
+              <Text fontSize='xl' noOfLines={3}>
+                You have no conversations
+              </Text>
+              <Text fontSize="xs" noOfLines={3}>
+                Start conversation by contacting posts's authors
+              </Text>
+            </div>
+          }
+          <AnimatePresence>
           {conversations.map((con) => (
+            <motion.div
+              key={con.conID}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2 }}
+            >
             <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {selectConversation(con.conID, con.comID, con.name, con.postID)} }>
               <ConversationItem {...con}/>
             </a>
+            </motion.div>
           ))}
+          </AnimatePresence>
         </div>
         <Divider orientation='vertical'/>
           <MessageContainer comID={comradeID} conID={selectedConversation} name={comradeName} postID={postID} updateLastMessage={updateLastMessage}/>

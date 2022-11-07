@@ -27,6 +27,24 @@
     overflow: scroll;
 }
 
+.ConversationContainer-Loading{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    row-gap: 16px;
+}
+
+.ConversationContainer-NoConversations{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    row-gap: 8px;
+}
+
 .ConversationItem{
     display: flex;
     flex-direction: row;
@@ -54,7 +72,6 @@
     height: 100%;
     font-size: 32px;
     gap: 16px;
-    color: #a0aec0;
 }
 
 .MessageContainer-Selected{

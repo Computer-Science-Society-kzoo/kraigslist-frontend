@@ -107,7 +107,7 @@ export function MainPage(): JSX.Element {
 
     console.log(text);
     if (text === "") {
-      return
+      getPosts();
       //messageFailure("Missing infomration", "Please provide a text to search.");
     } else {
       axios
@@ -169,7 +169,7 @@ export function MainPage(): JSX.Element {
               <Input
                 placeholder="Search"
                 borderRadius={"0px 10px 10px 0px"}
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e) => {setText(e.target.value); search(text)}}
                 focusBorderColor="orange.500"
                 _placeholder={{ color: 'orange.500' }}
               />

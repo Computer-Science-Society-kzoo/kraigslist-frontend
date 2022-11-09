@@ -11,6 +11,7 @@ import { MakePost } from "./makePost";
 import { SearchBar } from "../../components/SearchBar";
 import { SearchIcon } from "@chakra-ui/icons";
 //import { filterData } from "./Filters";
+import "./Filters.css";
 
 interface Post {
   title: string;

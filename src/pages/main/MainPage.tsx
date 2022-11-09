@@ -1,15 +1,16 @@
-import { Container, Heading, IconButton, Input, InputGroup, Text } from "@chakra-ui/react";
+import { Checkbox, Container, Divider, Heading, IconButton, Input, InputGroup, Stack, Text } from "@chakra-ui/react";
 import "./Post.css";
 import "./MainPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { FiltersMenu } from "./Filters";
+//import { FiltersMenu } from "./Filters";
 import Split from 'react-split'
 import './Split.css';
 import { MakePost } from "./makePost";
 import { SearchBar } from "../../components/SearchBar";
 import { SearchIcon } from "@chakra-ui/icons";
+//import { filterData } from "./Filters";
 
 interface Post {
   title: string;
@@ -81,26 +82,21 @@ export function MainPage(): JSX.Element {
       });
   }
 
+  // useEffect(() => {
+  //   if (text != "") {
+  //     search(text);
+  //   }
+  //   else {
+  //     getPosts();
+  //   }
+  // }, []);
   useEffect(() => {
-    if (text != "") {
-      search(text);
-    }
-    else {
-      getPosts();
-    }
+    getPostsMaster(text, filterCheck);
   }, []);
 
-  // async function getsearchPosts(text: string) {
-  //   console.log(token.auth);
-  //   axios
-  //     .get("http://localhost:3000/api/searchPosts", { params: { text: text } })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setPosts(parsePosts(res.data));
-  //     });
-  // }
 
   const [text, setText] = useState("");
+ 
 
 
   async function search(text: string) {
@@ -128,13 +124,39 @@ export function MainPage(): JSX.Element {
     }
   }
 
+  async function getPostsMaster(text: string, filterCheck: any) {
+    await filterChange();
+    console.log(text);
+    console.log(filterCheck);
+    axios
+      .get("http://localhost:3000/api/posts/master", {
+        params: { text: text, filter: filterCheck }
+      },
+
+      )
+      .then((res) => {
+        console.log(res.data);
+        setPosts(parsePosts(res.data));
+
+      })
+      .catch((err) => {
+        console.log(err);
+      }
+      );
+  }
+
+
+  // useEffect(() => {
+  //   if (text != "") {
+  //     search(text);
+  //   }
+  //   else {
+  //     getPosts();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    if (text != "") {
-      search(text);
-    }
-    else {
-      getPosts();
-    }
+    getPostsMaster(text, filterCheck);
   }, []);
 
   const dummyPost: Post = {
@@ -148,9 +170,68 @@ export function MainPage(): JSX.Element {
     key: 0,
   };
 
+  const [checkedItems, setCheckedItems] = useState([false, false]);
+
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
+  const [filterCheck, setFilterCheck] = useState("");
+
+  async function filterChange() {
+    if (checkedItems[0] && !checkedItems[1]) {
+      setFilterCheck("Offer");
+    }
+    else if (checkedItems[1] && !checkedItems[0]) {
+      setFilterCheck("Request");
+    }
+    else {
+      setFilterCheck("");
+    }
+    //setFilterCheck(e.target.value);
+    //filterData = filterCheck;
+
+  }
+
   return (
     <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
-      <FiltersMenu />
+      <div className="FiltersContainer">
+        <div className="FiltersContainer-InnerContainer">
+          <div className="FiltersContainer-InnerContainer-Category">
+            <Heading as={"h3"} size={"xs"}>
+              Request's Type
+            </Heading>
+
+
+            <Checkbox
+              isChecked={allChecked}
+              isIndeterminate={isIndeterminate}
+              colorScheme="orange"
+              onChange={(e) => {setCheckedItems([e.target.checked, e.target.checked]); getPostsMaster(text, filterCheck)}}
+            >
+              All
+            </Checkbox>
+            <Stack pl={6} mt={1} spacing={1}>
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems[0]}
+                onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]); getPostsMaster(text, filterCheck)}}
+                //onClick={() => getPostsMaster(text, filterCheck)}
+              >
+                Offer
+              </Checkbox>
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems[1]}
+                onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]); getPostsMaster(text, filterCheck)}}
+                //onClick={() => getPostsMaster(text, filterCheck)}
+              >
+                Requests
+              </Checkbox>
+            </Stack>
+            <Divider />
+          </div>
+        </div>
+      </div>
       <div className="MainPageContainer-PostsContainer">
         <div>
           <Heading as="h2" size="xs" variant="outlined">
@@ -164,12 +245,12 @@ export function MainPage(): JSX.Element {
                 icon={<SearchIcon />}
                 borderRadius={"10px 0px 0px 10px"}
                 colorScheme="orange"
-                onClick={() => search(text)}
+                onClick={() => getPostsMaster(text, filterCheck)}
               />
               <Input
                 placeholder="Search"
                 borderRadius={"0px 10px 10px 0px"}
-                onChange={(e) => {setText(e.target.value); search(text)}}
+                onChange={(e) => { setText(e.target.value); getPostsMaster(text, filterCheck) }}
                 focusBorderColor="orange.500"
                 _placeholder={{ color: 'orange.500' }}
               />

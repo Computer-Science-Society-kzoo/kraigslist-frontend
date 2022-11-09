@@ -1,10 +1,10 @@
-import { Container, Heading, Text } from "@chakra-ui/react";
+import { Checkbox, Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
 import "./Post.css";
 import "./MainPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { FiltersMenu } from "./Filters";
+//import { FiltersMenu } from "./Filters";
 import Split from 'react-split'
 import './Split.css';
 
@@ -93,9 +93,49 @@ export function YourPostsPage(): JSX.Element {
     key: 0,
   };
 
+  const [checkedItems, setCheckedItems] = useState([false, false]);
+
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
+  const [filterCheck, setFilterCheck] = useState("");
+
   return (
     <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
-      <FiltersMenu />
+      <div className="FiltersContainer">
+        <div className="FiltersContainer-InnerContainer">
+          <div className="FiltersContainer-InnerContainer-Category">
+            <Heading as={"h3"} size={"xs"}>
+              Request's Type
+            </Heading>
+            <Checkbox
+              isChecked={allChecked}
+              isIndeterminate={isIndeterminate}
+              colorScheme="orange"
+              onChange={(e) => setCheckedItems([e.target.checked, e.target.checked])}
+            >
+              All
+            </Checkbox>
+            <Stack pl={6} mt={1} spacing={1}>
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems[0]}
+                onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]); setFilterCheck("Offer") }}
+              >
+                Offer
+              </Checkbox>
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems[1]}
+                onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]); setFilterCheck("Request"); }}
+              >
+                Requests
+              </Checkbox>
+            </Stack>
+            <Divider />
+          </div>
+        </div>
+      </div>
       <div className="MainPageContainer-PostsContainer">
         {/* <Post
           title={dummyPost.title}
@@ -109,17 +149,17 @@ export function YourPostsPage(): JSX.Element {
         ></Post> */}
 
         {posts.map((post) => (
-        <YourPosts
-          title={post.title}
-          username={post.username}
-          text={post.text}
-          date={post.date}
-          type={post.type}
-          categories={post.categories}
-          img={post.img}
-          key={post.key}
-        ></YourPosts>
-      ))}
+          <YourPosts
+            title={post.title}
+            username={post.username}
+            text={post.text}
+            date={post.date}
+            type={post.type}
+            categories={post.categories}
+            img={post.img}
+            key={post.key}
+          ></YourPosts>
+        ))}
       </div>
     </Split>
   );

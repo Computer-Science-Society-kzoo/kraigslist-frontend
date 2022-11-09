@@ -80,13 +80,45 @@ export function MakePost(): JSX.Element {
     }
 
 
+    //A function that converts Uint8Array to bytes
+    // function uint8ArrayToBase64(array: Uint8Array) {
+    //     var CHUNK_SIZE = 0x8000; //arbitrary number
+    //     var index = 0;
+    //     var length = array.length;
+    //     var result: string = '';
+    //     var slice;
+    //     while (index < length) {
+    //         slice = array.slice(index, Math.min(index + CHUNK_SIZE, length)); // `Math.min` is not really necessary here I think
+    //         result += String.fromCharCode.apply(null, slice);
+    //         index += CHUNK_SIZE;
+    //     }
+    //     return btoa(result);
+    // }
+
+    var bytee: string;
+    //A function that converts array of bytes to base64
+    function bytesToBase64(bytes: any) {
+        var binary = '';
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        bytee = btoa(binary);
+        return btoa(binary);
+    }
+
+
 
     // function test(value: string){
     //   setEmail(value)
     //   console.log(email)
     // }
-
-    var picture: File | null = null;
+    var imageBuffer: Buffer;let bytes: any = [];
+    let binaryString: any;
+    let buffer: any = null;
+    let view: any = null;
+    var picture: any | null = null;
+    var picture1: string;
     const dispatch = useDispatch();
 
     //Image compression function
@@ -110,7 +142,31 @@ export function MakePost(): JSX.Element {
             //await uploadToServer(compressedFile); // write your own logic
             //setImage1(compressedFile);
             picture = compressedFile;
-            console.log(picture);
+
+            
+            const reader = new FileReader();
+            reader.readAsArrayBuffer(picture);
+            reader.onload = () => {
+                console.log(reader.result);
+                bytesToBase64(new Uint8Array(reader.result as ArrayBuffer));
+                picture = reader.result;
+                //picture1 = reader.result.toString('base64');
+                //picture = compressedFile;
+                //var newBuff = btoa([].reduce.call(new Uint8Array(buffer),function(p,c){return p+String.fromCharCode(c)},''))
+                
+                // view = new Uint32Array(buffer);
+                //imageBuffer = Buffer.from(reader.result as ArrayBuffer);
+                //binaryString = imageBuffer
+                bytes = new Uint8Array(reader.result as ArrayBuffer);
+                //console.log(binaryString);
+                // console.log(bytes);
+                // console.log(String.fromCharCode(bytes));
+                console.log(picture);
+                //console.log(imageBuffer);
+            };
+            //reader.readAsArrayBuffer(picture);
+            console.log("Array contains", bytes.byteLength, "bytes.");
+            // console.log(picture);
             //axios.post("http://localhost:8000/api/posts/", {
             //return(compressedFile);
         } catch (error) {
@@ -119,7 +175,7 @@ export function MakePost(): JSX.Element {
 
     }
 
-    async function makePost(title: string, text: string, type: string, category: string, offer_deadline:Date | null, price: number, picture: File | null) {
+    async function makePost(title: string, text: string, type: string, category: string, offer_deadline:Date | null, price: number, picture: any) {
         //alert("Email is: " + email + " Password is: " + password)
         // var r = new global.FileReader();
         // //r.onload = function(){ alert(r.result); };
@@ -128,13 +184,7 @@ export function MakePost(): JSX.Element {
         //     console.log(r);
         // }
         
-        console.log(picture);
-        console.log(title);
-        console.log(text);
-        console.log(type);
-        console.log(price);
-        console.log(category);
-        console.log(offer_deadline);
+        console.log(picture);        
 
         console.log(token.auth);
         if (title === "") {

@@ -26,7 +26,7 @@ import {
     Icon,
 } from "@chakra-ui/react";
 
-import {AttachmentIcon} from "@chakra-ui/icons";
+import { AttachmentIcon } from "@chakra-ui/icons";
 
 import axios from "axios";
 import imageCompression from "browser-image-compression";
@@ -35,7 +35,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { setAuthRedux, setCreatePost } from '../../redux/coreReducer'
 import { selectCreatePostSate } from "../../redux/coreReducer";
-import { useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import React from "react";
 import { isNullOrUndefined } from "util";
 
@@ -49,7 +49,6 @@ export function MakePost(): JSX.Element {
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [type, setType] = useState("");
-    const [category, setCategory] = useState("");
     const [offer_deadline, setOfferDeadline] = useState<Date | null>(null);
     const [price, setPrice] = useState("");
     const [image, setImage] = useState<FileList | null>(null);
@@ -58,7 +57,6 @@ export function MakePost(): JSX.Element {
     const [validTitle, setValidTitle] = useState(true);
     const [validText, setValidText] = useState(true);
     const [validType, setValidType] = useState(true);
-    const [validCategory, setValidCategory] = useState(true);
 
 
     const [shakeTitleStyle, setShakeTitleStyle] = useState("");
@@ -113,7 +111,7 @@ export function MakePost(): JSX.Element {
     //   setEmail(value)
     //   console.log(email)
     // }
-    var imageBuffer: Buffer;let bytes: any = [];
+    var imageBuffer: Buffer; let bytes: any = [];
     let binaryString: any;
     let buffer: any = null;
     let view: any = null;
@@ -123,7 +121,7 @@ export function MakePost(): JSX.Element {
 
     //Image compression function
     async function handleImageUpload(e: any) {
- 
+
         //const imageFile = e.target.files[0];
         const imageFile = e.target.files[0];
         console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
@@ -143,7 +141,7 @@ export function MakePost(): JSX.Element {
             //setImage1(compressedFile);
             picture = compressedFile;
 
-            
+
             const reader = new FileReader();
             reader.readAsArrayBuffer(picture);
             reader.onload = () => {
@@ -153,7 +151,7 @@ export function MakePost(): JSX.Element {
                 //picture1 = reader.result.toString('base64');
                 //picture = compressedFile;
                 //var newBuff = btoa([].reduce.call(new Uint8Array(buffer),function(p,c){return p+String.fromCharCode(c)},''))
-                
+
                 // view = new Uint32Array(buffer);
                 //imageBuffer = Buffer.from(reader.result as ArrayBuffer);
                 //binaryString = imageBuffer
@@ -175,7 +173,7 @@ export function MakePost(): JSX.Element {
 
     }
 
-    async function makePost(title: string, text: string, type: string, category: string, offer_deadline:Date | null, price: number, picture: any) {
+    async function makePost(title: string, text: string, type: string, offer_deadline: Date | null, price: number, picture: any) {
         //alert("Email is: " + email + " Password is: " + password)
         // var r = new global.FileReader();
         // //r.onload = function(){ alert(r.result); };
@@ -183,8 +181,8 @@ export function MakePost(): JSX.Element {
         //     r.readAsArrayBuffer(picture);
         //     console.log(r);
         // }
-        
-        console.log(picture);        
+
+        console.log(picture);
 
         console.log(token.auth);
         if (title === "") {
@@ -196,19 +194,15 @@ export function MakePost(): JSX.Element {
         } else if (type === "") {
             messageFailure("Missing infomration", "Please select an offer or request type.");
             shakePassword()
-        } else if (category === "") {
-            messageFailure("Missing infomration", "Please select a category for your post.");
-            shakePassword()
         } else {
             axios
                 .post("http://localhost:3000/api/posts/makepost", {
                     title: title,
                     text: text,
                     type: type,
-                    category: category,
-                    img: picture,
                     offer_deadline: offer_deadline,
                     price: price,
+                    img: picture,
                 }, {
                     headers: {
                         "Authorization": "Bearer " + token.auth
@@ -221,8 +215,8 @@ export function MakePost(): JSX.Element {
                 })
                 .catch((err) => {
                     console.log(err);
-                        messageFailure("Error", "Something went wrong. Please try again later");
-                    }
+                    messageFailure("Error", "Something went wrong. Please try again later");
+                }
                 );
         }
     }
@@ -255,112 +249,101 @@ export function MakePost(): JSX.Element {
 
     return (
         <div>
-            <Modal isOpen={isOpenRedux} onClose={() => {dispatch(setCreatePost(false))}} >
+            <Modal isOpen={isOpenRedux} onClose={() => { dispatch(setCreatePost(false)) }} >
                 <ModalOverlay />
                 <ModalContent>
-                        <ModalHeader>Create Post</ModalHeader>
-                        <ModalBody pb={6}>
+                    <ModalHeader>Create Post</ModalHeader>
+                    <ModalBody pb={6}>
                         <FormControl isRequired>
-                        <FormLabel> Post Title </FormLabel>
-                        <Input
-                            isInvalid={!validTitle}
-                            className={"default-transition " + shakeTitleStyle}
-                            onChange={(el) => { setTitle(el.target.value); setValidTitle(true) }}
-                            placeholder="Title"
-                            required
-                        />
-                    </FormControl>
-                    <FormControl isRequired>
-                        <FormLabel> Post Description </FormLabel>
-                        <Textarea
-                            isInvalid={!validText}
-                            className={"default-transition " + shakeTextStyle}
-                            onChange={(el) => { setText(el.target.value); setValidText(true) }}
-                            placeholder="Description"
-                            required
-                        />
-                    </FormControl>  
-
-                    <FormControl isRequired>
-                        <FormLabel> Post Type </FormLabel>
-                        <span className="LoginSignupForm-Inline">
-                            {/* <FormLabel> Category </FormLabel> */}
-                            
-                            <Select 
-                                placeholder='Select Type'
-                                isInvalid={!validType}
-                                onChange={(el) => { setType(el.target.value); setValidType(true) }}
+                            <FormLabel> Post Title </FormLabel>
+                            <Input
+                                isInvalid={!validTitle}
+                                className={"default-transition " + shakeTitleStyle}
+                                onChange={(el) => { setTitle(el.target.value); setValidTitle(true) }}
+                                placeholder="Title"
                                 required
-                            >
-                                <option value='Request'>Request</option>
-                                <option value='Offer'>Offer</option>
-                            </Select>
-                            
-                            
-                            <Select
-                                placeholder='Select Category'
-                                isInvalid={!validCategory}
-                                onChange={(el) => { setCategory(el.target.value); setValidCategory(true) }}
+                            />
+                        </FormControl>
+                        <FormControl isRequired>
+                            <FormLabel> Post Description </FormLabel>
+                            <Textarea
+                                isInvalid={!validText}
+                                className={"default-transition " + shakeTextStyle}
+                                onChange={(el) => { setText(el.target.value); setValidText(true) }}
+                                placeholder="Description"
                                 required
-                            >
-                                <option value='Tutor'>Tutor</option>
-                                <option value='Category 2'>Category 2</option>
-                                <option value='Category 3'>Category 3</option>
-                            </Select>
-                        </span>
-                    </FormControl>
+                            />
+                        </FormControl>
 
-                    <FormControl>
-                        <FormLabel>Price</FormLabel>
+                        <FormControl isRequired>
+                            <FormLabel> Post Type </FormLabel>
+                            <span className="LoginSignupForm-Inline">
+                                {/* <FormLabel> Category </FormLabel> */}
+
+                                <Select
+                                    placeholder='Select Type'
+                                    isInvalid={!validType}
+                                    onChange={(el) => { setType(el.target.value); setValidType(true) }}
+                                    required
+                                >
+                                    <option value='Request'>Request</option>
+                                    <option value='Offer'>Offer</option>
+                                </Select>
+
+                            </span>
+                        </FormControl>
+
+                        <FormControl>
+                            <FormLabel>Price</FormLabel>
                             <InputGroup>
                                 <InputLeftElement
-                                pointerEvents='none'
-                                color='gray.300'
-                                fontSize='1.2em'
-                                children='$'
+                                    pointerEvents='none'
+                                    color='gray.300'
+                                    fontSize='1.2em'
+                                    children='$'
                                 />
                                 <Input placeholder='Enter Price'
-                                onChange={(el) => { setPrice(el.target.value); }} />
+                                    onChange={(el) => { setPrice(el.target.value); }} />
                             </InputGroup>
-                    </FormControl>
+                        </FormControl>
 
-                    <FormControl>
-                        <FormLabel>Offer/Request Deadline</FormLabel>
+                        <FormControl>
+                            <FormLabel>Offer/Request Deadline</FormLabel>
                             <Input
-                            placeholder="Select Date and Time"
-                            size="md"
-                            type="date"
-                            onChange={(el) => { setOfferDeadline(el.target.valueAsDate); }}
+                                placeholder="Select Date and Time"
+                                size="md"
+                                type="date"
+                                onChange={(el) => { setOfferDeadline(el.target.valueAsDate); }}
                             />
-                    </FormControl>
+                        </FormControl>
 
-                    <FormControl>
-                        <FormLabel> Add image </FormLabel>
-                        <span className="LoginSignupForm-Inline">
-                            <Input
-                                type="file" accept=".jpg, .jpeg, .png" onChange={(el) => handleImageUpload(el)}
-                            />
+                        <FormControl>
+                            <FormLabel> Add image </FormLabel>
+                            <span className="LoginSignupForm-Inline">
+                                <Input
+                                    type="file" accept=".jpg, .jpeg, .png" onChange={(el) => handleImageUpload(el)}
+                                />
 
-                        </span>
-                    </FormControl>
-                        </ModalBody>
+                            </span>
+                        </FormControl>
+                    </ModalBody>
                     <ModalFooter>
-                        <Button 
+                        <Button
                             colorScheme="gray"
                             type="submit"
                             loadingText="Creating Post"
-                            onClick={() => {makePost(title, text, type, category, offer_deadline, parseInt(price), picture)}}
+                            onClick={() => { makePost(title, text, type, offer_deadline, parseInt(price), picture) }}
                             mr={3}
                         >
                             Create Post
                         </Button>
-                        <Button colorScheme='orange' onClick={() => {dispatch(setCreatePost(false))}}>
-                        Close
+                        <Button colorScheme='orange' onClick={() => { dispatch(setCreatePost(false)) }}>
+                            Close
                         </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-            
+
         </div>
     );
 }

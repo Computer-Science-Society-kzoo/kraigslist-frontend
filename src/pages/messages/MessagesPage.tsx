@@ -6,9 +6,6 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion"
 import axios from "axios";
 import Moment from "react-moment";
-import { useDispatch, useSelector } from "react-redux";
-import { selectConversationsState } from "../../redux/messagesReducer"
-import { setTotalUnreadMessagesRedux, setConversationsRedux, addConversationRedux, addMessageToConversationRedux } from "../../redux/messagesReducer"
 
 
 
@@ -318,10 +315,7 @@ export function MessagesPage(): JSX.Element {
   
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  const conversations = useSelector(selectConversationsState);
-  const dispatch = useDispatch();
-  
-
+  const [conversations, setConversations] = useState<Converstaion[]>([]);
   const [conversationsTrigger, setconversationsTrigger] = useState<boolean>(false);
   const [comradeID, setComradeID] = useState<number>(-1);
   const [comradeName, setComradeName] = useState<string>("");
@@ -355,7 +349,7 @@ export function MessagesPage(): JSX.Element {
       })
       .then((res) => {
         console.log(res.data);
-        dispatch(setConversationsRedux(parsePosts(res.data)))
+        setConversations(parsePosts(res.data));
         setLoading(false);
       })
       .catch((err) => {
@@ -378,7 +372,7 @@ export function MessagesPage(): JSX.Element {
         con.lastMessage = message;
       }
     });
-    dispatch(setConversationsRedux(newConversations));
+    setConversations(newConversations);
     setconversationsTrigger(!conversationsTrigger);
   }
 
@@ -427,7 +421,7 @@ export function MessagesPage(): JSX.Element {
               transition={{ duration: 0.2 }}
             >
             <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {selectConversation(con.conID, con.comID, con.name, con.postID)} }>
-              <ConversationItem lastMessage={con.lastMessage} name={con.name} conID={con.conID} comID={con.comID} postID={con.postID} />
+              <ConversationItem {...con}/>
             </a>
             </motion.div>
           ))}

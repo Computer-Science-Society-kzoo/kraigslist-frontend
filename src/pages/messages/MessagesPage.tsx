@@ -223,7 +223,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   function updateAfterDelay(delay: number) {
     setTimeout(() => {
-      if (props.conID !== -1) {
+      if (props.conID !== -1 ) {
         setTrigger(!trigger);
         console.log("Checking for new messages");
       }
@@ -236,10 +236,10 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
     useEffect(() => {
       getMessages();
-      updateAfterDelay(2500);
+     // updateAfterDelay(2500);
     }, [trigger])
-  
-    updateAfterDelay(2500);
+    
+  //updateAfterDelay(2500);
 
 
     return (

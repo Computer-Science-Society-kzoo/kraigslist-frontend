@@ -1,0 +1,32 @@
+.Guideline-Container{
+    max-width:900px;
+    height: auto;
+    border : 1px solid var(--k-orange);
+    border-radius : 12px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin: auto;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+.Guideline-Container-Items{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 12px;
+}
+
+.Guideline-Header{
+    font-size: 20px;
+    font-weight: 600;
+    margin: 12px;
+    color: var(--k-orange);
+}
+
+.Guideline-Text{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 12px;
+}

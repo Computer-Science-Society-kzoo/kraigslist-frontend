@@ -50,7 +50,7 @@ function EditControl() {
   } = useEditableControls();
 
   return isEditing ? (
-    <ButtonGroup justifyContent="end" size="sm" w="full">
+    <ButtonGroup justifyContent="end" size="sm" w="full" spacing={2} mt={2}>
       <IconButton
         aria-label="check"
         icon={<CheckIcon boxSize={3} />}
@@ -95,7 +95,9 @@ function ProfileInfo(): JSX.Element {
     <div className="Profile-Container">
       
       <Header />
-      <Stack>
+      <Stack 
+      align="stretch"
+      >
         <Editable defaultValue="Name" isPreviewFocusable={false}>
           <EditablePreview />
           <Input as={EditableInput} />

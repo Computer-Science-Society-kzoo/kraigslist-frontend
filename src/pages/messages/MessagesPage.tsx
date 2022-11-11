@@ -107,7 +107,6 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
               }
           })
           .then((res) => {
-              console.log(res);
               props.addNewMessage(message);
               setMessage("");
           })
@@ -159,7 +158,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
     let parsedMessages: Message[] = [];
     newMessages.forEach((con: any) => {
       date = new Date(con.date);
-      console.log(date);
       parsedMessages.push({
         message: con.message,
         yours: (con.receiverUID === props.comID) ? true : false,
@@ -205,7 +203,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
   }
 
   async function getMessages() {
-    console.log(token.auth);
     axios
       .get("http://localhost:3000/api/messages/allmessages", { 
         "headers":
@@ -215,7 +212,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
         }
       })
       .then((res) => {
-        console.log(res.data);
         setMessages(parseMessages(res.data));
         props.updateLastMessage(props.conID, res.data[0].message);
       });
@@ -239,8 +235,8 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
      // updateAfterDelay(2500);
     }, [trigger])
     
-  //updateAfterDelay(2500);
-
+    
+    let counter = 0
 
     return (
         <div className="MessageContainer">
@@ -271,14 +267,12 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                       }  
 
                    
-                      console.log(message.date);
-                      console.log(message.message)
                       return(
                               <motion.div
-                                key={message.message}
+                                key={counter++}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ duration: 0.2 }}
+                                transition={{ duration: 0.2}}
                               >
                                 {showFirstDate && 
                                 <div className="MessageContainer-Selected-Messages-Date">
@@ -348,7 +342,6 @@ export function MessagesPage(): JSX.Element {
         }
       })
       .then((res) => {
-        console.log(res.data);
         setConversations(parsePosts(res.data));
         setLoading(false);
       })

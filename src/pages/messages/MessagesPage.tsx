@@ -84,7 +84,6 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
   
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const [message, setMessage] = useState<string>("");
-  
   async function sendMessage() {
 
     if (message !== "") {

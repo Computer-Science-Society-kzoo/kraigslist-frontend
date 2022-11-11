@@ -43,7 +43,6 @@ export function Header(): JSX.Element {
   };
 
   function testSignOut() {
-    setAuthRedux(false)
     removeToken("auth");
     toast({
       title: "Warning",

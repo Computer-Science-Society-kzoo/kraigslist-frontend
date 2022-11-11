@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { LoginPage } from "./pages/login/LoginPage";
@@ -17,10 +17,22 @@ function Footer(): JSX.Element {
 }
 
 function LoginOrHome(): JSX.Element {
-  const [token, setToken, removeToken] = useCookies(["auth"]); // Get the token from the cookie
   const dispatch = useDispatch();
-  dispatch(setAuthRedux(token["auth"] ? true : false)); // Set the auth state to true if the token exists
+
   const auth = useSelector(selectAuthState);
+
+  const [token, setToken, removeToken] = useCookies(["auth"]);
+
+  useEffect(() => {
+    console.log("token: ", token.auth);
+    if (token.auth) {
+      dispatch(setAuthRedux(true));
+    } else {
+      dispatch(setAuthRedux(false));
+    }
+
+  }, [auth, token]);
+  
   return <>{auth ? <HomePage /> : <LoginPage />}</>; // If the auth state is true, show the main page, otherwise show the login page
 }
 

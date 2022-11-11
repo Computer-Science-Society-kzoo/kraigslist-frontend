@@ -36,11 +36,10 @@ export const coresSlice = createSlice({
             state.totalMessages = action.payload;
         },
         setConversationsRedux: (state, action) => {
-            console.log("setConversationsRedux: ", action.payload);
             state.conversations = action.payload 
         },
         setActiveMessagesRedux: (state, action) => {
-            console.log("setActiveMessagesRedux: ", action.payload);
+            console.log(action.payload)
             state.activeMessages = action.payload 
         }
     }

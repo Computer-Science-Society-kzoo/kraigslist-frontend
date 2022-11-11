@@ -18,6 +18,7 @@ interface MessageDetails{
 }
 
 interface BoottomMessageContainerProps {
+  postID: number;
   id: number;
   addNewMessage: (message: string) => void;
 }
@@ -90,7 +91,8 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
       axios
           .post("http://localhost:3000/api/messages/send", {
               conversationID: props.id,
-              message: message
+              message: message,
+              postID: props.postID,
           }, {
               headers: {
                   "Authorization": "Bearer " + token.auth
@@ -162,7 +164,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
         date: con.date
       });
     });
-    return parsedMessages;
+    return parsedMessages.reverse();
   }
 
 
@@ -201,12 +203,14 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
   }
 
   async function getMessages() {
+    console.log(props.postID)
     axios
       .get("http://localhost:3000/api/messages/allmessages", { 
         "headers":
         {
           "Authorization": `Bearer ${token.auth}`,
           "Comradeid": props.comID,
+          "Postid": props.postID
         }
       })
       .then((res) => {
@@ -228,14 +232,14 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
     useEffect(() => {
       getMessages();
-    }, [props.comID])
+    }, [props.conID])
 
     useEffect(() => {
       getMessages();
      // updateAfterDelay(2500);
     }, [trigger])
     
-    
+
     let counter = 0
 
     return (
@@ -298,7 +302,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                      )})}
                   </AnimatePresence>
                 </div>  
-                <BottomMessageContainer id={props.conID} addNewMessage={addNewMessage}/>
+                <BottomMessageContainer id={props.conID} postID={props.postID} addNewMessage={addNewMessage}/>
               </div>
             }
         </div>

@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import coreReducer from './coreReducer';
+import messagesReducer from './messagesReducer';
 
 export const store = configureStore({
     reducer: {
-        core: coreReducer
+        core: coreReducer,
+        messages: messagesReducer
     }
 })
 

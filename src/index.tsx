@@ -8,6 +8,8 @@ import { store } from './redux/store';
 import { extendTheme, ChakraProvider, ThemeConfig } from '@chakra-ui/react'
 import { customTheme } from './ChakraTheme';
 import { ColorModeScript } from '@chakra-ui/react'
+import { createWebSocketConnection } from './websocket';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -22,6 +24,8 @@ const config: ThemeConfig = {
 }
 
 const theme = extendTheme({ config })
+
+createWebSocketConnection()
 
 root.render(
   <React.StrictMode>

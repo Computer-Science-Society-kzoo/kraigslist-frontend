@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { selectActiveMessagesState, setActiveMessagesRedux, MessageProps } from "./redux/messagesReducer";
+import { selectActiveMessagesState, pushActiveMessageRedux, setActiveMessagesRedux, MessageProps } from "./redux/messagesReducer";
 import { useDispatch } from "react-redux";
+import moment from "moment";
 
 interface Message {
     type: string;
@@ -80,7 +81,11 @@ export function WebSockets(): JSX.Element {
                     message: dataFromServer.data.message
                 }
 
-                const now = Date.now()
+
+                
+                const now = moment().toDate()
+
+                //get current date                
                 
                 const newMessage: MessageProps = {
                     message: dataFromServer.data.message,
@@ -90,7 +95,7 @@ export function WebSockets(): JSX.Element {
 
                 let newMessages = [...allMessages, newMessage]
 
-                dispatch(setActiveMessagesRedux(newMessages))                
+                dispatch(pushActiveMessageRedux(newMessage))                
 
                 break
             default:

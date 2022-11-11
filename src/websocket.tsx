@@ -10,19 +10,20 @@ export function WebSockets(): JSX.Element {
     let auth = useSelector(selectAuthState);
     const [token, setToken, removeToken] = useCookies(["auth"]);
 
-    let websocket = new W3CWebSocket('ws://localhost:8000');
+    let websocket = new WebSocket('ws://localhost:8000');
 
+    
     websocket.onopen = () => {
         console.log('Websocket connected');
     };
 
     useEffect(() => {
         if (auth) {
-            websocket = new W3CWebSocket('ws://localhost:8000/token?' + token.auth  );        
+            websocket = new WebSocket('ws://localhost:8000/token?=' + token.auth);        
         }
     }, [auth]);
 
-    return <span style={{display: "none"}}></span>
+    return <span style={{display: "visible"}}>I am the websocket</span>
 }
 
 

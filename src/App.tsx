@@ -24,7 +24,6 @@ function LoginOrHome(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   useEffect(() => {
-    console.log("token: ", token.auth);
     if (token.auth) {
       dispatch(setAuthRedux(true));
     } else {

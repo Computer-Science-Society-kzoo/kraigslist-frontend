@@ -80,8 +80,6 @@ export function WebSockets(): JSX.Element {
                     conID: dataFromServer.data.conversationID,
                     message: dataFromServer.data.message
                 }
-
-
                 
                 const now = moment().toDate()
 

@@ -163,6 +163,10 @@
     padding: 0px 10px;
 }
 
+.MessageContainer-SendButton{
+    width: 50px;
+}
+
 @media screen and (max-width: 1080px) {
     .MessagesPageContainer-Main{
         width: 100%;

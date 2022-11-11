@@ -43,15 +43,17 @@ export const coresSlice = createSlice({
             state.activeMessages = action.payload 
         },
         pushActiveMessageRedux: (state, action) => {
-            state.activeMessages = [ action.payload, ...state.activeMessages]
+            state.activeMessages = [...state.activeMessages, action.payload]
             console.log("state " + JSON.stringify(state.activeMessages))
             console.log("payload: " + JSON.stringify((action.payload)))
+        },
+        pushMoreMessagesRedux: (state, action) => {
+            state.activeMessages = [...action.payload, ...state.activeMessages]
         }
-
     }
   })
 
-export const { pushActiveMessageRedux, setTotalUnreadMessagesRedux,  setConversationsRedux, setActiveMessagesRedux  } = coresSlice.actions
+export const { pushMoreMessagesRedux, pushActiveMessageRedux, setTotalUnreadMessagesRedux,  setConversationsRedux, setActiveMessagesRedux  } = coresSlice.actions
 export const selectTotalMessagesState = (state: RootState) => state.messages.totalMessages
 export const selectConversationsState = (state: RootState) => state.messages.conversations
 export const selectActiveMessagesState = (state: RootState) => state.messages.activeMessages

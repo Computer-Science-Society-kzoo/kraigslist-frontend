@@ -6,9 +6,12 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion"
 import axios from "axios";
 import Moment from "react-moment";
-import { selectActiveMessagesState, setActiveMessagesRedux } from "../../redux/messagesReducer";
+import { pushActiveMessageRedux, pushMoreMessagesRedux, selectActiveMessagesState, setActiveMessagesRedux } from "../../redux/messagesReducer";
 import { ConversationProps, MessageProps } from "../../redux/messagesReducer";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import scroller from "react-scroll";
+import InfiniteScroll from 'react-infinite-scroller';
 
 interface MessageDetails{
   name: string;
@@ -73,6 +76,8 @@ function Message(props: MessageProps): JSX.Element {
 
 export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX.Element {
 
+  const [sending, setSending] = useState(false);
+
   function messageFailure(title: string, desc: string) {
     toast({
       title: title,
@@ -86,8 +91,8 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const [message, setMessage] = useState<string>("");
   async function sendMessage() {
-
     if (message !== "") {
+      setSending(true);
       axios
           .post("http://localhost:3000/api/messages/send", {
               conversationID: props.id,
@@ -101,9 +106,12 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
           .then((res) => {
               props.addNewMessage(message);
               setMessage("");
+              setSending(false);
           })
           .catch((err) => {
               messageFailure("Error", "Something went wrong.");
+              setMessage("");
+              setSending(false);
               }
           );
     }
@@ -126,11 +134,15 @@ export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={(e) => {handleKeyDown(e)}}
+        disabled={sending}
       />
       <InputRightElement width='4.5rem'>
-        <Button colorScheme="orange" h='1.75rem' size='sm' onClick={sendMessage}>
-          Send
+        
+ 
+        <Button className="MessageContainer-SendButton" colorScheme="orange" h='1.75rem' size='sm' onClick={sendMessage} disabled={sending}>
+          { sending ? <Spinner size="sm" /> : <>Send</>}     
         </Button>
+      
       </InputRightElement>
     </InputGroup>
     </div>
@@ -147,6 +159,10 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   function setMessages(messages: MessageProps[]) {
     dispatch(setActiveMessagesRedux(messages))
+  }
+
+  function addMessage(message: MessageProps) {
+    dispatch(pushActiveMessageRedux(message))
   }
 
 
@@ -198,7 +214,8 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
   }
 
   function addNewMessage(message: string) {
-    setMessages([{message: message, yours: true, date: ""}, ...messages]);
+    const now = moment().toDate()
+    addMessage({message: message, yours: true, date: now.toString()})
     props.updateLastMessage(props.conID, message);
   }
 
@@ -240,7 +257,26 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
     }, [trigger])
     
 
+
     let counter = 0
+
+    function loadFunc(){
+
+      if (messages.length > 0) {
+        let randomBoolean = Math.random() >= 0.5;
+
+        let now = moment().toDate()
+
+        const newMessage: MessageProps = {
+          message: "TestMessage",
+          yours: randomBoolean,
+          date: now.toString()
+        }
+
+      }             
+    }
+
+
 
     return (
         <div className="MessageContainer">
@@ -257,6 +293,14 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                 <TopMessageContainer {...props}/>
                 <div className="MessageContainer-Selected-Messages" id="MessagesContainer">
                   <AnimatePresence>
+                  <InfiniteScroll
+                        isReverse={false}
+                        pageStart={0}
+                        loadMore={loadFunc}
+                        hasMore={false}
+                        loader={<div className="loader" key={0}>Loading ...</div>}
+                  
+                      >
                     {messages.map((message) => {
 
                       let showDate = false;
@@ -269,9 +313,9 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                       if (messages.indexOf(message) === messages.length - 1) {
                         showFirstDate = true;
                       }  
-
                    
                       return(
+                   
                               <motion.div
                                 key={counter++}
                                 initial={{ opacity: 0 }}
@@ -300,6 +344,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                                 </div>}
                               </motion.div>
                      )})}
+                      </InfiniteScroll>
                   </AnimatePresence>
                 </div>  
                 <BottomMessageContainer id={props.conID} postID={props.postID} addNewMessage={addNewMessage}/>
@@ -383,6 +428,7 @@ export function MessagesPage(): JSX.Element {
     console.log("Conversations updated");
   },[conversationsTrigger]);
 
+
   return (
     <div className="MessagesPageContainer">
       <div className="MessagesPageContainer-Main">
@@ -413,16 +459,16 @@ export function MessagesPage(): JSX.Element {
           }
           <AnimatePresence>
           {conversations.map((con) => (
-            <motion.div
-              key={con.conID}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-            <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {selectConversation(con.conID, con.comID, con.name, con.postID)} }>
-              <ConversationItem {...con}/>
-            </a>
-            </motion.div>
+              <motion.div
+                key={con.conID}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+              <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {selectConversation(con.conID, con.comID, con.name, con.postID)} }>
+                <ConversationItem {...con}/>
+              </a>
+              </motion.div>
           ))}
           </AnimatePresence>
         </div>

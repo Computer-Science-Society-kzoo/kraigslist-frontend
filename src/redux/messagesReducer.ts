@@ -1,20 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from './store';
 
+export interface MessageProps {
+    message: string;
+    yours: boolean;
+    date: string;
+  }
 
-interface Conversation {
+export interface ConversationProps {
     conID: number;
     comID: number;
     postID: number;
     name: string;
     lastMessage: string;
-    messages?: String[];
+    messages?: MessageProps[];
     numberOfUnreadMessages: number;
 }
 
 export interface messagesState {
     totalMessages: number;
-    conversations: Conversation[];
+    conversations: ConversationProps[];
 }
 
 const initialState: messagesState = {
@@ -30,10 +35,17 @@ export const coresSlice = createSlice({
             state.totalMessages = action.payload;
         },
         setConversationsRedux: (state, action) => {
+            console.log("setConversationsRedux: ", action.payload);
             state.conversations = action.payload 
         },
         addConversationRedux: (state, action) => { 
             state.conversations.push(action.payload)
+        },
+        setMessagesToConversationRedux: (state, action) => {
+            const conversation = state.conversations.find(conversation => conversation.conID === action.payload.conID);
+            if (conversation) {
+                conversation.messages = action.payload.messages;
+            }
         },
         addMessageToConversationRedux: (state, action) => {
             const conID = action.payload.conID;
@@ -52,7 +64,7 @@ export const coresSlice = createSlice({
     }
   })
 
-export const { setTotalUnreadMessagesRedux, setConversationsRedux, addConversationRedux, addMessageToConversationRedux  } = coresSlice.actions
+export const { setTotalUnreadMessagesRedux, setMessagesToConversationRedux,  setConversationsRedux, addConversationRedux, addMessageToConversationRedux  } = coresSlice.actions
 export const selectTotalMessagesState = (state: RootState) => state.messages.totalMessages
 export const selectConversationsState = (state: RootState) => state.messages.conversations
 export default coresSlice.reducer

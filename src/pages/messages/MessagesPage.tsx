@@ -8,24 +8,37 @@ import axios from "axios";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { selectConversationsState } from "../../redux/messagesReducer"
-import { setTotalUnreadMessagesRedux, setMessagesToConversationRedux, setConversationsRedux, addConversationRedux, addMessageToConversationRedux } from "../../redux/messagesReducer"
-import { ConversationProps, MessageProps } from "../../redux/messagesReducer"
+import { setTotalUnreadMessagesRedux, setConversationsRedux, addConversationRedux, addMessageToConversationRedux } from "../../redux/messagesReducer"
 
 
-interface SendMessageFieldProps {
-  conID: number;
-  addNewMessage: (message: string) => void;
+
+interface Message {
+  message: string;
+  yours: boolean;
+  date: string;
 }
 
-interface ChatContainerProps{
+interface MessageDetails{
   name: string;
   conID: number;
   comID: number;
   postID: number;
+}
+
+interface BoottomMessageContainerProps {
+  id: number;
+  addNewMessage: (message: string) => void;
+}
+
+interface Converstaion extends MessageDetails {
+  lastMessage: string;
+}
+
+interface conversationWithUpdateFunction extends MessageDetails {
   updateLastMessage: (conID: number, message: string) => void;
 }
 
-function ConversationItem(props: ConversationProps): JSX.Element {
+function ConversationItem(props: Converstaion): JSX.Element {
 
     return (
         <div className="ConversationItem">
@@ -40,7 +53,7 @@ function ConversationItem(props: ConversationProps): JSX.Element {
     )
 }
 
-function TopMessageContainer(props: ChatContainerProps): JSX.Element {
+function TopMessageContainer(props: MessageDetails): JSX.Element {
   return (
       <div className="TopMessageContainer">
         {/* <Heading as='h1' size='lg'>
@@ -54,7 +67,7 @@ function TopMessageContainer(props: ChatContainerProps): JSX.Element {
   );
 }
 
-function Message(props: MessageProps): JSX.Element {
+function Message(props: Message): JSX.Element {
     return (
       <div className="MessageFullContainer">
         <div className={props.yours ? "MessageItem YourMessage" : "MessageItem"}>
@@ -69,7 +82,7 @@ function Message(props: MessageProps): JSX.Element {
 }
 
 
-export function SendMessageField(props: SendMessageFieldProps): JSX.Element {
+export function BottomMessageContainer(props: BoottomMessageContainerProps): JSX.Element {
 
   function messageFailure(title: string, desc: string) {
     toast({
@@ -89,7 +102,7 @@ export function SendMessageField(props: SendMessageFieldProps): JSX.Element {
     if (message !== "") {
       axios
           .post("http://localhost:3000/api/messages/send", {
-              conversationID: props.conID,
+              conversationID: props.id,
               message: message
           }, {
               headers: {
@@ -135,29 +148,18 @@ export function SendMessageField(props: SendMessageFieldProps): JSX.Element {
     </div>
   );
 }
-function ChatContainer(props: ChatContainerProps): JSX.Element {
+function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
+  const [messages, setMessages] = useState<Message[]>([]);
+
   const [trigger, setTrigger] = useState<boolean>(false);
-
-  const dispatch = useDispatch();
-  
-  const conservation = useSelector(selectConversationsState).find((con) => con.conID === props.conID);
-  const messages = conservation?.messages || [];
-
-  function setMessages(messages: MessageProps[]) {
-    let data = {
-      conID: props.conID,
-      messages: messages
-    }
-    dispatch(setMessagesToConversationRedux(data));
-  }
   
   let date = new Date();
 
   function parseMessages(newMessages: any) {
-    let parsedMessages: MessageProps[] = [];
+    let parsedMessages: Message[] = [];
     newMessages.forEach((con: any) => {
       date = new Date(con.date);
       console.log(date);
@@ -304,7 +306,7 @@ function ChatContainer(props: ChatContainerProps): JSX.Element {
                      )})}
                   </AnimatePresence>
                 </div>  
-                <SendMessageField addNewMessage={addNewMessage} conID={props.conID}/>
+                <BottomMessageContainer id={props.conID} addNewMessage={addNewMessage}/>
               </div>
             }
         </div>
@@ -328,16 +330,15 @@ export function MessagesPage(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
 
   function parsePosts(newConversations: any) {
-    let parsedConversations: ConversationProps[] = [];
+    let parsedConversations: Converstaion[] = [];
     newConversations.forEach((con: any) => {
       parsedConversations.push({
         conID: con.conversationID,
         comID: con.comID,
         name: con.name,
         lastMessage: con.lastMessage,
-        postID: con.postID,
-        numberOfUnreadMessages: con.numberOfUnreadMessages,
-      });
+        postID: con.postID
+       });
     });
     return parsedConversations;
   }
@@ -426,14 +427,14 @@ export function MessagesPage(): JSX.Element {
               transition={{ duration: 0.2 }}
             >
             <a className={selectedConversation === con.conID ? "SelectedMessage" : ""} onClick={() => {selectConversation(con.conID, con.comID, con.name, con.postID)} }>
-              <ConversationItem lastMessage={con.lastMessage} name={con.name} conID={con.conID} comID={con.comID} postID={con.postID} numberOfUnreadMessages={con.numberOfUnreadMessages} />
+              <ConversationItem lastMessage={con.lastMessage} name={con.name} conID={con.conID} comID={con.comID} postID={con.postID} />
             </a>
             </motion.div>
           ))}
           </AnimatePresence>
         </div>
         <Divider orientation='vertical'/>
-          <ChatContainer comID={comradeID} conID={selectedConversation} name={comradeName} postID={postID} updateLastMessage={updateLastMessage}/>
+          <MessageContainer comID={comradeID} conID={selectedConversation} name={comradeName} postID={postID} updateLastMessage={updateLastMessage}/>
       </div>
     </div>
   );

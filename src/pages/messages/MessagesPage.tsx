@@ -6,14 +6,9 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion"
 import axios from "axios";
 import Moment from "react-moment";
-
-
-
-interface Message {
-  message: string;
-  yours: boolean;
-  date: string;
-}
+import { selectActiveMessagesState, setActiveMessagesRedux } from "../../redux/messagesReducer";
+import { ConversationProps, MessageProps } from "../../redux/messagesReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 interface MessageDetails{
   name: string;
@@ -27,15 +22,11 @@ interface BoottomMessageContainerProps {
   addNewMessage: (message: string) => void;
 }
 
-interface Converstaion extends MessageDetails {
-  lastMessage: string;
-}
-
 interface conversationWithUpdateFunction extends MessageDetails {
   updateLastMessage: (conID: number, message: string) => void;
 }
 
-function ConversationItem(props: Converstaion): JSX.Element {
+function ConversationItem(props: ConversationProps): JSX.Element {
 
     return (
         <div className="ConversationItem">
@@ -64,7 +55,7 @@ function TopMessageContainer(props: MessageDetails): JSX.Element {
   );
 }
 
-function Message(props: Message): JSX.Element {
+function Message(props: MessageProps): JSX.Element {
     return (
       <div className="MessageFullContainer">
         <div className={props.yours ? "MessageItem YourMessage" : "MessageItem"}>
@@ -148,14 +139,22 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  const [messages, setMessages] = useState<Message[]>([]);
+
+
+  const dispatch = useDispatch();
+  const messages = useSelector(selectActiveMessagesState);
+
+  function setMessages(messages: MessageProps[]) {
+    dispatch(setActiveMessagesRedux(messages))
+  }
+
 
   const [trigger, setTrigger] = useState<boolean>(false);
   
   let date = new Date();
 
   function parseMessages(newMessages: any) {
-    let parsedMessages: Message[] = [];
+    let parsedMessages: MessageProps[] = [];
     newMessages.forEach((con: any) => {
       date = new Date(con.date);
       parsedMessages.push({
@@ -213,7 +212,9 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
       })
       .then((res) => {
         setMessages(parseMessages(res.data));
-        props.updateLastMessage(props.conID, res.data[0].message);
+        if (res.data.length > 0) {
+          props.updateLastMessage(props.conID, res.data[0].message);
+        }
       });
   }
 
@@ -310,7 +311,7 @@ export function MessagesPage(): JSX.Element {
   
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  const [conversations, setConversations] = useState<Converstaion[]>([]);
+  const [conversations, setConversations] = useState<ConversationProps[]>([]);
   const [conversationsTrigger, setconversationsTrigger] = useState<boolean>(false);
   const [comradeID, setComradeID] = useState<number>(-1);
   const [comradeName, setComradeName] = useState<string>("");
@@ -319,15 +320,16 @@ export function MessagesPage(): JSX.Element {
   const [loading, setLoading] = useState<boolean>(true);
 
   function parsePosts(newConversations: any) {
-    let parsedConversations: Converstaion[] = [];
+    let parsedConversations: ConversationProps[] = [];
     newConversations.forEach((con: any) => {
       parsedConversations.push({
         conID: con.conversationID,
         comID: con.comID,
         name: con.name,
         lastMessage: con.lastMessage,
-        postID: con.postID
-       });
+        postID: con.postID,
+        numberOfUnreadMessages: con.numberOfUnreadMessages || 0
+      });
     });
     return parsedConversations;
   }

@@ -123,7 +123,7 @@ export function MainPage(): JSX.Element {
     }
   }
 
-  async function getPostsMaster(text: string, filterCheck: any, filterCheck2: any) {
+  async function getPostsMaster(text: string, filterCheck: any, filterCheck2: any, filterCheck3:any) {
     console.log(text);
     console.log(filterCheck);
     console.log(filterCheck2);
@@ -207,11 +207,19 @@ export function MainPage(): JSX.Element {
     }
   }
 
+  
+  useEffect(() => {
+    filterChange();
+    filterChange2();
+    filterChange3();
+
+  }, [checkedItems, checkedItems2, checkedItems3]);
+
 
   useEffect(() => {
     getPostsMaster(text, filterCheck, filterCheck2, filterCheck3);
 
-  }, [filterCheck, filterCheck2]);
+  }, [text, filterCheck, filterCheck2, filterCheck3]);
   //trying out something with onChange and filters
   // handleChange = (e) => {
   //   this.setState({
@@ -277,7 +285,7 @@ export function MainPage(): JSX.Element {
             <Checkbox
               colorScheme="orange"
               isChecked={checkedItems3[0]}
-              onChange={(e) => { setCheckedItems3([e.target.checked, false]); getPostsMaster(text, filterCheck, filterCheck2, filterCheck3) }}
+              onChange={(e) => { setCheckedItems3([e.target.checked, false]);}}
             >
               Deadline: Soonest to Latest
 

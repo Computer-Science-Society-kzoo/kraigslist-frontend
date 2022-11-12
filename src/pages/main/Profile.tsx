@@ -173,15 +173,17 @@ function ProfileInfo(user: User): JSX.Element {
       <Stack
         align="stretch"
       >
-        <Editable defaultValue={"First name: " + user.first_name + "    "} isPreviewFocusable={false}>
+        <Editable defaultValue={user.first_name} isPreviewFocusable={false}>
+          First name: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
-        <Editable defaultValue={"Last name: " + user.last_name + "   "} isPreviewFocusable={false}>
+        <Editable defaultValue={user.last_name} isPreviewFocusable={false}>
+        Last name: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
@@ -191,21 +193,24 @@ function ProfileInfo(user: User): JSX.Element {
           <EditControl />
         </Editable> */}
 
-        <Editable defaultValue={"Username: " + user.username + "   "} isPreviewFocusable={false}>
+        <Editable defaultValue={user.username} isPreviewFocusable={false}>
+          Username: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
-        <Editable defaultValue={"Email: " + user.email + "   "} isPreviewFocusable={false}>
+        <Editable defaultValue={user.email} isPreviewFocusable={false}>
+          Email: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
-        <Editable defaultValue={"Year: " + user.year.toString() + "   "} isPreviewFocusable={false}>
+        <Editable defaultValue={user.year.toString()} isPreviewFocusable={false}>
+          Year: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 

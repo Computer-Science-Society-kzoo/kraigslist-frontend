@@ -36,3 +36,27 @@
 .Header-Button{
     color: black !important;
 }
+
+#Messages{
+    position: relative;
+}
+
+.UnreadTotalMessageValue{
+    background-color: var(--k-orange);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    top: -6px;
+    right: -16px;
+    color: white;
+}
+
+.UnreadTotalMessageValueHide{
+    display: none;
+    right: 0;
+}

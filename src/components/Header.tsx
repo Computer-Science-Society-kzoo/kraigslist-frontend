@@ -9,6 +9,7 @@ import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { setAuthRedux } from '../redux/coreReducer'
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { selectTotalMessagesState } from "../redux/messagesReducer";
 
 
 export function Header(): JSX.Element {
@@ -55,6 +56,9 @@ export function Header(): JSX.Element {
 
   const dispatch = useDispatch()
 
+  const totalMessages = useSelector(selectTotalMessagesState);
+
+
   return (
       <header className={"Header"}>
         <Heading className="tracking-in-expand-fwd-top " id="KRAIGSLIST-TEXT">
@@ -84,9 +88,13 @@ export function Header(): JSX.Element {
               </Button>
             </Link>
             <Link to="/messages">
-              <Button className="Header-Button" variant={"link"}>
+              <Button className="Header-Button" variant={"link"} id="Messages">
                 Messages
+                  <div className={totalMessages > 0 ? "UnreadTotalMessageValue" : "UnreadMessageValueHide" }>
+                    <div>{totalMessages}</div>
+                  </div>
               </Button>
+    
             </Link>
             <Link to="/profile">
               <Button className="Header-Button" variant={"link"}>

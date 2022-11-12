@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { selectActiveMessagesState, pushActiveMessageRedux, setActiveMessagesRedux, MessageProps } from "./redux/messagesReducer";
+import { pushNewIncomingMessageRedux, selectActiveMessagesState, pushActiveMessageRedux, setActiveMessagesRedux, MessageProps, setTotalUnreadMessagesRedux } from "./redux/messagesReducer";
 import { useDispatch } from "react-redux";
 import moment from "moment";
+import axios from "axios";
 
 interface Message {
     type: string;
@@ -61,6 +62,8 @@ export function WebSockets(): JSX.Element {
 
   const dispatch = useDispatch();
 
+  
+
   useEffect(() => {
     if (lastMessage !== null) {
         setMessageHistory([...messageHistory, lastMessage.data]);
@@ -71,19 +74,22 @@ export function WebSockets(): JSX.Element {
         switch (dataFromServer.type) {
             case "connected":
                 console.log("Connected to the WebSocket server");
+                axios.get("http://localhost:3000/api/messages/totalmessages", { withCredentials: true })
+                .then((res) => {
+                    console.log(res.data);
+                    dispatch(setTotalUnreadMessagesRedux(res.data));
+                });
+
                 break;
             case "newMessage":
                 console.log(dataFromServer)
-
-
-                const data = {
-                    conID: dataFromServer.data.conversationID,
-                    message: dataFromServer.data.message
-                }
+        
                 
                 const now = moment().toDate()
 
-                //get current date                
+                //get current date            
+                
+                const id = dataFromServer.data.conversationID
                 
                 const newMessage: MessageProps = {
                     message: dataFromServer.data.message,
@@ -91,9 +97,7 @@ export function WebSockets(): JSX.Element {
                     date: now.toString()
                 }
 
-                let newMessages = [...allMessages, newMessage]
-
-                dispatch(pushActiveMessageRedux(newMessage))                
+                dispatch(pushNewIncomingMessageRedux({conId: id, message: newMessage}))       
 
                 break
             default:
@@ -127,7 +131,7 @@ export function WebSockets(): JSX.Element {
     }, [auth]);
 
     return (
-        <div style={{display: "flex", flexDirection: "column"}}>
+        <div style={{display: "none", flexDirection: "column"}}>
           <span>The WebSocket is currently {connectionStatus}</span>
           {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
           <ul>

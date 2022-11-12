@@ -93,8 +93,37 @@
 }
 
 .SelectedMessage > * {
+    background-color: var(--k-orange);
+}
+
+.UnreadMessage > * {
     background-color: var(--orange-selection);
 }
+
+.ConversationContainer-Conversation{
+    position: relative;
+}
+
+.UnreadMessageValue{
+    margin-left: auto;
+    position:absolute;
+    display: flex;
+    justify-content: center;
+    bottom: 8px;
+    right: 8px;
+    border-radius: 50%;
+    height: 24px;
+    width: 24px;
+    background-color: white;
+    color: black;
+}
+
+
+
+.UnreadMessageValueHide{
+    display: none;
+}
+
 
 .SendMessageContainer{
     margin: 10px;
@@ -165,6 +194,10 @@
 
 .MessageContainer-SendButton{
     width: 50px;
+}
+
+.MessageContainer-LoadMoreSpinner{
+    padding-top: 25px;
 }
 
 @media screen and (max-width: 1080px) {

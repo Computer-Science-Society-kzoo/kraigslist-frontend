@@ -38,6 +38,7 @@ import { selectCreatePostSate } from "../../redux/coreReducer";
 import { useSelector, useDispatch } from "react-redux";
 import React from "react";
 import { isNullOrUndefined } from "util";
+import { useNavigate } from "react-router-dom";
 
 
 export function MakePost(): JSX.Element {
@@ -243,9 +244,26 @@ export function MakePost(): JSX.Element {
         });
     }
 
-
     const isOpenRedux = useSelector(selectCreatePostSate);
+    const toHomepage = useNavigate();
 
+    function closeAndCreatePost() {
+        if (title === "") {
+            messageFailure("Missing infomration", "Please provide a title for your post.");
+            shakeTitle()
+        } else if (text === "") {
+            messageFailure("Missing infomration", "Please provide a description for your post.");
+            shakePassword()
+        } else if (type === "") {
+            messageFailure("Missing infomration", "Please select an offer or request type.");
+            shakePassword()
+        } else
+        {
+            makePost(title, text, type, offer_deadline, parseInt(price), picture);
+            dispatch(setCreatePost(false));
+            toHomepage("/");
+        }
+    }
 
     return (
         <div>
@@ -332,7 +350,7 @@ export function MakePost(): JSX.Element {
                             colorScheme="gray"
                             type="submit"
                             loadingText="Creating Post"
-                            onClick={() => { makePost(title, text, type, offer_deadline, parseInt(price), picture) }}
+                            onClick={() => { closeAndCreatePost() }}
                             mr={3}
                         >
                             Create Post

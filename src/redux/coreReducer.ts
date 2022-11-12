@@ -5,12 +5,14 @@ import { RootState } from './store';
 export interface coreState {
     auth: boolean;
     createPost: boolean;
+    openPost: boolean;
 }
 
 
 const initialState: coreState = {
     auth: false,
-    createPost: false
+    createPost: false,
+    openPost: false
 };
 
 export const coresSlice = createSlice({
@@ -21,14 +23,18 @@ export const coresSlice = createSlice({
         state.auth = action.payload;
       },
         setCreatePost: (state, action) => {
-          state.createPost = action.payload 
+          state.createPost = action.payload; 
+        },
+        setOpenPost: (state, action) => {
+          state.openPost = action.payload; 
         }
     }
   })
   
-export const { setAuthRedux, setCreatePost } = coresSlice.actions
+export const { setAuthRedux, setCreatePost, setOpenPost } = coresSlice.actions
 export const selectAuthState = (state: RootState) => state.core.auth;
 export const selectCreatePostSate = (state: RootState) => state.core.createPost;
+export const selectOpenPostSate = (state: RootState) => state.core.openPost;
 export default coresSlice.reducer
 
 

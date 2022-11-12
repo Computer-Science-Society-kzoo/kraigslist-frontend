@@ -1,4 +1,4 @@
-import { Checkbox, Container, Divider, Heading, IconButton, Input, InputGroup, Stack, Text } from "@chakra-ui/react";
+import { Button, Checkbox, Container, Divider, Heading, IconButton, Input, InputGroup, Stack, Text } from "@chakra-ui/react";
 import "./Post.css";
 import "./MainPage.css";
 import axios from "axios";
@@ -12,6 +12,8 @@ import { SearchBar } from "../../components/SearchBar";
 import { SearchIcon } from "@chakra-ui/icons";
 //import { filterData } from "./Filters";
 import "./Filters.css";
+import { selectOpenPostSate, setOpenPost } from "../../redux/coreReducer";
+import {useDispatch, useSelector} from "react-redux";
 
 interface Post {
   title: string;
@@ -24,10 +26,16 @@ interface Post {
   key: number;
 }
 
+
+
+
 function Post(post: Post): JSX.Element {
+  const dispatch = useDispatch();
   return (
     <>
-      <div className="PostContainer">
+      <div className="PostContainer"
+        onClick={() => {dispatch(setOpenPost(true))}}
+      >
         <div className="PostContainer-Internal">
           <Heading as={"h1"} size={"md"}>
             {post.title}

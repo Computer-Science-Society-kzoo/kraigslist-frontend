@@ -27,10 +27,6 @@ export function Header(): JSX.Element {
     document.documentElement.style.setProperty("--header-height", 152 + "px");
   }, [])
 
-
-  //Modal const
-  const {isOpen, onOpen, onClose} = useDisclosure();
-
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
 
@@ -54,7 +50,7 @@ export function Header(): JSX.Element {
     });
   }
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const totalMessages = useSelector(selectTotalMessagesState);
 

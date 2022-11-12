@@ -83,45 +83,7 @@ export function MainPage(): JSX.Element {
       });
   }
 
-  // useEffect(() => {
-  //   if (text != "") {
-  //     search(text);
-  //   }
-  //   else {
-  //     getPosts();
-  //   }
-  // }, []);
-
-
-
   const [text, setText] = useState("");
-
-
-
-  async function search(text: string) {
-
-    console.log(text);
-    if (text === "") {
-      getPosts();
-      //messageFailure("Missing infomration", "Please provide a text to search.");
-    } else {
-      axios
-        .get("http://localhost:3000/api/posts/searchPosts", {
-          params: { text: text }
-        },
-
-        )
-        .then((res) => {
-          console.log(res.data);
-          setPosts(parsePosts(res.data));
-
-        })
-        .catch((err) => {
-          console.log(err);
-        }
-        );
-    }
-  }
 
   async function getPostsMaster(text: string, filterCheck: any, filterCheck2: any, filterCheck3:any) {
     console.log(text);

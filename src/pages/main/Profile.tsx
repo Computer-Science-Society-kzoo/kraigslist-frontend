@@ -16,17 +16,45 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Form } from "react-router-dom";
 import { setAuthRedux } from "../../redux/coreReducer";
 import "./Profile.css";
 
+interface User {
+  username: string;
+  email: string;
+  //password: string;
+  first_name: string;
+  //last_name: string;
+  year: number;
+}
+
 export function Profile(): JSX.Element {
+  const [user, setUser] = useState<User[]>([]);
+  const [token, setToken, removeToken] = useCookies(["auth"]);
+
+  //get username
+  async function getPosts() {
+    console.log(token.auth);
+    axios
+      .get("http://localhost:3000/api/account/getUsername", { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+        setUser(parseUser(res.data));
+      });
+  }
+
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
 
     <div>
-      <ProfileInfo />
+      <ProfileInfo username={""} email={""} first_name={""} year={0} />
     </div>
   );
 }
@@ -71,9 +99,25 @@ function EditControl() {
   );
 }
 
+// const [user, setUser] = useState<User[]>([]);
+// const [token, setToken, removeToken] = useCookies(["auth"]);
+
+function parseUser(user: any) {
+  let parsedUser: User[] = [];
+  user.forEach((user: any) => {
+    parsedUser.push({
+      first_name: user.first_name,
+      username: user.username,
+      email: user.email,
+      year: user.year,
+    });
+  });
+  return parsedUser
+}
 
 
-function ProfileInfo(): JSX.Element {
+
+function ProfileInfo(user: User): JSX.Element {
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
@@ -90,15 +134,17 @@ function ProfileInfo(): JSX.Element {
     });
   }
 
+
+
   return (
 
     <div className="Profile-Container">
-      
+
       <Header />
-      <Stack 
-      align="stretch"
+      <Stack
+        align="stretch"
       >
-        <Editable defaultValue="Name" isPreviewFocusable={false}>
+        <Editable defaultValue={user.first_name} isPreviewFocusable={false}>
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
@@ -110,19 +156,19 @@ function ProfileInfo(): JSX.Element {
           <EditControl />
         </Editable>
 
-        <Editable defaultValue="Username" isPreviewFocusable={false}>
+        <Editable defaultValue={user.username} isPreviewFocusable={false}>
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
         </Editable>
 
-        <Editable defaultValue="Email" isPreviewFocusable={false}>
+        <Editable defaultValue={user.email} isPreviewFocusable={false}>
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
         </Editable>
 
-        <Editable defaultValue="Year" isPreviewFocusable={false}>
+        <Editable defaultValue={user.year.toString()} isPreviewFocusable={false}>
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />

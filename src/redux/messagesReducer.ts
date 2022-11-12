@@ -24,12 +24,14 @@ export interface messagesState {
     totalMessages: number;
     conversations: ConversationProps[];
     activeMessages: MessageProps[];
+    activeConID: number;
 }
 
 const initialState: messagesState = {
     totalMessages: 0,
     conversations: [],
-    activeMessages: []
+    activeMessages: [],
+    activeConID: 0
 };
 
 export const coresSlice = createSlice({
@@ -40,9 +42,10 @@ export const coresSlice = createSlice({
             state.totalMessages = action.payload.total;
         },
         setConversationsRedux: (state, action) => {
-
-
             state.conversations = action.payload 
+        },
+        setActiveConIDRedux: (state, action) => {
+            state.activeConID = action.payload
         },
         setActiveMessagesRedux: (state, action) => {
             console.log(action.payload)
@@ -64,6 +67,10 @@ export const coresSlice = createSlice({
             });
             state.totalMessages += 1;
 
+            if (state.activeConID === conID) {
+                state.activeMessages = [message, ...state.activeMessages]
+            }
+            
         },
         pushMoreMessagesRedux: (state, action) => {
             state.activeMessages = [ ...action.payload, ...state.activeMessages]
@@ -93,10 +100,11 @@ export const coresSlice = createSlice({
     }
   })
 
-export const { pushNewIncomingMessageRedux, setNewLastMessageRedux, eraseActiveMessagesRedux, pushMoreMessagesRedux, pushActiveMessageRedux, setTotalUnreadMessagesRedux,  setConversationsRedux, setActiveMessagesRedux  } = coresSlice.actions
+export const { setActiveConIDRedux, pushNewIncomingMessageRedux, setNewLastMessageRedux, eraseActiveMessagesRedux, pushMoreMessagesRedux, pushActiveMessageRedux, setTotalUnreadMessagesRedux,  setConversationsRedux, setActiveMessagesRedux  } = coresSlice.actions
 export const selectTotalMessagesState = (state: RootState) => state.messages.totalMessages
 export const selectConversationsState = (state: RootState) => state.messages.conversations
 export const selectActiveMessagesState = (state: RootState) => state.messages.activeMessages
+export const selectActiveConIDState = (state: RootState) => state.messages.activeConID
 export default coresSlice.reducer
 
 

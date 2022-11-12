@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import Moment from "react-moment";
 import {
+  setActiveConIDRedux,
   eraseActiveMessagesRedux,
   pushActiveMessageRedux,
   pushMoreMessagesRedux,
@@ -25,6 +26,7 @@ import {
   selectConversationsState,
   setActiveMessagesRedux,
   setConversationsRedux,
+  selectActiveConIDState,
 } from "../../redux/messagesReducer";
 import { ConversationProps, MessageProps } from "../../redux/messagesReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -413,7 +415,12 @@ export function MessagesPage(): JSX.Element {
   const [comradeID, setComradeID] = useState<number>(-1);
   const [comradeName, setComradeName] = useState<string>("");
   const [postID, setPostID] = useState<number>(-1);
-  const [selectedConversation, setSelectedConversation] = useState<number>(-1);
+
+  const selectedConversation = useSelector(selectActiveConIDState);
+
+  function setSelectedConversation(conID: number) {
+    dispatch(setActiveConIDRedux(conID));
+  }
   const [loading, setLoading] = useState<boolean>(true);
 
   function parsePosts(newConversations: any) {

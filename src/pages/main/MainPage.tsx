@@ -1,4 +1,4 @@
-import { Button, Checkbox, Container, Divider, Heading, IconButton, Input, InputGroup, Stack, Text } from "@chakra-ui/react";
+import { Button, Checkbox, Container, Divider, Heading, IconButton, Input, InputGroup, Modal, Stack, Text } from "@chakra-ui/react";
 import "./Post.css";
 import "./MainPage.css";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import "./Filters.css";
 import { selectOpenPostSate, setOpenPost } from "../../redux/coreReducer";
 import {useDispatch, useSelector} from "react-redux";
+import {ModalPost} from "./PostModal";
 
 interface Post {
   title: string;
@@ -36,6 +37,7 @@ function Post(post: Post): JSX.Element {
       <div className="PostContainer"
         onClick={() => {dispatch(setOpenPost(true))}}
       >
+        <ModalPost />
         <div className="PostContainer-Internal">
           <Heading as={"h1"} size={"md"}>
             {post.title}

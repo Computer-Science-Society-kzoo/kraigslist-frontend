@@ -12,7 +12,7 @@ import  { selectOpenPostSate } from "../../redux/coreReducer";
 import { setOpenPost } from "../../redux/coreReducer";
 
 
-export default function PostModal(props: any) {
+export function ModalPost(): JSX.Element {
 
     const isOpenRedux = useSelector(selectOpenPostSate);
     const dispatch = useDispatch();

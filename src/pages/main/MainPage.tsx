@@ -241,7 +241,7 @@ export function MainPage(): JSX.Element {
               isChecked={allChecked}
               isIndeterminate={isIndeterminate}
               colorScheme="orange"
-              onChange={(e) => { setCheckedItems([e.target.checked, e.target.checked, e.target.checked, e.target.checked]); getPostsMaster(text, filterCheck, filterCheck2) }}
+              onChange={(e) => { setCheckedItems([e.target.checked, e.target.checked]); getPostsMaster(text, filterCheck, filterCheck2) }}
             >
               All
             </Checkbox>

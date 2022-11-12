@@ -1,29 +1,143 @@
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { selectAuthState } from "./redux/coreReducer";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { selectActiveMessagesState, pushActiveMessageRedux, setActiveMessagesRedux, MessageProps } from "./redux/messagesReducer";
+import { useDispatch } from "react-redux";
+import moment from "moment";
 
+interface Message {
+    type: string;
+    data: any;
+}
 
 export function WebSockets(): JSX.Element {
 
-    let auth = useSelector(selectAuthState);
-    const [token, setToken, removeToken] = useCookies(["auth"]);
-
-    let websocket = new WebSocket('ws://localhost:8000');
+    // let websocket = new WebSocket('ws://localhost:8000');
 
     
-    websocket.onopen = () => {
-        console.log('Websocket connected');
-    };
+    // websocket.onopen = () => {
+    //     //console.log('Websocket connected');
+    // };
+
+
+    // websocket.onmessage = (message) => {
+    //     console.log(message)
+    //     let data = JSON.parse(message.data);
+    //     const dataFromServer: Message = data
+    //     console.log(dataFromServer)
+    //     switch (dataFromServer.type) {
+    //         case "connected":
+    //             console.log("Connected to the WebSocket server");
+    //             break;
+    //         case "newMessage":
+    //             console.log(dataFromServer)
+    //             const data = {
+    //                 conID: dataFromServer.data.conversationID,
+    //                 message: dataFromServer.data.message
+    //             }
+    //             break
+    //         default:
+    //             console.log("Undefined message type: ", message.data);
+    //             break
+    //     }
+    // };
+
+      //Public API that will echo messages sent to it back to the client
+
+  let auth = useSelector(selectAuthState);
+  const [token, setToken, removeToken] = useCookies(["auth"]);
+  const [URL, setURL] = useState("ws://localhost:8000");
+
+  const [socketUrl, setSocketUrl] = useState('ws://localhost:8000');
+  const [messageHistory, setMessageHistory] = useState<any>([]);
+
+  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+  
+  let allMessages = useSelector(selectActiveMessagesState);
+
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (lastMessage !== null) {
+        setMessageHistory([...messageHistory, lastMessage.data]);
+
+        const message = lastMessage
+        let data = JSON.parse(message.data);
+        const dataFromServer: Message = data
+        switch (dataFromServer.type) {
+            case "connected":
+                console.log("Connected to the WebSocket server");
+                break;
+            case "newMessage":
+                console.log(dataFromServer)
+
+
+                const data = {
+                    conID: dataFromServer.data.conversationID,
+                    message: dataFromServer.data.message
+                }
+                
+                const now = moment().toDate()
+
+                //get current date                
+                
+                const newMessage: MessageProps = {
+                    message: dataFromServer.data.message,
+                    yours: false,
+                    date: now.toString()
+                }
+
+                let newMessages = [...allMessages, newMessage]
+
+                dispatch(pushActiveMessageRedux(newMessage))                
+
+                break
+            default:
+                console.log("Undefined message type: ", message.data);
+                break
+        }
+        
+    }
+  }, [lastMessage, setMessageHistory]);
+
+  const handleClickChangeSocketUrl = useCallback(
+    () => setSocketUrl(URL),
+    []
+  );
+
+  const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
+
+  const connectionStatus = {
+    [ReadyState.CONNECTING]: 'Connecting',
+    [ReadyState.OPEN]: 'Open',
+    [ReadyState.CLOSING]: 'Closing',
+    [ReadyState.CLOSED]: 'Closed',
+    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+  }[readyState];
 
     useEffect(() => {
         if (auth) {
-            websocket = new WebSocket('ws://localhost:8000/token?=' + token.auth);        
+            setURL("ws://localhost:8000?token=" + token.auth);
+            handleClickChangeSocketUrl()     
         }
     }, [auth]);
 
-    return <span style={{display: "visible"}}>I am the websocket</span>
+    return (
+        <div style={{display: "flex", flexDirection: "column"}}>
+          <span>The WebSocket is currently {connectionStatus}</span>
+          {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
+          <ul>
+            {messageHistory.map((message: { data: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | ReactFragment | ReactPortal | null | undefined; }, idx: Key | null | undefined) => (
+              <span key={idx}>{message ? message.data : null}</span>
+            ))}
+          </ul>
+        </div>
+      );
+
 }
 
 

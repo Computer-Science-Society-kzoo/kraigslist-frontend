@@ -68,26 +68,47 @@ export function YourPostsPage(): JSX.Element {
     return parsedPosts;
   }
 
-  async function getMyPosts() {
-    console.log(token.auth);
+  async function myPosts(token: any) {
+    console.log(token);
     axios
-      .get("http://localhost:3000/api/posts", { withCredentials: true })
+      .get("http://localhost:3000/api/posts/getMyPosts",
+        { withCredentials: true }
+
+      )
       .then((res) => {
         console.log(res.data);
         setPosts(parsePosts(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
+
+
+
   //write a function to filter parsedPosts based on the given username
-  function filterPostsbyUsername(posts: Post[], username: string) {
-    let filteredPosts: Post[] = posts.filter((post) => post.username === username);
-    return filteredPosts
-  }
+  // function filterPostsbyUsername(posts: Post[], username: string) {
+  //   let filteredPosts: Post[] = posts.filter((post) => post.username === username);
+  //   return filteredPosts
+  // }
 
-  // useEffect(() => {
-  //   getMyPosts();
-  // }, []);
+  // async function myPosts() {
+  //   axios
+  //     .get("http://localhost:3000/api/posts/myPosts", {
+  //       params: { token: token["auth"] },
+  //     },
+  //     )
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setPosts(parsePosts(res.data));
 
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     }
+  //     );
+  // }
 
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
@@ -96,57 +117,62 @@ export function YourPostsPage(): JSX.Element {
 
   const [filterCheck, setFilterCheck] = useState("");
 
-  return (
-    <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
-      <div className="FiltersContainer">
-        <div className="FiltersContainer-InnerContainer">
-          <div className="FiltersContainer-InnerContainer-Category">
-            <Heading as={"h3"} size={"xs"}>
-              Request's Type
-            </Heading>
-            <Checkbox
-              isChecked={allChecked}
-              isIndeterminate={isIndeterminate}
-              colorScheme="orange"
-              onChange={(e) => setCheckedItems([e.target.checked, e.target.checked])}
-            >
-              All
-            </Checkbox>
-            <Stack pl={6} mt={1} spacing={1}>
-              <Checkbox
-                colorScheme="orange"
-                isChecked={checkedItems[0]}
-                onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]); setFilterCheck("Offer") }}
-              >
-                Offer
-              </Checkbox>
-              <Checkbox
-                colorScheme="orange"
-                isChecked={checkedItems[1]}
-                onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]); setFilterCheck("Request"); }}
-              >
-                Requests
-              </Checkbox>
-            </Stack>
-            <Divider />
-          </div>
-        </div>
-      </div>
-      <div className="MainPageContainer-PostsContainer">
+  useEffect(() => {
+    myPosts(token["auth"]);
+  }, []);
 
-        {posts.map((post) => (
-          <YourPosts
-            title={post.title}
-            username={post.username}
-            text={post.text}
-            date={post.date}
-            type={post.type}
-            categories={post.categories}
-            img={post.img}
-            key={post.key}
-          ></YourPosts>
-        ))}
-      </div>
-    </Split>
+
+  return (
+    // <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
+    //   <div className="FiltersContainer">
+    //     <div className="FiltersContainer-InnerContainer">
+    //       <div className="FiltersContainer-InnerContainer-Category">
+    //         <Heading as={"h3"} size={"xs"}>
+    //           Request's Type
+    //         </Heading>
+    //         <Checkbox
+    //           isChecked={allChecked}
+    //           isIndeterminate={isIndeterminate}
+    //           colorScheme="orange"
+    //           onChange={(e) => setCheckedItems([e.target.checked, e.target.checked])}
+    //         >
+    //           All
+    //         </Checkbox>
+    //         <Stack pl={6} mt={1} spacing={1}>
+    //           <Checkbox
+    //             colorScheme="orange"
+    //             isChecked={checkedItems[0]}
+    //             onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]); setFilterCheck("Offer") }}
+    //           >
+    //             Offer
+    //           </Checkbox>
+    //           <Checkbox
+    //             colorScheme="orange"
+    //             isChecked={checkedItems[1]}
+    //             onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]); setFilterCheck("Request"); }}
+    //           >
+    //             Requests
+    //           </Checkbox>
+    //         </Stack>
+    //         <Divider />
+    //       </div>
+    //     </div>
+    //   </div>
+    <div className="MainPageContainer-PostsContainer">
+
+      {posts.map((post) => (
+        <YourPosts
+          title={post.title}
+          username={post.username}
+          text={post.text}
+          date={post.date}
+          type={post.type}
+          categories={post.categories}
+          img={post.img}
+          key={post.key}
+        ></YourPosts>
+      ))}
+    </div>
+    // </Split>
   );
 }

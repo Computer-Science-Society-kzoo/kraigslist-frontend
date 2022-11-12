@@ -70,7 +70,7 @@ export function MainPage(): JSX.Element {
         key: post.id,
       });
     });
-    return parsedPosts;
+    return parsedPosts
   }
 
   async function getPosts() {
@@ -170,7 +170,7 @@ export function MainPage(): JSX.Element {
     //setFilterCheck(e.target.value);
     //filterData = filterCheck;
 
-  } //do we need cases for multiple filters being checked?
+  }
 
   //filters for price 
   const [checkedItems2, setCheckedItems2] = useState([false, false]);

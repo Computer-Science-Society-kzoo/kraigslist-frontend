@@ -78,20 +78,16 @@ export function YourPostsPage(): JSX.Element {
       });
   }
 
-  useEffect(() => {
-    getMyPosts();
-  }, []);
+  //write a function to filter parsedPosts based on the given username
+  function filterPostsbyUsername(posts: Post[], username: string) {
+    let filteredPosts: Post[] = posts.filter((post) => post.username === username);
+    return filteredPosts
+  }
 
-  const dummyPost: Post = {
-    title: "Need a drive to Chicago!",
-    username: "Michael",
-    text: "Anyone driving from Kalamazoo to Chicago this upcoming Friday (September 30th) in the late afternoon (3-4 PM ET)? I need a ride, I can chip in for the gas!",
-    date: "03.09.2021",
-    type: "Request",
-    categories: [""],
-    img: "/images/temp/dummyPost.png",
-    key: 0,
-  };
+  // useEffect(() => {
+  //   getMyPosts();
+  // }, []);
+
 
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
@@ -137,16 +133,6 @@ export function YourPostsPage(): JSX.Element {
         </div>
       </div>
       <div className="MainPageContainer-PostsContainer">
-        {/* <Post
-          title={dummyPost.title}
-          username={dummyPost.username}
-          text={dummyPost.text}
-          date={dummyPost.date}
-          type={dummyPost.type}
-          categories={dummyPost.categories}
-          img={dummyPost.img}
-          key={dummyPost.key}
-        ></Post> */}
 
         {posts.map((post) => (
           <YourPosts

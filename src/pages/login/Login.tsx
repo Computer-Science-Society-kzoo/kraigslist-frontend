@@ -59,7 +59,7 @@ export function Login(props: LoginProps): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const dispatch = useDispatch();
   function setAuth(token: string) {
-    setToken("auth", token, { path: "/", maxAge: 43200 });
+    setToken("auth", token, { path: "/", maxAge: 43200, sameSite: false, secure: false });
     dispatch(setAuthRedux(true))
   }
 

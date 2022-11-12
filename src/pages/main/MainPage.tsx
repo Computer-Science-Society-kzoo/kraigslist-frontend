@@ -124,8 +124,6 @@ export function MainPage(): JSX.Element {
   }
 
   async function getPostsMaster(text: string, filterCheck: any, filterCheck2: any) {
-    await filterChange();
-    await filterChange2();
     console.log(text);
     console.log(filterCheck);
     console.log(filterCheck2);
@@ -145,20 +143,6 @@ export function MainPage(): JSX.Element {
       }
       );
   }
-
-
-  // useEffect(() => {
-  //   if (text != "") {
-  //     search(text);
-  //   }
-  //   else {
-  //     getPosts();
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   getPostsMaster(text, filterCheck, filterCheck2);
-  // }, []);
 
   const dummyPost: Post = {
     title: "Need a drive to Chicago!",
@@ -215,11 +199,17 @@ export function MainPage(): JSX.Element {
 
   } //do we need cases for multiple filters being checked?
 
+
+  useEffect(() => {
+    filterChange();
+    filterChange2();
+
+  }, [checkedItems, checkedItems2]);
+
   useEffect(() => {
     getPostsMaster(text, filterCheck, filterCheck2);
 
-  }, []);
-
+  }, [filterCheck, filterCheck2]);
   //trying out something with onChange and filters
   // handleChange = (e) => {
   //   this.setState({
@@ -241,7 +231,7 @@ export function MainPage(): JSX.Element {
               isChecked={allChecked}
               isIndeterminate={isIndeterminate}
               colorScheme="orange"
-              onChange={(e) => { setCheckedItems([e.target.checked, e.target.checked]); getPostsMaster(text, filterCheck, filterCheck2) }}
+              onChange={(e) => { setCheckedItems([e.target.checked, e.target.checked]);  }}
             >
               All
             </Checkbox>
@@ -249,14 +239,15 @@ export function MainPage(): JSX.Element {
               <Checkbox
                 colorScheme="orange"
                 isChecked={checkedItems[0]} //making an onChange function
-                onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]); getPostsMaster(text, filterCheck, filterCheck2) }}
+                
+                onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]);  }}
               >
                 Offer
               </Checkbox>
               <Checkbox
                 colorScheme="orange"
                 isChecked={checkedItems[1]}
-                onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]); getPostsMaster(text, filterCheck, filterCheck2) }}
+                onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]);  }}
               >
                 Requests
               </Checkbox>
@@ -266,14 +257,14 @@ export function MainPage(): JSX.Element {
             <Checkbox
               colorScheme="orange"
               isChecked={checkedItems2[0]}
-              onChange={(e) => { setCheckedItems2([e.target.checked, false]); getPostsMaster(text, filterCheck, filterCheck2) }}
+              onChange={(e) => { setCheckedItems2([e.target.checked, false]);  }}
             >
               Price: Low to High
             </Checkbox>
             <Checkbox
               colorScheme="orange"
               isChecked={checkedItems2[1]}
-              onChange={(e) => { setCheckedItems2([false, e.target.checked]); getPostsMaster(text, filterCheck, filterCheck2) }}
+              onChange={(e) => { setCheckedItems2([false, e.target.checked]);  }}
             >
               Price: High to Low
             </Checkbox>
@@ -300,7 +291,7 @@ export function MainPage(): JSX.Element {
               <Input
                 placeholder="Search"
                 borderRadius={"0px 10px 10px 0px"}
-                onChange={(e) => { setText(e.target.value); getPostsMaster(text, filterCheck, filterCheck2) }}
+                onChange={(e) => { setText(e.target.value);  }}
                 focusBorderColor="orange.500"
                 _placeholder={{ color: 'orange.500' }}
               />

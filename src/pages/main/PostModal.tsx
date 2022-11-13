@@ -6,13 +6,27 @@ import { Modal,
          ModalCloseButton,
          ModalFooter,
          Button,
+         Heading,
+         Text,
         } from "@chakra-ui/react"
 import  { useSelector, useDispatch } from "react-redux";
 import  { selectOpenPostSate } from "../../redux/coreReducer";
 import { setOpenPost } from "../../redux/coreReducer";
 
+//Post Modal Interface
+interface ModalPost {
+    title: string;
+    username: string;
+    text: string;
+    date: string;
+    type: string;
+    categories: string[];
+    img: string;
+    key: number;
+  }
 
 export function ModalPost(): JSX.Element {
+
 
     const isOpenRedux = useSelector(selectOpenPostSate);
     const dispatch = useDispatch();

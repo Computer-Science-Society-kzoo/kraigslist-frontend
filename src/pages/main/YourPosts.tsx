@@ -1,5 +1,5 @@
 import { Checkbox, Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
-import "./Post.css";
+import "./YourPosts.css";
 import "./MainPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";

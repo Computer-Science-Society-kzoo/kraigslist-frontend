@@ -28,33 +28,52 @@ interface User {
   email: string;
   //password: string;
   first_name: string;
-  //last_name: string;
+  last_name: string;
   year: number;
 }
 
 export function Profile(): JSX.Element {
-  const [user, setUser] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
+  const toast = useToast();
+
+
+  function parseUser(user: any) {
+    let parsedUser: User[] = [];
+      parsedUser.push({
+        first_name: user.first_name,
+        last_name: user.last_name,
+        username: user.username,
+        email: user.email,
+        year: user.year,
+      });
+      return parsedUser
+  }
+
   //get username
-  async function getPosts() {
-    console.log(token.auth);
+  async function getPosts(token: any) {
+    console.log(token);
     axios
       .get("http://localhost:3000/api/account/getUsername", { withCredentials: true })
       .then((res) => {
         console.log(res.data);
-        setUser(parseUser(res.data));
+        setUsers(parseUser(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
   useEffect(() => {
-    getPosts();
+    getPosts(token["auth"]);
   }, []);
 
   return (
 
     <div>
-      <ProfileInfo username={""} email={""} first_name={""} year={0} />
+      {users.map((user) => (
+      <ProfileInfo username={user.username} email={user.email} first_name={user.first_name } last_name={user.last_name} year={user.year}></ProfileInfo>))}
     </div>
   );
 }
@@ -102,24 +121,15 @@ function EditControl() {
 // const [user, setUser] = useState<User[]>([]);
 // const [token, setToken, removeToken] = useCookies(["auth"]);
 
-function parseUser(user: any) {
-  let parsedUser: User[] = [];
-  user.forEach((user: any) => {
-    parsedUser.push({
-      first_name: user.first_name,
-      username: user.username,
-      email: user.email,
-      year: user.year,
-    });
-  });
-  return parsedUser
-}
+
 
 
 
 function ProfileInfo(user: User): JSX.Element {
 
+
   const [token, setToken, removeToken] = useCookies(["auth"]);
+
   const toast = useToast();
 
   function testSignOut() {
@@ -134,7 +144,26 @@ function ProfileInfo(user: User): JSX.Element {
     });
   }
 
-
+  async function deleteAccount(token: any) {
+    console.log(token);
+    setAuthRedux(false);
+    removeToken("auth");
+    toast({
+      title: "Warning",
+      description: "Your account is now deleted.",
+      status: "warning",
+      duration: 9000,
+      isClosable: true,
+    });
+    axios
+      .post("http://localhost:3000/api/account/delete", { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
 
@@ -145,37 +174,48 @@ function ProfileInfo(user: User): JSX.Element {
         align="stretch"
       >
         <Editable defaultValue={user.first_name} isPreviewFocusable={false}>
+          First name: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
-        <Editable defaultValue="Pronouns" isPreviewFocusable={false}>
+        <Editable defaultValue={user.last_name} isPreviewFocusable={false}>
+        Last name: <span/>
+          <EditablePreview />
+          <Input as={EditableInput} /> <span/>
+          <EditControl />
+        </Editable>
+
+        {/* <Editable defaultValue="Pronouns" isPreviewFocusable={false}>
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
-        </Editable>
+        </Editable> */}
 
         <Editable defaultValue={user.username} isPreviewFocusable={false}>
+          Username: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
         <Editable defaultValue={user.email} isPreviewFocusable={false}>
+          Email: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
         <Editable defaultValue={user.year.toString()} isPreviewFocusable={false}>
+          Year: <span/>
           <EditablePreview />
-          <Input as={EditableInput} />
+          <Input as={EditableInput} /> <span/>
           <EditControl />
         </Editable>
 
-        <Button onClick={testSignOut} colorScheme="orange">
-          Sign Out
+        <Button onClick={deleteAccount} colorScheme="orange">
+          Delete Account
         </Button>
       </Stack>
     </div>

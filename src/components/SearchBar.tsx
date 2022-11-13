@@ -3,6 +3,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import axios from "axios";
 import { RestAPIHOST } from "./../index";
+import "./SearchBar"
 
 export function SearchBar(): JSX.Element {
 
@@ -34,7 +35,7 @@ export function SearchBar(): JSX.Element {
 
 
   return (
-    <div>
+    <div className="SearchBarContainer">
       <Heading as="h2" size="xs" variant="outlined">
         <InputGroup size="sm"
         width={768}

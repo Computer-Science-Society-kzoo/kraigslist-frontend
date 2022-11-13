@@ -23,3 +23,7 @@
 .MainPageContainer-PostsContainerMAINPAGE > * {
     margin: 0 !important;
 }
+
+.SearchBarContainer{
+    background-color: white !important;
+}

@@ -314,6 +314,7 @@ export function MainPage(): JSX.Element {
                 }
               />
               <Input
+                className="SearchBarContainer"
                 placeholder="Search"
                 borderRadius={"0px 10px 10px 0px"}
                 onChange={(e) => {

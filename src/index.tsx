@@ -17,7 +17,6 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-console.log(process.env.REACT_APP_FREEIMAGE_API?.split("d")[0])
 
 
 const config: ThemeConfig = {

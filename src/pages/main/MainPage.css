@@ -27,3 +27,14 @@
 .SearchBarContainer{
     background-color: white !important;
 }
+
+.CreatePostLabels{
+    padding-top: 12px;
+}
+
+.MakePostInput{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

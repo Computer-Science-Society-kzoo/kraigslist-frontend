@@ -8,6 +8,7 @@ import { pushNewIncomingMessageRedux, selectActiveMessagesState, pushActiveMessa
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import axios from "axios";
+import { RestAPIHOST, WebSocketHOST } from "./index";
 
 interface Message {
     type: string;
@@ -50,7 +51,7 @@ export function WebSockets(): JSX.Element {
 
   let auth = useSelector(selectAuthState);
   const [token, setToken, removeToken] = useCookies(["auth"]);
-  const [URL, setURL] = useState("ws://localhost:4500");
+  const [URL, setURL] = useState(`${WebSocketHOST}`);
 
   const [messageHistory, setMessageHistory] = useState<any>([]);
 
@@ -73,7 +74,7 @@ export function WebSockets(): JSX.Element {
         switch (dataFromServer.type) {
             case "connected":
                 console.log("Connected to the WebSocket server");
-                axios.get("http://localhost:3000/api/messages/totalmessages", { withCredentials: true })
+                axios.get(`${RestAPIHOST}/api/messages/totalmessages`, { withCredentials: true })
                 .then((res) => {
                     console.log(res.data);
                     dispatch(setTotalUnreadMessagesRedux(res.data));
@@ -120,7 +121,7 @@ export function WebSockets(): JSX.Element {
 
     useEffect(() => {
         if (auth) {
-            setURL("ws://localhost:4500?token=" + token.auth);
+            setURL(`${WebSocketHOST}?access_token=` + token.auth);
         }
     }, [auth]);
 

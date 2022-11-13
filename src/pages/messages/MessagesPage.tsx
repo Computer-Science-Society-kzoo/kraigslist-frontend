@@ -36,6 +36,8 @@ import {
   scroller,
 } from "react-scroll";
 
+import { RestAPIHOST } from "../../index";
+
 interface MessageDetails {
   name: string;
   conID: number;
@@ -123,7 +125,7 @@ export function BottomMessageContainer(
       setSending(true);
       axios
         .post(
-          "http://localhost:3000/api/messages/send",
+          `${RestAPIHOST}/api/messages/send`,
           {
             conversationID: props.id,
             message: message,
@@ -257,7 +259,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
   async function getMessages() {
     console.log(props.postID);
     axios
-      .get("http://localhost:3000/api/messages/allmessages", {
+      .get(`${RestAPIHOST}/api/messages/allmessages`, {
         headers: {
           Authorization: `Bearer ${token.auth}`,
           Comradeid: props.comID,
@@ -445,7 +447,7 @@ export function MessagesPage(): JSX.Element {
     console.log(token.auth);
     setLoading(true);
     axios
-      .get("http://localhost:3000/api/messages/allconversations", {
+      .get(`${RestAPIHOST}/api/messages/allconversations`, {
         headers: {
           Authorization: `Bearer ${token.auth}`,
         },

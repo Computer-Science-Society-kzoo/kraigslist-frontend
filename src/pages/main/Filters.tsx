@@ -37,7 +37,7 @@ export function main(){
 //   //   console.log(checkedItems);
 //   //   if (checkedItems[0] === true) {
 //   //     axios
-//   //       .get("http://localhost:3000/api/posts/getPostsByType", {
+//   //       .get(`${RestAPIHOST}/api/posts/getPostsByType`, {
 //   //         params: { type: "offer" }
 //   //       },
 
@@ -54,7 +54,7 @@ export function main(){
 //   //     //messageFailure("Missing infomration", "Please provide a text to search.");
 //   //   } else if (checkedItems[1] === true) {
 //   //     axios
-//   //       .get("http://localhost:3000/api/posts/getPostsByType", {
+//   //       .get(`${RestAPIHOST}/api/posts/getPostsByType`, {
 //   //         params: { type: "request" }
 //   //       },
 
@@ -70,7 +70,7 @@ export function main(){
 //   //       );
 //   //   } else if (allChecked === true) {
 //   //     axios
-//   //       .get("http://localhost:3000/api/posts/searchPosts", {
+//   //       .get(`${RestAPIHOST}/api/posts/searchPosts`, {
 //   //         params: { type: "request" }
 //   //       },
 

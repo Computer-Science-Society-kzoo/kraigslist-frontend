@@ -15,6 +15,7 @@ import "./Filters.css";
 import { selectOpenPostSate, setOpenPost } from "../../redux/coreReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {ModalPost} from "./PostModal";
+import { RestAPIHOST } from "../../index";
 
 interface Post {
   title: string;
@@ -86,7 +87,7 @@ export function MainPage(): JSX.Element {
   async function getPosts() {
     console.log(token.auth);
     axios
-      .get("http://localhost:3000/api/posts", { withCredentials: true })
+      .get(`${RestAPIHOST}/api/posts`, { withCredentials: true })
       .then((res) => {
         console.log(res.data);
         setPosts(parsePosts(res.data));
@@ -101,7 +102,7 @@ export function MainPage(): JSX.Element {
     console.log(filterCheck2);
     console.log(filterCheck3);
     axios
-      .get("http://localhost:3000/api/posts/master", {
+      .get(`${RestAPIHOST}/api/posts/master`, {
         params: { text: text, filter: filterCheck, filter2: filterCheck2, filter3: filterCheck3 }
       },
 

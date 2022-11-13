@@ -7,6 +7,7 @@ import { useCookies } from "react-cookie";
 //import { FiltersMenu } from "./Filters";
 import Split from 'react-split'
 import './Split.css';
+import { RestAPIHOST} from "../../index";
 
 interface Post {
   title: string;
@@ -71,7 +72,7 @@ export function YourPostsPage(): JSX.Element {
   async function myPosts(token: any) {
     console.log(token);
     axios
-      .get("http://localhost:3000/api/posts/getMyPosts",
+      .get(`${RestAPIHOST}/api/posts/getMyPosts`,
         { withCredentials: true }
 
       )
@@ -95,7 +96,7 @@ export function YourPostsPage(): JSX.Element {
 
   // async function myPosts() {
   //   axios
-  //     .get("http://localhost:3000/api/posts/myPosts", {
+  //     .get(`${RestAPIHOST}/api/posts/myPosts`, {
   //       params: { token: token["auth"] },
   //     },
   //     )

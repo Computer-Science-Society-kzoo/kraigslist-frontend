@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 import { setAuthRedux } from '../../redux/coreReducer'
+import { RestAPIHOST } from "../../index"
 
 interface LoginProps {
   switchPage: () => void;
@@ -80,7 +81,7 @@ export function Login(props: LoginProps): JSX.Element {
       shakePassword()
     } else {
       axios
-        .post("http://localhost:3000/api/auth/login", {
+        .post(`${RestAPIHOST}/api/auth/login`, {
           email: email,
           password: password,
         })

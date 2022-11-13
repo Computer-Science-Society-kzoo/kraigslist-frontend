@@ -39,7 +39,7 @@ import { useSelector, useDispatch } from "react-redux";
 import React from "react";
 import { isNullOrUndefined } from "util";
 import { useNavigate } from "react-router-dom";
-
+import { RestAPIHOST } from "../../index";
 
 export function MakePost(): JSX.Element {
 
@@ -197,7 +197,7 @@ export function MakePost(): JSX.Element {
             shakePassword()
         } else {
             axios
-                .post("http://localhost:3000/api/posts/makepost", {
+                .post(`${RestAPIHOST}/api/posts/makepost`, {
                     title: title,
                     text: text,
                     type: type,

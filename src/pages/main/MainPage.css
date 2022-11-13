@@ -13,3 +13,8 @@
     padding-top: 32px;
     padding-left: 32px;
 }
+
+.MainPageContainer-PostsContainerMAINPAGE > * {
+    margin: 0 !important;
+}
+

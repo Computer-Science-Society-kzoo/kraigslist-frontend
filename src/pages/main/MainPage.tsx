@@ -28,8 +28,7 @@ import { selectOpenPostSate, setOpenPost } from "../../redux/coreReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { ModalPost } from "./PostModal";
 import { RestAPIHOST } from "../../index";
-import { Radio } from '@chakra-ui/react'
-
+import Moment from "react-moment";
 
 interface Post {
   title: string;
@@ -60,13 +59,13 @@ function Post(post: Post): JSX.Element {
           <Heading as={"h2"} size={"sm"}>
             {post.username}
           </Heading>
-          <Text fontSize={"md"}>{post.text}</Text>
+          <Text className="PostContainer-Internal-Text" fontSize={"md"}>{post.text}</Text>
           <div className="PostContainer-Internal-BottomFlex">
             <Heading as={"h2"} size={"xs"}>
               {post.type}
             </Heading>
             <Heading as={"h2"} size={"xs"}>
-              {post.date}
+              <Moment format="LLL">{post.date}</Moment>
             </Heading>
           </div>
         </div>
@@ -297,7 +296,7 @@ export function MainPage(): JSX.Element {
           </div>
         </div>
       </div>
-      <div className="MainPageContainer-PostsContainer">
+      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE">
         <div>
           <Heading as="h2" size="xs" variant="outlined">
             <InputGroup

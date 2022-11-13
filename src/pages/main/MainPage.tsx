@@ -41,7 +41,7 @@ interface Post {
   key: number;
 }
 
-function Post(post: Post): JSX.Element {
+export function Post(post: Post): JSX.Element {
   const dispatch = useDispatch();
   return (
     <>
@@ -51,7 +51,6 @@ function Post(post: Post): JSX.Element {
           dispatch(setOpenPost(true));
         }}
       >
-        <ModalPost />
         <div className="PostContainer-Internal">
           <Heading as={"h1"} size={"md"}>
             {post.title}
@@ -339,6 +338,7 @@ export function MainPage(): JSX.Element {
             key={post.key}
           ></Post>
         ))}
+          <ModalPost />
       </div>
     </Split>
   );

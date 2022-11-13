@@ -50,12 +50,11 @@ export function WebSockets(): JSX.Element {
 
   let auth = useSelector(selectAuthState);
   const [token, setToken, removeToken] = useCookies(["auth"]);
-  const [URL, setURL] = useState("ws://localhost:8000");
+  const [URL, setURL] = useState("ws://localhost:4500");
 
-  const [socketUrl, setSocketUrl] = useState('ws://localhost:8000');
   const [messageHistory, setMessageHistory] = useState<any>([]);
 
-  const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+  const { sendMessage, lastMessage, readyState } = useWebSocket(URL);
   
   let allMessages = useSelector(selectActiveMessagesState);
 
@@ -108,10 +107,6 @@ export function WebSockets(): JSX.Element {
     }
   }, [lastMessage, setMessageHistory]);
 
-  const handleClickChangeSocketUrl = useCallback(
-    () => setSocketUrl(URL),
-    []
-  );
 
   const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
 
@@ -125,13 +120,12 @@ export function WebSockets(): JSX.Element {
 
     useEffect(() => {
         if (auth) {
-            setURL("ws://localhost:8000?token=" + token.auth);
-            handleClickChangeSocketUrl()     
+            setURL("ws://localhost:4500?token=" + token.auth);
         }
     }, [auth]);
 
     return (
-        <div style={{display: "none", flexDirection: "column"}}>
+        <div style={{display: "flex", flexDirection: "column"}}>
           <span>The WebSocket is currently {connectionStatus}</span>
           {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
           <ul>

@@ -418,7 +418,6 @@ export function MessagesPage(): JSX.Element {
 
   const selectedConversation = useSelector(selectActiveConIDState);
 
-  
   function setSelectedConversation(conID: number) {
     dispatch(setActiveConIDRedux(conID));
   }

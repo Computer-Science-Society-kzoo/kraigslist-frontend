@@ -9,7 +9,14 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding: 32px;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.FiltersContainer-InnerContainer-Category{
+    display: flex;
+    flex-direction: column;    
+    padding-top: 24px;
 }
 
 .FiltersContainer-InnerContainer-Category > *:first-child {

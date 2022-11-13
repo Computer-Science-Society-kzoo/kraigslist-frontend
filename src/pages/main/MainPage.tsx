@@ -1,21 +1,35 @@
-import { Button, Checkbox, Container, Divider, Heading, IconButton, Input, InputGroup, Modal, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  Container,
+  Divider,
+  Heading,
+  IconButton,
+  Input,
+  InputGroup,
+  Modal,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import "./Post.css";
 import "./MainPage.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 //import { FiltersMenu } from "./Filters";
-import Split from 'react-split'
-import './Split.css';
+import Split from "react-split";
+import "./Split.css";
 import { MakePost } from "./makePost";
 import { SearchBar } from "../../components/SearchBar";
 import { SearchIcon } from "@chakra-ui/icons";
 //import { filterData } from "./Filters";
 import "./Filters.css";
 import { selectOpenPostSate, setOpenPost } from "../../redux/coreReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {ModalPost} from "./PostModal";
+import { useDispatch, useSelector } from "react-redux";
+import { ModalPost } from "./PostModal";
 import { RestAPIHOST } from "../../index";
+import { Radio } from '@chakra-ui/react'
+
 
 interface Post {
   title: string;
@@ -28,15 +42,15 @@ interface Post {
   key: number;
 }
 
-
-
-
 function Post(post: Post): JSX.Element {
   const dispatch = useDispatch();
   return (
     <>
-      <div className="PostContainer"
-        onClick={() => {dispatch(setOpenPost(true))}}
+      <div
+        className="PostContainer"
+        onClick={() => {
+          dispatch(setOpenPost(true));
+        }}
       >
         <ModalPost />
         <div className="PostContainer-Internal">
@@ -81,7 +95,7 @@ export function MainPage(): JSX.Element {
         key: post.id,
       });
     });
-    return parsedPosts
+    return parsedPosts;
   }
 
   async function getPosts() {
@@ -96,29 +110,33 @@ export function MainPage(): JSX.Element {
 
   const [text, setText] = useState("");
 
-  async function getPostsMaster(text: string, filterCheck: any, filterCheck2: any, filterCheck3:any) {
+  async function getPostsMaster(
+    text: string,
+    filterCheck: any,
+    filterCheck2: any,
+    filterCheck3: any
+  ) {
     console.log(text);
     console.log(filterCheck);
     console.log(filterCheck2);
     console.log(filterCheck3);
     axios
       .get(`${RestAPIHOST}/api/posts/master`, {
-        params: { text: text, filter: filterCheck, filter2: filterCheck2, filter3: filterCheck3 }
-      },
-
-      )
+        params: {
+          text: text,
+          filter: filterCheck,
+          filter2: filterCheck2,
+          filter3: filterCheck3,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setPosts(parsePosts(res.data));
-
       })
       .catch((err) => {
         console.log(err);
-      }
-      );
+      });
   }
-
-
 
   const [checkedItems, setCheckedItems] = useState([false, false]);
 
@@ -130,19 +148,16 @@ export function MainPage(): JSX.Element {
   async function filterChange() {
     if (checkedItems[0] && !checkedItems[1]) {
       setFilterCheck("Offer");
-    }
-    else if (checkedItems[1] && !checkedItems[0]) {
+    } else if (checkedItems[1] && !checkedItems[0]) {
       setFilterCheck("Request");
-    }
-    else {
+    } else {
       setFilterCheck("");
     }
     //setFilterCheck(e.target.value);
     //filterData = filterCheck;
-
   }
 
-  //filters for price 
+  //filters for price
   const [checkedItems2, setCheckedItems2] = useState([false, false]);
 
   const allChecked2 = checkedItems2.every(Boolean);
@@ -153,18 +168,14 @@ export function MainPage(): JSX.Element {
   async function filterChange2() {
     if (checkedItems2[0] && !checkedItems2[1]) {
       setFilterCheck2("asc");
-    }
-    else if (checkedItems2[1] && !checkedItems2[0]) {
+    } else if (checkedItems2[1] && !checkedItems2[0]) {
       setFilterCheck2("desc");
-    }
-    else {
+    } else {
       setFilterCheck2("");
     }
-
-
   } //do we need cases for multiple filters being checked?
 
-  //filters for deadline 
+  //filters for deadline
   const [checkedItems3, setCheckedItems3] = useState([false, false]);
 
   const allChecked3 = checkedItems3.every(Boolean);
@@ -174,24 +185,19 @@ export function MainPage(): JSX.Element {
   async function filterChange3() {
     if (checkedItems3[0] && !checkedItems3[1]) {
       setFilterCheck3("asc");
-    }
-    else {
+    } else {
       setFilterCheck3("");
     }
   }
 
-  
   useEffect(() => {
     filterChange();
     filterChange2();
     filterChange3();
-
   }, [checkedItems, checkedItems2, checkedItems3]);
-
 
   useEffect(() => {
     getPostsMaster(text, filterCheck, filterCheck2, filterCheck3);
-
   }, [text, filterCheck, filterCheck2, filterCheck3]);
   //trying out something with onChange and filters
   // handleChange = (e) => {
@@ -201,20 +207,26 @@ export function MainPage(): JSX.Element {
   // }
 
   return (
-    <Split className="split MainPageContainer" sizes={[20, 80]} maxSize={[500, Infinity]} minSize={[240, 500]} expandToMin={false}>
+    <Split
+      className="split MainPageContainer"
+      sizes={[20, 80]}
+      maxSize={[500, Infinity]}
+      minSize={[240, 500]}
+      expandToMin={false}
+    >
       <div className="FiltersContainer">
         <div className="FiltersContainer-InnerContainer">
           <div className="FiltersContainer-InnerContainer-Category">
             <Heading as={"h3"} size={"xs"}>
-              Request's Type
+              Type
             </Heading>
-
-
             <Checkbox
               isChecked={allChecked}
               isIndeterminate={isIndeterminate}
               colorScheme="orange"
-              onChange={(e) => { setCheckedItems([e.target.checked, e.target.checked]);  }}
+              onChange={(e) => {
+                setCheckedItems([e.target.checked, e.target.checked]);
+              }}
             >
               All
             </Checkbox>
@@ -222,46 +234,64 @@ export function MainPage(): JSX.Element {
               <Checkbox
                 colorScheme="orange"
                 isChecked={checkedItems[0]} //making an onChange function
-                
-                onChange={(e) => { setCheckedItems([e.target.checked, checkedItems[1]]);  }}
+                onChange={(e) => {
+                  setCheckedItems([e.target.checked, checkedItems[1]]);
+                }}
               >
                 Offer
               </Checkbox>
               <Checkbox
                 colorScheme="orange"
                 isChecked={checkedItems[1]}
-                onChange={(e) => { setCheckedItems([checkedItems[0], e.target.checked]);  }}
+                onChange={(e) => {
+                  setCheckedItems([checkedItems[0], e.target.checked]);
+                }}
               >
                 Requests
               </Checkbox>
             </Stack>
 
             <Divider />
+          </div>
+          <div className="FiltersContainer-InnerContainer-Category">
+            <Heading as={"h3"} size={"xs"}>
+              Price
+            </Heading>
 
             <Checkbox
               colorScheme="orange"
               isChecked={checkedItems2[0]}
-              onChange={(e) => { setCheckedItems2([e.target.checked, false]);  }}
+              onChange={(e) => {
+                setCheckedItems2([e.target.checked, false]);
+              }}
             >
-              Price: Low to High
+              Low to High
             </Checkbox>
             <Checkbox
               colorScheme="orange"
               isChecked={checkedItems2[1]}
-              onChange={(e) => { setCheckedItems2([false, e.target.checked]);  }}
+              onChange={(e) => {
+                setCheckedItems2([false, e.target.checked]);
+              }}
             >
-              Price: High to Low
+              High to Low
             </Checkbox>
 
             <Divider />
+          </div>
+          <div className="FiltersContainer-InnerContainer-Category">
+            <Heading as={"h3"} size={"xs"}>
+              Deadline
+            </Heading>
 
             <Checkbox
               colorScheme="orange"
               isChecked={checkedItems3[0]}
-              onChange={(e) => { setCheckedItems3([e.target.checked, false]);}}
+              onChange={(e) => {
+                setCheckedItems3([e.target.checked, false]);
+              }}
             >
-              Deadline: Soonest to Latest
-
+              Soonest to Latest
             </Checkbox>
             <Divider />
           </div>
@@ -270,7 +300,8 @@ export function MainPage(): JSX.Element {
       <div className="MainPageContainer-PostsContainer">
         <div>
           <Heading as="h2" size="xs" variant="outlined">
-            <InputGroup size="sm"
+            <InputGroup
+              size="sm"
               width={768}
               outline="1px solid #F6AD55"
               borderRadius={"10px 10px 10px 10px"}
@@ -280,19 +311,22 @@ export function MainPage(): JSX.Element {
                 icon={<SearchIcon />}
                 borderRadius={"10px 0px 0px 10px"}
                 colorScheme="orange"
-                onClick={() => getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)}
+                onClick={() =>
+                  getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)
+                }
               />
               <Input
                 placeholder="Search"
                 borderRadius={"0px 10px 10px 0px"}
-                onChange={(e) => { setText(e.target.value);  }}
+                onChange={(e) => {
+                  setText(e.target.value);
+                }}
                 focusBorderColor="orange.500"
-                _placeholder={{ color: 'orange.500' }}
+                _placeholder={{ color: "orange.500" }}
               />
             </InputGroup>
           </Heading>
         </div>
-
 
         {posts.map((post) => (
           <Post

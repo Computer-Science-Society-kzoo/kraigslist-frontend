@@ -260,6 +260,20 @@ function ProfileInfo(user: User): JSX.Element {
   const [isDisabled, setIsDisabled] = useState(true);
   const [editIcon, setEditIcon] = useState(<EditIcon/>);
 
+
+  function editSave(){
+    if(isDisabled){
+      setIsDisabled(false);
+      setEditIcon(<CheckIcon/>);
+    }
+    else{
+      setIsDisabled(true);
+      setEditIcon(<EditIcon/>);
+    }
+  }
+
+
+
   return (
 
     <div className="Profile-Container">
@@ -271,26 +285,29 @@ function ProfileInfo(user: User): JSX.Element {
             First Name
           </div>
           <div className="Profile-MiddleElt">
-          <Editable defaultValue={user.first_name} isPreviewFocusable={false} onChange={(value) => { setFirstname(value) }}>
-          
-          <EditablePreview />
-          <Input as={EditableInput} />
-          <EditControl />
-          </Editable>
-          </div>
+          <input
+            className="Profile-MiddleElt"
+            placeholder={user.first_name}
+            disabled={isDisabled}
+            border-radius={0}
+            onChange={(placeholder) => setFirstname(placeholder.target.value)}
+          />
+        </div>
         </span>
         
         <span className="Profile-Contents-Container">
           <div className="Profile-LeftElt">
-          Last name
+          Last Name
           </div>
           <div className="Profile-MiddleElt">
-          <Editable defaultValue={user.last_name} isPreviewFocusable={false} onChange={(value) => { setLastname(value) }}>
-          <EditablePreview />
-          <Input as={EditableInput} />
-          <EditControl />
-          </Editable>
-          </div>
+          <input
+            className="Profile-MiddleElt"
+            placeholder={user.last_name}
+            disabled={isDisabled}
+            border-radius={0}
+            onChange={(placeholder) => setLastname(placeholder.target.value)}
+          />
+        </div>
         </span>
 
         {/* <Editable defaultValue={user.password} isPreviewFocusable={false}>
@@ -310,54 +327,51 @@ function ProfileInfo(user: User): JSX.Element {
             placeholder={user.email}
             disabled={isDisabled}
             border-radius={0}
+            onChange={(placeholder) => setEmail(placeholder.target.value)}
           />
         </div>
-        <IconButton
-          className="Profile-RightElt"
-          border-radius={"10px 0px 0px 10px"}
-          aria-label="Edit"
-          icon={<EditIcon />}
-          onClick={() => {setIsDisabled(!isDisabled)}}
-        />
-
         </span>
-        <Editable defaultValue={user.email} isPreviewFocusable={false} onChange={(value) => { setEmail(value) }}>
-          <EditablePreview />
-          <Input as={EditableInput} />
-          <EditControl />
-        </Editable>
 
         
         <span className="Profile-Contents-Container">
           <div className="Profile-LeftElt">
-            Year <TimeIcon/>
+            Year
           </div>
           <div className="Profile-MiddleElt">
-            <Editable defaultValue={user.year.toString()} isPreviewFocusable={false} onChange={(value) => { setYear(parseInt(value, 10)) }}>
-            <EditablePreview />
-            <Input as={EditableInput} />
-            <EditControl />
-            </Editable>
-          </div>
+          <input
+            className="Profile-MiddleElt"
+            placeholder={user.year.toString()}
+            disabled={isDisabled}
+            border-radius={0}
+            onChange={(placeholder) => setYear(parseInt(placeholder.target.value,10))}
+          />
+        </div>
         </span>
 
         <span className="Profile-Contents-Container">
           <div className="Profile-LeftElt">
           Username
           </div>
-          <div className="Profile-MiddleElt">
-          <Editable defaultValue={user.username} isPreviewFocusable={false}>
-          
-          <EditablePreview />
-          <Input as={EditableInput} />
-          {/* <EditControl /> */}
-          </Editable>
-          </div>
+          <input
+            className="Profile-MiddleElt"
+            placeholder={user.username}
+            disabled={true}
+            border-radius={0}
+            onChange={(placeholder) => setYear(parseInt(placeholder.target.value,10))}
+          />
         </span>
 
-        <Button onClick={() => setDeleteCheck(true)} colorScheme="orange">
-          Delete Account
-        </Button>
+        <span>
+          <ButtonGroup>
+          <Button onClick={() => setDeleteCheck(true)} colorScheme="orange">
+            Delete Account
+          </Button>
+          <Button onClick={() => editSave()}>
+            Edit Profile
+          </Button>
+          </ButtonGroup>
+        </span>
+        
     </div>
   );
 }

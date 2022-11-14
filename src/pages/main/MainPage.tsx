@@ -64,7 +64,7 @@ export function Post(post: Post): JSX.Element {
         }}
       >
         <div className="PostContainer-Internal">
-          <Heading as={"h1"} size={"md"}>
+          <Heading className="PostContainer-Internal-Title" as={"h1"} size={"md"}>
             {post.title}
           </Heading>
           <Heading as={"h2"} size={"sm"}>
@@ -75,12 +75,12 @@ export function Post(post: Post): JSX.Element {
             <Heading as={"h2"} size={"xs"}>
               {post.type}
             </Heading>
-            <Heading as={"h2"} size={"xs"}>
-              <Moment format="LLL">{post.date}</Moment>
-            </Heading>
+              <Heading as={"h2"} size={"xs"}>
+                <Moment format="LLL">{post.date}</Moment>
+              </Heading>
           </div>
         </div>
-        {post.img !== null && <img src={post.img} alt="post image" />}
+        {(post.img !== "" && post.img !== null) && <img src={post.img} alt="post image" className="PostContainer-Internal-Image" />}
       </div>
     </>
   );

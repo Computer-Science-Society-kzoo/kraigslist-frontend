@@ -1,56 +1,169 @@
-import { Modal,
-         ModalOverlay,
-         ModalContent,
-         ModalHeader,
-         ModalBody,
-         ModalCloseButton,
-         ModalFooter,
-         Button,
-         Heading,
-         Text,
-        } from "@chakra-ui/react"
-import  { useSelector, useDispatch } from "react-redux";
-import  { selectOpenPostSate } from "../../redux/coreReducer";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  Button,
+  Heading,
+  Text,
+  InputGroup,
+  InputRightElement,
+  Input,
+  Spinner,
+} from "@chakra-ui/react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectOpenPostSate } from "../../redux/coreReducer";
 import { setOpenPost } from "../../redux/coreReducer";
-import { thisPostTitle } from "./MainPage"
-import { thisPostText } from "./MainPage"
-import { thisPostDate } from "./MainPage"
+import { selectPostModalRedux } from "../../redux/postModalReducer";
+import { PostProps, thisPostTitle } from "./MainPage";
+import { thisPostText } from "./MainPage";
+import Moment from "react-moment"
+import './PostModal.css'
+import axios from "axios";
+import { RestAPIHOST } from "../..";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 //Post Modal Interface
-interface ModalPost {
-    title: string;
-    username: string;
-    text: string;
-    date: string;
-    type: string;
-    categories: string[];
-    img: string;
-    key: number;
+export function ModalPost(): JSX.Element {
+  const isOpenRedux = useSelector(selectOpenPostSate);
+  const dispatch = useDispatch();
+
+  const post = useSelector(selectPostModalRedux);
+
+  const [sending, setSending] = useState(false);
+  const [message, setMessage] = useState("");
+
+  function returnPriceText(price: number, type: string): string {
+    if (type === "Ohter") {
+      return "Price: " + price
+    } else {
+      return type + "Price: " + price
+    }
   }
 
-export function ModalPost(): JSX.Element {
+  const [token, setToken, removeToken] = useCookies(["auth", "myid"]);
 
-    const isOpenRedux = useSelector(selectOpenPostSate);
-    const dispatch = useDispatch();
+  const myid = Number(token["myid"]);
 
-    return(
-        <div>
-            <Modal isOpen={isOpenRedux} onClose={() => {dispatch(setOpenPost(false))}}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{thisPostTitle}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <p>{thisPostText}</p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme="blue" mr={3} onClick={() => {dispatch(setOpenPost(false))}}>
-                            Close
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
 
-            </Modal>
-        </div>
-    )
+  
+  function startConversation(){
+    setSending(true)
+    axios.post(RestAPIHOST + "/api/messages/newconversation", {
+      message: message,
+      postID: post.postID,
+    }, {
+        headers: {
+            Authorization: "Bearer " + token.auth,
+        }}).then((res) => {
+            setSending(false)
+            dispatch(setOpenPost(false))
+        }).catch((err) => {
+            setSending(false)
+            console.log(err)
+            console.log(err.message)
+        })
+    }
+    
+
+    
+
+
+  return (
+    <div>
+      <Modal
+        isCentered 
+        size={"3xl"}
+        isOpen={isOpenRedux}
+        onClose={() => {
+          dispatch(setOpenPost(false));
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent className="PostModalCont">
+          <ModalCloseButton />
+          <ModalBody>
+            <div
+              className="PostModalContainer"
+              
+            >
+              <div className="PostModalContainer-Internal">
+                <Heading
+                  className="PostModalContainer-Internal-Title"
+                  as={"h1"}
+                  size={"md"}
+                >
+                  {post.title}
+                </Heading>
+                <Heading as={"h2"} size={"sm"}>
+                  {post.username}
+                </Heading>
+                <Text className="PostModalContainer-Internal-Text" fontSize={"md"}>
+                  {post.text}
+                </Text>
+              </div>
+              {post.price !== 0 &&
+                <div className="PostModalContainer-Internal-BottomFlex">
+                  <Heading as={"h2"} size={"xs"}>
+                    {returnPriceText(post.price, post.type)}
+                  </Heading>
+                </div>
+                }
+              {post.img !== "" && post.img !== null && (
+                <img
+                  src={post.img}
+                  alt="post image"
+                  className="PostModalContainer-Internal-Image"
+                />
+              )}
+              <div className="PostModalContainer-Internal-BottomFlex">
+                
+                  <Heading as={"h2"} size={"xs"}>
+                    Created at <Moment format="LLL">{post.date_created}</Moment>
+                  </Heading>
+                  <Heading as={"h2"} size={"xs"}>
+                    Deadline: <Moment format="LLL">{post.offer_deadline}</Moment>
+                  </Heading>
+                </div>
+            </div>
+            
+          </ModalBody>
+          {myid !== post.userID && 
+          <ModalFooter>
+            <span className="PostModalStartConversation">
+                <InputGroup size="md">
+                    <Input
+                    outline={"1px solid var(--k-orange)"}
+                    borderRadius={"12px 0px 0px 12px"}
+                    pr="4.5rem"
+                    type="text"
+                    placeholder="Enter message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    disabled={sending}
+                    focusBorderColor={"orange.500"}
+                    />
+                </InputGroup>
+                <Button
+                colorScheme="orange"
+                mr={3}
+                onClick={() => {
+                    startConversation()
+                }}
+                >
+                Start Conversation
+                </Button>
+            </span>
+
+    
+          </ModalFooter>
+}
+        </ModalContent>
+      </Modal>
+    </div>
+  );
 }

@@ -57,11 +57,12 @@ export function Login(props: LoginProps): JSX.Element {
   // }
 
 
-  const [token, setToken, removeToken] = useCookies(["auth"]);
+  const [token, setToken, removeToken] = useCookies(["auth", "myid"]);
   const dispatch = useDispatch();
-  function setAuth(token: string) {
+  function setAuth(token: string, id: number) {
     setToken("auth", token, { path: "/", maxAge: 43200 });
     dispatch(setAuthRedux(true))
+    setToken("myid", id, { path: "/", maxAge: 43200 });
   }
 
   async function login(email: string, password: string) {
@@ -87,7 +88,8 @@ export function Login(props: LoginProps): JSX.Element {
         })
         .then((res) => {
           console.log(res);
-          setAuth(res.data);
+          setAuth(res.data.token, res.data.id);
+
           messageSuccess("Success!", "You have successfully logged in");
         })
         .catch((err) => {

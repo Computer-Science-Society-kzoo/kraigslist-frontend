@@ -86,10 +86,11 @@ export function Signup(): JSX.Element {
   //   console.log(email)
   // }
 
-  const [token, setToken, removeToken] = useCookies(["auth"]);
+  const [token, setToken, removeToken] = useCookies(["auth", "myid"]);
   const dispatch = useDispatch();
-  function setAuth(token: string) {
+  function setAuth(token: string, myid: number) {
     setToken("auth", token, { secure: true, sameSite: "strict" });
+    setToken("myid", myid, { path: "/", maxAge: 43200 });
     dispatch(setAuthRedux(true))
   }
 
@@ -148,7 +149,7 @@ export function Signup(): JSX.Element {
         })
         .then((res) => {
           console.log(res);
-          setAuth(res.data);
+          setAuth(res.data.token, res.data.id);
           messageSuccess("Success!", "You have successfully signed up.");
           console.log(res);
         })

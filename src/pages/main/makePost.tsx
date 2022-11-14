@@ -40,6 +40,7 @@ import { selectCreatePostSate } from "../../redux/coreReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RestAPIHOST } from "../../index";
+import { setPostModalRedux } from "../../redux/postModalReducer";
 
 export function MakePost(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);

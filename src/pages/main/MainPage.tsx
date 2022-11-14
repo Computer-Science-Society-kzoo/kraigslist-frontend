@@ -29,8 +29,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { ModalPost } from "./PostModal";
 import { RestAPIHOST } from "../../index";
 import Moment from "react-moment";
+import { setPostModalRedux } from "../../redux/postModalReducer";
 
-interface Post {
+export interface PostProps {
+  date_created: string;
   title: string;
   username: string;
   text: string;
@@ -38,8 +40,13 @@ interface Post {
   type: string;
   categories: string[];
   img: string;
-  key: number;
+  userID: number;
+  postID: number;
+  price: number;
+  deadline: string;
 }
+
+
 let thisPostTitle = "";
 export { thisPostTitle };
 
@@ -49,14 +56,27 @@ export { thisPostText };
 let thisPostDate = "";
 export { thisPostDate };
 
-export function Post(post: Post): JSX.Element {
-
+export function Post(post: PostProps): JSX.Element {
+  
   const dispatch = useDispatch();
   return (
     <>
       <div
         className="PostContainer"
         onClick={() => {
+          dispatch(setPostModalRedux(
+            {
+              title: post.title,
+              text: post.text,
+              username: post.username,
+              type: post.type,
+              img: post.img,
+              offer_deadline: post.date,
+              userID: post.userID,
+              postID: post.postID,
+              price: 0,
+            }
+          ))
           dispatch(setOpenPost(true));
           thisPostTitle = post.title;
           thisPostText = post.text;
@@ -89,12 +109,14 @@ export function Post(post: Post): JSX.Element {
 export function MainPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostProps[]>([]);
 
   function parsePosts(posts: any) {
-    let parsedPosts: Post[] = [];
+    let parsedPosts: PostProps[] = [];
     posts.forEach((post: any) => {
       parsedPosts.push({
+
+        date_created: post.dt_created,
         title: post.title,
         username: post.username,
         text: post.text,
@@ -102,7 +124,10 @@ export function MainPage(): JSX.Element {
         type: post.type,
         categories: post.categories,
         img: post.img,
-        key: post.id,
+        userID: post.userID,
+        postID: post.id,
+        price: post.price,
+        deadline: post.offer_deadline,
       });
     });
     return parsedPosts;
@@ -362,6 +387,7 @@ export function MainPage(): JSX.Element {
 
         {posts.map((post) => (
           <Post
+            date_created={post.date_created}
             title={post.title}
             username={post.username}
             text={post.text}
@@ -369,8 +395,11 @@ export function MainPage(): JSX.Element {
             type={post.type}
             categories={post.categories}
             img={post.img}
-            key={post.key}
-          ></Post>
+            postID={post.postID}
+            price={post.price}
+            deadline={post.deadline} 
+            userID={post.userID}
+            ></Post>
         ))}
         <ModalPost />
       </div>

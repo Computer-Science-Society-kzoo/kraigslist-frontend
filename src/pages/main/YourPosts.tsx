@@ -8,29 +8,18 @@ import { useCookies } from "react-cookie";
 import Split from 'react-split'
 import './Split.css';
 import { RestAPIHOST} from "../../index";
-import { Post } from "./MainPage";
-
-interface Post {
-  title: string;
-  username: string;
-  text: string;
-  date: string;
-  type: string;
-  categories: string[];
-  img: string;
-  key: number;
-}
-
+import { Post, PostProps } from "./MainPage";
 
 export function YourPostsPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostProps[]>([]);
 
   function parsePosts(posts: any) {
-    let parsedPosts: Post[] = [];
+    let parsedPosts: PostProps[] = [];
     posts.forEach((post: any) => {
       parsedPosts.push({
+        date_created: post.dt_created,
         title: post.title,
         username: post.username,
         text: post.text,
@@ -38,7 +27,10 @@ export function YourPostsPage(): JSX.Element {
         type: post.type,
         categories: post.categories,
         img: post.img,
-        key: post.id,
+        userID: post.user_id,
+        postID: post.id,
+        price: post.price,
+        deadline: post.offer_deadline,
       });
     });
     return parsedPosts;
@@ -98,8 +90,8 @@ export function YourPostsPage(): JSX.Element {
   }, []);
 
   //write a function that sorts the posts by date
-  function sortPostsbyDate(posts: Post[]) {
-    let sortedPosts: Post[] = posts.sort((a, b) => {
+  function sortPostsbyDate(posts: PostProps[]) {
+    let sortedPosts: PostProps[] = posts.sort((a, b) => {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
     });
     return sortedPosts;
@@ -153,7 +145,11 @@ export function YourPostsPage(): JSX.Element {
           type={post.type}
           categories={post.categories}
           img={post.img}
-          key={post.key}
+          date_created={post.date_created} 
+          userID={post.userID}
+          postID={post.postID}
+          price={post.price}
+          deadline={post.deadline}
         ></Post>
       ))}
     </div>

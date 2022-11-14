@@ -126,7 +126,7 @@ export function WebSockets(): JSX.Element {
     }, [auth]);
 
     return (
-        <div style={{display: "flex", flexDirection: "column"}}>
+        <div style={{display: "none", flexDirection: "column"}}>
           <span>The WebSocket is currently {connectionStatus}</span>
           {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
           <ul>

@@ -176,45 +176,45 @@ export function MakePost(): JSX.Element {
 
     const myFile = e.target.files[0];
     try {
-        console.log("ping !");
-        setIsUploading(true);
-        
-        const myForm = new FormData();
-        myForm.append("image", myFile);
-    
-        axios
-          .post(
-            `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_FREEIMAGE_API}`,
-            myForm,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          )
-          .then((response) => {
-            console.log("Upload success");
-            setImageURL(response.data.data.medium.url);
-            setIsUploading(false);
-          })
-          .catch((err) => {
-            console.log("API error ↓");
-            setIsUploading(false);
-            console.log(err);
-    
-            if (err.response.data.error) {
-              console.log(err.response.data.error);
-              //When trouble shooting, simple informations about the error can be found in err.response.data.error so it's good to display it
-            }
-            
-          });
-      } catch (error) {
-        console.log(error);
-      }
-  
-}
-    
-  
+      console.log("ping !");
+      setIsUploading(true);
+
+      const myForm = new FormData();
+      myForm.append("image", myFile);
+
+      axios
+        .post(
+          `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_FREEIMAGE_API}`,
+          myForm,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Upload success");
+          setImageURL(response.data.data.medium.url);
+          setIsUploading(false);
+        })
+        .catch((err) => {
+          console.log("API error ↓");
+          setIsUploading(false);
+          console.log(err);
+
+          if (err.response.data.error) {
+            console.log(err.response.data.error);
+            //When trouble shooting, simple informations about the error can be found in err.response.data.error so it's good to display it
+          }
+
+        });
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+
 
   async function makePost(
     title: string,
@@ -391,6 +391,7 @@ export function MakePost(): JSX.Element {
                 >
                   <option value="Request">Request</option>
                   <option value="Offer">Offer</option>
+                  <option value="Information">Information</option>
                   <option value="Other">Other</option>
                 </Select>
               </span>
@@ -431,25 +432,25 @@ export function MakePost(): JSX.Element {
                 Upload Image
               </FormLabel>
               <label className="MakePostFileInput">
-                  <AttachmentIcon
-                    color="var(--k-orange)"
-                    viewBox="0 0 24 24"
-                    boxSize="1.5em"
-                    mr={5}
-                  />
-                  Nothing Attached
-                  <input
+                <AttachmentIcon
+                  color="var(--k-orange)"
+                  viewBox="0 0 24 24"
+                  boxSize="1.5em"
+                  mr={5}
+                />
+                Nothing Attached
+                <input
                   type="file"
                   id="avatar"
                   name="avatar"
                   accept="image/png, image/jpeg, image/jpg"
                   onChange={(el) => handleImageUpload(el)}
                   style={{ display: "none" }}
-                  />
-                </label>
+                />
+              </label>
               <span className="MakePostInput">
-                
-                 { isUploading && <Spinner color="orange.500" size="md" /> }
+
+                {isUploading && <Spinner color="orange.500" size="md" />}
               </span>
             </FormControl>
           </ModalBody>

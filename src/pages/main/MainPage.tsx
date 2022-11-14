@@ -360,7 +360,6 @@ export function MainPage(): JSX.Element {
             <InputGroup
               size="sm"
               width={768}
-              outline="1px solid #F6AD55"
               borderRadius={"10px 10px 10px 10px"}
             >
               <IconButton
@@ -368,17 +367,20 @@ export function MainPage(): JSX.Element {
                 icon={<SearchIcon />}
                 borderRadius={"10px 0px 0px 10px"}
                 colorScheme="orange"
+                style={{  border: "1px solid #F6AD55" }}
                 onClick={() =>
                   getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)
                 }
               />
               <Input
                 placeholder="Search"
+                outline="1px solid #F6AD55"
                 borderRadius={"0px 10px 10px 0px"}
                 onChange={(e) => {
                   setText(e.target.value);
                 }}
                 focusBorderColor="orange.500"
+                style={{  height: "30px", marginTop: "1px" }}
                 _placeholder={{ color: "orange.500" }}
               />
             </InputGroup>

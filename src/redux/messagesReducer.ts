@@ -31,7 +31,7 @@ const initialState: messagesState = {
     totalMessages: 0,
     conversations: [],
     activeMessages: [],
-    activeConID: 0
+    activeConID: -1
 };
 
 export const coresSlice = createSlice({

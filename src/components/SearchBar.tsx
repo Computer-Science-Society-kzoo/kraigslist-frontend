@@ -2,7 +2,8 @@ import { Heading, InputGroup, IconButton, Input } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import axios from "axios";
-import e from "express";
+import { RestAPIHOST } from "./../index";
+import "./SearchBar"
 
 export function SearchBar(): JSX.Element {
 
@@ -17,7 +18,7 @@ export function SearchBar(): JSX.Element {
         //messageFailure("Missing infomration", "Please provide a text to search.");
     } else {
         axios
-            .get("http://localhost:3000/api/posts/searchPosts", {
+            .get(`${RestAPIHOST}/api/posts/searchPosts`, {
                 params : {text: text}},
             
             )
@@ -34,7 +35,7 @@ export function SearchBar(): JSX.Element {
 
 
   return (
-    <div>
+    <div className="SearchBarContainer">
       <Heading as="h2" size="xs" variant="outlined">
         <InputGroup size="sm"
         width={768}

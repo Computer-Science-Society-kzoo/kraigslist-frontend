@@ -16,6 +16,8 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 import { setAuthRedux } from '../../redux/coreReducer'
+import { RestAPIHOST } from "../../index"
+
 
 export function Signup(): JSX.Element {
   const toast = useToast();
@@ -136,7 +138,7 @@ export function Signup(): JSX.Element {
     } 
     else {
       axios
-        .post("http://localhost:3000/api/auth/signup", {
+        .post(`${RestAPIHOST}/api/auth/signup`, {
           email: email,
           password: password,
           first_name: firstname,

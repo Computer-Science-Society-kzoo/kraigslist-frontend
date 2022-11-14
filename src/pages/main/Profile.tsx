@@ -23,6 +23,7 @@ import { Form } from "react-router-dom";
 import { parseIsolatedEntityName } from "typescript";
 import { setAuthRedux } from "../../redux/coreReducer";
 import "./Profile.css";
+import { RestAPIHOST } from "../../index";
 
 interface User {
   username: string;
@@ -57,7 +58,7 @@ export function Profile(): JSX.Element {
   async function getPosts(token: any) {
     console.log(token);
     axios
-      .get("http://localhost:3000/api/account/getUsername", { withCredentials: true })
+      .get(`${RestAPIHOST}/api/account/getUsername`, { withCredentials: true })
       .then((res) => {
         console.log(res.data);
         setUsers(parseUser(res.data));
@@ -151,7 +152,7 @@ function ProfileInfo(user: User): JSX.Element {
     console.log(token);
     //setAuthRedux(false);
     axios
-      .post("http://localhost:3000/api/account/delete", { withCredentials: true })
+      .post(`${RestAPIHOST}/api/account/delete`, { withCredentials: true })
       .then((res) => {
         console.log(res.data);
       })

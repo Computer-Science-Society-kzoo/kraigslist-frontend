@@ -10,9 +10,13 @@ import { customTheme } from './ChakraTheme';
 import { ColorModeScript } from '@chakra-ui/react'
 import { WebSockets } from './websocket'; 
 
+
+export const RestAPIHOST = (process.env.NODE_ENV === "production") ? "https://bkl1.kzoocss.org" : "http://localhost:3000" 
+export const WebSocketHOST = (process.env.NODE_ENV === "production") ? "wss://bkl1.kzoocss.org/ws/" : "ws://localhost:4500"
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 
 
 const config: ThemeConfig = {

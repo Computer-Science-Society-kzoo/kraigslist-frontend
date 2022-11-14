@@ -7,6 +7,8 @@ import { useCookies } from "react-cookie";
 //import { FiltersMenu } from "./Filters";
 import Split from 'react-split'
 import './Split.css';
+import { RestAPIHOST} from "../../index";
+import { Post } from "./MainPage";
 
 interface Post {
   title: string;
@@ -19,32 +21,6 @@ interface Post {
   key: number;
 }
 
-function YourPosts(post: Post): JSX.Element {
-  return (
-    <>
-      <div className="PostContainer">
-        <div className="PostContainer-Internal">
-          <Heading as={"h1"} size={"md"}>
-            {post.title}
-          </Heading>
-          <Heading as={"h2"} size={"sm"}>
-            {post.username}
-          </Heading>
-          <Text fontSize={"md"}>{post.text}</Text>
-          <div className="PostContainer-Internal-BottomFlex">
-            <Heading as={"h2"} size={"xs"}>
-              {post.type}
-            </Heading>
-            <Heading as={"h2"} size={"xs"}>
-              {post.date}
-            </Heading>
-          </div>
-        </div>
-        {post.img !== null && <img src={post.img} alt="post image" />}
-      </div>
-    </>
-  );
-}
 
 export function YourPostsPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
@@ -71,7 +47,7 @@ export function YourPostsPage(): JSX.Element {
   async function myPosts(token: any) {
     console.log(token);
     axios
-      .get("http://localhost:3000/api/posts/getMyPosts",
+      .get(`${RestAPIHOST}/api/posts/getMyPosts`,
         { withCredentials: true }
 
       )
@@ -95,7 +71,7 @@ export function YourPostsPage(): JSX.Element {
 
   // async function myPosts() {
   //   axios
-  //     .get("http://localhost:3000/api/posts/myPosts", {
+  //     .get(`${RestAPIHOST}/api/posts/myPosts`, {
   //       params: { token: token["auth"] },
   //     },
   //     )
@@ -120,6 +96,14 @@ export function YourPostsPage(): JSX.Element {
   useEffect(() => {
     myPosts(token["auth"]);
   }, []);
+
+  //write a function that sorts the posts by date
+  function sortPostsbyDate(posts: Post[]) {
+    let sortedPosts: Post[] = posts.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+    return sortedPosts;
+  }
 
 
   return (
@@ -160,8 +144,8 @@ export function YourPostsPage(): JSX.Element {
     //   </div>
     <div className="MainPageContainer-PostsContainer">
 
-      {posts.map((post) => (
-        <YourPosts
+      {sortPostsbyDate(posts).map((post) => (
+        <Post
           title={post.title}
           username={post.username}
           text={post.text}
@@ -170,7 +154,7 @@ export function YourPostsPage(): JSX.Element {
           categories={post.categories}
           img={post.img}
           key={post.key}
-        ></YourPosts>
+        ></Post>
       ))}
     </div>
     // </Split>

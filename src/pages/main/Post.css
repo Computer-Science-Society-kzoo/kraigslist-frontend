@@ -1,6 +1,7 @@
 .PostContainer{
     max-width: 768px;
-    height: 220px;
+    height: fit-content !important;
+    max-height: 300px !important;
     border : 1px solid #e2e8f0;
     border-radius : 12px;
     display: flex;
@@ -8,6 +9,7 @@
     gap: 16px;
     transition: all 0.2s ease-out;
     background-color: white;
+    padding: 0 !important;
 }
 
 .PostContainer:hover{
@@ -16,13 +18,25 @@
 }
 
 .PostContainer-Internal{
-    width: 560px; 
-    padding: 16px 16px 16px 16px;
+    width: 768px;
+    max-width: 768px;
+    max-height: 300px !important;
+    padding: 16px !important;
     border-radius : 12px;
     display: flex;
     flex-direction: column;    
     gap: 16px;
 }
+
+.PostContainer-Internal-Text{
+    max-height: 300px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 
 .PostContainer > img {
     width: fit-content;

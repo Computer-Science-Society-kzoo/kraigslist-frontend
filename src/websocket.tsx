@@ -74,9 +74,11 @@ export function WebSockets(): JSX.Element {
         switch (dataFromServer.type) {
             case "connected":
                 console.log("Connected to the WebSocket server");
-                axios.post(`${RestAPIHOST}/api/messages/totalmessages`, {
+                axios
+                .get(`${RestAPIHOST}/api/messages/totalmessages`, {
                   headers: {
-                    Authorization: `Bearer ${token.auth}`,
+                    Authorization: `Bearer ${token.auth}`
+                    //page: page,
                   },
                 })
                 .then((res) => {

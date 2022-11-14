@@ -391,6 +391,7 @@ export function MakePost(): JSX.Element {
                 >
                   <option value="Request">Request</option>
                   <option value="Offer">Offer</option>
+                  <option value="Other">Other</option>
                 </Select>
               </span>
             </FormControl>

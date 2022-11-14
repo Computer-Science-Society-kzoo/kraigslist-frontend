@@ -50,7 +50,7 @@ let thisPostDate = "";
 export { thisPostDate };
 
 export function Post(post: Post): JSX.Element {
-  
+
   const dispatch = useDispatch();
   return (
     <>
@@ -75,9 +75,9 @@ export function Post(post: Post): JSX.Element {
             <Heading as={"h2"} size={"xs"}>
               {post.type}
             </Heading>
-              <Heading as={"h2"} size={"xs"}>
-                <Moment format="LLL">{post.date}</Moment>
-              </Heading>
+            <Heading as={"h2"} size={"xs"}>
+              <Moment format="LLL">{post.date}</Moment>
+            </Heading>
           </div>
         </div>
         {(post.img !== "" && post.img !== null) && <img src={post.img} alt="post image" className="PostContainer-Internal-Image" />}
@@ -148,7 +148,7 @@ export function MainPage(): JSX.Element {
       });
   }
 
-  const [checkedItems, setCheckedItems] = useState([true, true]);
+  const [checkedItems, setCheckedItems] = useState([true, true, true]);
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
@@ -156,10 +156,12 @@ export function MainPage(): JSX.Element {
   const [filterCheck, setFilterCheck] = useState("");
 
   async function filterChange() {
-    if (checkedItems[0] && !checkedItems[1]) {
+    if (checkedItems[0] && !checkedItems[1] && !checkedItems[2]) {
       setFilterCheck("Offer");
-    } else if (checkedItems[1] && !checkedItems[0]) {
+    } else if (checkedItems[1] && !checkedItems[0] && !checkedItems[2]) {
       setFilterCheck("Request");
+    } else if (checkedItems[2] && !checkedItems[0] && !checkedItems[1]) {
+      setFilterCheck("Other");
     } else {
       setFilterCheck("");
     }
@@ -235,7 +237,7 @@ export function MainPage(): JSX.Element {
               isIndeterminate={isIndeterminate}
               colorScheme="orange"
               onChange={(e) => {
-                setCheckedItems([e.target.checked, e.target.checked]);
+                setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
               }}
             >
               All
@@ -245,7 +247,7 @@ export function MainPage(): JSX.Element {
                 colorScheme="orange"
                 isChecked={checkedItems[0]} //making an onChange function
                 onChange={(e) => {
-                  setCheckedItems([e.target.checked, checkedItems[1]]);
+                  setCheckedItems([e.target.checked, checkedItems[1], checkedItems[2]]);
                 }}
               >
                 Offer
@@ -254,10 +256,19 @@ export function MainPage(): JSX.Element {
                 colorScheme="orange"
                 isChecked={checkedItems[1]}
                 onChange={(e) => {
-                  setCheckedItems([checkedItems[0], e.target.checked]);
+                  setCheckedItems([checkedItems[0], e.target.checked, checkedItems[2]]);
                 }}
               >
                 Requests
+              </Checkbox>
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems[2]}
+                onChange={(e) => {
+                  setCheckedItems([checkedItems[0], checkedItems[1], e.target.checked]);
+                }}
+              >
+                Other
               </Checkbox>
             </Stack>
 
@@ -350,7 +361,7 @@ export function MainPage(): JSX.Element {
             key={post.key}
           ></Post>
         ))}
-        <ModalPost/>
+        <ModalPost />
       </div>
     </Split>
   );

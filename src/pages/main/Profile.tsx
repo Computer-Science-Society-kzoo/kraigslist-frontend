@@ -1,4 +1,4 @@
-import { EditIcon, CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { EditIcon, CheckIcon, CloseIcon, EmailIcon, TimeIcon, StarIcon } from "@chakra-ui/icons";
 import {
   FormControl,
   FormLabel,
@@ -15,6 +15,7 @@ import {
   ButtonGroup,
   Button,
   useToast,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -24,6 +25,7 @@ import { parseIsolatedEntityName } from "typescript";
 import { setAuthRedux } from "../../redux/coreReducer";
 import "./Profile.css";
 import { RestAPIHOST } from "../../index";
+import { read } from "fs";
 
 interface User {
   username: string;
@@ -100,23 +102,19 @@ function EditControl() {
   } = useEditableControls();
 
   return isEditing ? (
-    <ButtonGroup justifyContent="end" size="sm" w="full" spacing={2} mt={2}>
-      <IconButton
+    <ButtonGroup justifyContent="left" size="sm" w="full" spacing={2} mt={2} className="Profile-RightElt">
+      <Button
         aria-label="check"
-        icon={<CheckIcon boxSize={3} />
-        }
         {...getSubmitButtonProps()}
       />
       <IconButton
         aria-label="close"
-        icon={<CloseIcon boxSize={3} />}
         {...getCancelButtonProps()}
       />
     </ButtonGroup>
   ) : (
     <IconButton
       aria-label="edit"
-      icon={<EditIcon />}
       {...getEditButtonProps()}
     />
   );
@@ -253,29 +251,41 @@ function ProfileInfo(user: User): JSX.Element {
 
   }, [deleteCheck]);
 
-
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [editIcon, setEditIcon] = useState(<EditIcon/>);
 
   return (
 
     <div className="Profile-Container">
 
       <Header />
-      <Stack
-        align="stretch"
-      >
-        <Editable defaultValue={user.first_name} isPreviewFocusable={false} onChange={(value) => { setFirstname(value) }}>
-          First name: <span />
-          <EditablePreview />
-          <Input as={EditableInput} />
-          <EditControl />
-        </Editable>
 
-        <Editable defaultValue={user.last_name} isPreviewFocusable={false} onChange={(value) => { setLastname(value) }}>
-          Last name: <span />
+        <span className="Profile-Contents-Container">
+          <div className="Profile-LeftElt">
+            First Name
+          </div>
+          <div className="Profile-MiddleElt">
+          <Editable defaultValue={user.first_name} isPreviewFocusable={false} onChange={(value) => { setFirstname(value) }}>
+          
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
-        </Editable>
+          </Editable>
+          </div>
+        </span>
+        
+        <span className="Profile-Contents-Container">
+          <div className="Profile-LeftElt">
+          Last name
+          </div>
+          <div className="Profile-MiddleElt">
+          <Editable defaultValue={user.last_name} isPreviewFocusable={false} onChange={(value) => { setLastname(value) }}>
+          <EditablePreview />
+          <Input as={EditableInput} />
+          <EditControl />
+          </Editable>
+          </div>
+        </span>
 
         {/* <Editable defaultValue={user.password} isPreviewFocusable={false}>
           Password: <span />
@@ -284,33 +294,64 @@ function ProfileInfo(user: User): JSX.Element {
           <EditControl />
         </Editable> */}
 
+        <span className="Profile-Contents-Container">
+        <div className="Profile-LeftElt">
+          Email
+        </div>
+        <div className="Profile-MiddleElt">
+          <input
+            className="Profile-MiddleElt"
+            placeholder={user.email}
+            disabled={isDisabled}
+            border-radius={0}
+          />
+        </div>
+        <IconButton
+          className="Profile-RightElt"
+          border-radius={"10px 0px 0px 10px"}
+          aria-label="Edit"
+          icon={<EditIcon />}
+          onClick={() => {setIsDisabled(!isDisabled)}}
+        />
 
+        </span>
         <Editable defaultValue={user.email} isPreviewFocusable={false} onChange={(value) => { setEmail(value) }}>
-          Email: <span />
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
         </Editable>
 
-        <Editable defaultValue={user.year.toString()} isPreviewFocusable={false} onChange={(value) => { setYear(parseInt(value, 10)) }}>
-          Year: <span />
-          <EditablePreview />
-          <Input as={EditableInput} />
-          <EditControl />
-        </Editable>
+        
+        <span className="Profile-Contents-Container">
+          <div className="Profile-LeftElt">
+            Year <TimeIcon/>
+          </div>
+          <div className="Profile-MiddleElt">
+            <Editable defaultValue={user.year.toString()} isPreviewFocusable={false} onChange={(value) => { setYear(parseInt(value, 10)) }}>
+            <EditablePreview />
+            <Input as={EditableInput} />
+            <EditControl />
+            </Editable>
+          </div>
+        </span>
 
-
-        <Editable defaultValue={user.username} isPreviewFocusable={false}>
-          Username: <span />
+        <span className="Profile-Contents-Container">
+          <div className="Profile-LeftElt">
+          Username
+          </div>
+          <div className="Profile-MiddleElt">
+          <Editable defaultValue={user.username} isPreviewFocusable={false}>
+          
           <EditablePreview />
           <Input as={EditableInput} />
           {/* <EditControl /> */}
-        </Editable>
+          </Editable>
+          </div>
+        </span>
 
         <Button onClick={() => setDeleteCheck(true)} colorScheme="orange">
           Delete Account
         </Button>
-      </Stack>
     </div>
   );
 }

@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 75%;
+    width: 100%;
     max-width: 750px;
     border : 1px solid #e2e8f0;
     border-radius : 12px;
@@ -23,4 +23,50 @@
     height: 100%;
     width: 100%;
     padding: 0 20px;
+}
+
+.Profile-Contents-Container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40px;
+    width: 450px;
+    background-color: white;
+    border-radius: 10px 10px 10px 10px;
+    outline: 2px solid #edeef0;
+}
+
+.Profile-LeftElt{
+    display: flex;
+    height: 40px;
+    width: 100px;
+    flex-direction: row;
+    background-color: #edeef0;
+    justify-content: left;
+    border-radius: 10px 0px 0px 10px;
+    padding: 0;
+    justify-content: center;
+}
+
+.Profile-MiddleElt{
+    display: flex;
+    height: 40px;
+    width: 300px;
+    flex-direction: row;
+    background-color: white;
+    justify-content: center;
+    border-radius: 0px 0px 0px 0px;
+    padding: 0;
+}
+
+.Profile-RightElt{
+    display: flex;
+    height: 40px;
+    width: 50px;
+    flex-direction: row;
+    background-color: #edeef0;
+    justify-content: center;
+    border-radius: 0px 10px 10px 0px;
+    padding: 0;
+    margin-left: auto;
 }

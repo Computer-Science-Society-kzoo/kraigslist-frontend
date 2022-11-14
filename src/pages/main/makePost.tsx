@@ -176,6 +176,7 @@ export function MakePost(): JSX.Element {
   function handleImageUpload(e: any) {
 
     const myFile = e.target.files[0];
+    setAttachement(myFile.name);
     try {
       console.log("ping !");
       setIsUploading(true);
@@ -337,6 +338,8 @@ export function MakePost(): JSX.Element {
     }
   }
 
+  const [attachement, setAttachement] = useState("Nothing Attached");
+
   return (
     <div>
       <Modal
@@ -439,7 +442,7 @@ export function MakePost(): JSX.Element {
                   boxSize="1.5em"
                   mr={5}
                 />
-                Nothing Attached
+                {attachement}
                 <input
                   type="file"
                   id="avatar"

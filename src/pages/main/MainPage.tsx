@@ -158,12 +158,14 @@ export function MainPage(): JSX.Element {
     text: string,
     filterCheck: any,
     filterCheck2: any,
-    filterCheck3: any
+    filterCheck3: any,
   ) {
     console.log(text);
     console.log(filterCheck);
     console.log(filterCheck2);
     console.log(filterCheck3);
+   // console.log(token.auth);
+
     axios
       .get(`${RestAPIHOST}/api/posts/master`, {
         params: {
@@ -171,7 +173,11 @@ export function MainPage(): JSX.Element {
           filter: filterCheck,
           filter2: filterCheck2,
           filter3: filterCheck3,
-        },
+        }, 
+        headers: {
+          Authorization: `Bearer ${token.auth}`,
+          Postid: 0
+        }
       })
       .then((res) => {
         console.log(res.data);

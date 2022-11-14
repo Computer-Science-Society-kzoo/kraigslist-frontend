@@ -156,7 +156,12 @@ function ProfileInfo(user: User): JSX.Element {
     console.log(token);
     //setAuthRedux(false);
     axios
-      .post(`${RestAPIHOST}/api/account/delete`, { withCredentials: true })
+      .post(`${RestAPIHOST}/api/account/delete`, {
+        headers: {
+          Authorization: `Bearer ${token.auth}`,
+          //Postid: 0
+        },
+      })
       .then((res) => {
         console.log(res.data);
       })
@@ -228,49 +233,54 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   useEffect(() => {
-    if(firstnameChange != user.first_name) {
-    updateFirstName(token["auth"]);}
+    if (firstnameChange != user.first_name) {
+      updateFirstName(token["auth"]);
+    }
 
   }, [firstnameChange]);
 
   useEffect(() => {
-    if(lastnameChange != user.last_name) {
-    updateLastName(token["auth"]);}
+    if (lastnameChange != user.last_name) {
+      updateLastName(token["auth"]);
+    }
 
   }, [lastnameChange]);
 
   useEffect(() => {
-    if(emailChange != user.email) {
-    updateEmail(token["auth"]);}
+    if (emailChange != user.email) {
+      updateEmail(token["auth"]);
+    }
 
   }, [emailChange]);
 
   useEffect(() => {
-    if(yearChange != user.year) {
-    updateYear(token["auth"]);}
+    if (yearChange != user.year) {
+      updateYear(token["auth"]);
+    }
 
   }, [yearChange]);
 
   useEffect(() => {
-    if(deleteCheck==true){
-    deleteAccount(token["auth"]);}
+    if (deleteCheck == true) {
+      deleteAccount(token["auth"]);
+    }
 
   }, [deleteCheck]);
 
   const [isDisabled, setIsDisabled] = useState(true);
-  const [editIcon, setEditIcon] = useState(<EditIcon/>);
+  const [editIcon, setEditIcon] = useState(<EditIcon />);
   const [buttonText, setButtonText] = useState('Edit Profile');
 
 
-  function editSave(){
-    if(isDisabled){
+  function editSave() {
+    if (isDisabled) {
       setIsDisabled(false);
-      setEditIcon(<CheckIcon/>);
+      setEditIcon(<CheckIcon />);
       setButtonText('Save Profile');
     }
-    else{
+    else {
       setIsDisabled(true);
-      setEditIcon(<EditIcon/>);
+      setEditIcon(<EditIcon />);
       setButtonText('Edit Profile');
     }
   }
@@ -283,11 +293,11 @@ function ProfileInfo(user: User): JSX.Element {
 
       <Header />
 
-        <span className="Profile-Contents-Container">
-          <div className="Profile-LeftElt">
-            First Name
-          </div>
-          <div className="Profile-MiddleElt">
+      <span className="Profile-Contents-Container">
+        <div className="Profile-LeftElt">
+          First Name
+        </div>
+        <div className="Profile-MiddleElt">
           <input
             className="Profile-MiddleElt"
             placeholder={user.first_name}
@@ -296,13 +306,13 @@ function ProfileInfo(user: User): JSX.Element {
             onChange={(placeholder) => setFirstname(placeholder.target.value)}
           />
         </div>
-        </span>
-        
-        <span className="Profile-Contents-Container">
-          <div className="Profile-LeftElt">
+      </span>
+
+      <span className="Profile-Contents-Container">
+        <div className="Profile-LeftElt">
           Last Name
-          </div>
-          <div className="Profile-MiddleElt">
+        </div>
+        <div className="Profile-MiddleElt">
           <input
             className="Profile-MiddleElt"
             placeholder={user.last_name}
@@ -311,16 +321,16 @@ function ProfileInfo(user: User): JSX.Element {
             onChange={(placeholder) => setLastname(placeholder.target.value)}
           />
         </div>
-        </span>
+      </span>
 
-        {/* <Editable defaultValue={user.password} isPreviewFocusable={false}>
+      {/* <Editable defaultValue={user.password} isPreviewFocusable={false}>
           Password: <span />
           <EditablePreview />
           <Input as={EditableInput} />
           <EditControl />
         </Editable> */}
 
-        <span className="Profile-Contents-Container">
+      <span className="Profile-Contents-Container">
         <div className="Profile-LeftElt">
           Email
         </div>
@@ -333,48 +343,48 @@ function ProfileInfo(user: User): JSX.Element {
             onChange={(placeholder) => setEmail(placeholder.target.value)}
           />
         </div>
-        </span>
+      </span>
 
-        
-        <span className="Profile-Contents-Container">
-          <div className="Profile-LeftElt">
-            Year
-          </div>
-          <div className="Profile-MiddleElt">
+
+      <span className="Profile-Contents-Container">
+        <div className="Profile-LeftElt">
+          Year
+        </div>
+        <div className="Profile-MiddleElt">
           <input
             className="Profile-MiddleElt"
             placeholder={user.year.toString()}
             disabled={isDisabled}
             border-radius={0}
-            onChange={(placeholder) => setYear(parseInt(placeholder.target.value,10))}
+            onChange={(placeholder) => setYear(parseInt(placeholder.target.value, 10))}
           />
         </div>
-        </span>
+      </span>
 
-        <span className="Profile-Contents-Container">
-          <div className="Profile-LeftElt">
+      <span className="Profile-Contents-Container">
+        <div className="Profile-LeftElt">
           Username
-          </div>
-          <input
-            className="Profile-MiddleElt"
-            placeholder={user.username}
-            disabled={true}
-            border-radius={0}
-            onChange={(placeholder) => setYear(parseInt(placeholder.target.value,10))}
-          />
-        </span>
+        </div>
+        <input
+          className="Profile-MiddleElt"
+          placeholder={user.username}
+          disabled={true}
+          border-radius={0}
+          onChange={(placeholder) => setYear(parseInt(placeholder.target.value, 10))}
+        />
+      </span>
 
-        <span>
-          <ButtonGroup>
+      <span>
+        <ButtonGroup>
           <Button onClick={() => setDeleteCheck(true)} colorScheme="orange">
             Delete Account
           </Button>
           <Button onClick={() => editSave()}>
             {buttonText}
           </Button>
-          </ButtonGroup>
-        </span>
-        
+        </ButtonGroup>
+      </span>
+
     </div>
   );
 }

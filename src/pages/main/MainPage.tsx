@@ -417,7 +417,7 @@ export function MainPage(): JSX.Element {
               colorScheme="orange"
               onClick={() => setShow(!show)}
             >
-              Close filters
+              Close Filters
             </Button>}
           </div>
         </div>
@@ -458,7 +458,7 @@ export function MainPage(): JSX.Element {
             className="FiltersContainerButton HideWhenNONMobile"
             onClick={() => setShow(!show)}
           >
-            Open filters
+            Open Filters
           </Button>
         </div>
 

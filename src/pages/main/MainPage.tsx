@@ -72,7 +72,7 @@ export function Post(post: PostProps): JSX.Element {
               offer_deadline: post.date,
               userID: post.userID,
               postID: post.postID,
-              price: 0,
+              price: post.price,
             })
           );
           dispatch(setOpenPost(true));

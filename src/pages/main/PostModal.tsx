@@ -38,10 +38,10 @@ export function ModalPost(): JSX.Element {
   const [message, setMessage] = useState("");
 
   function returnPriceText(price: number, type: string): string {
-    if (type === "Ohter") {
-      return "Price: " + price
+    if (type === "Other") {
+      return "Price: $" + price
     } else {
-      return type + "Price: " + price
+      return type + " Price: $" + price
     }
   }
 
@@ -106,10 +106,10 @@ export function ModalPost(): JSX.Element {
                   {post.text}
                 </Text>
               </div>
-              {post.price !== 0 &&
+              {post.price !== null &&
                 <div className="PostModalContainer-Internal-BottomFlex">
                   <Heading as={"h2"} size={"xs"}>
-                    {returnPriceText(post.price, post.type)}
+                    {returnPriceText(post.price, post.type )}
                   </Heading>
                 </div>
                 }

@@ -57,10 +57,16 @@ export function Profile(): JSX.Element {
   }
 
   //get username
-  async function getPosts(token: any) {
+  async function getPosts(token2: any) {
     console.log(token);
     axios
-      .get(`${RestAPIHOST}/api/account/getUsername`, { withCredentials: true })
+      .get(`${RestAPIHOST}/api/account/getusername`, {
+        headers: {
+          Authorization: `Bearer ${token.auth}`,
+          Postid: 0
+          //page: page,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setUsers(parseUser(res.data));

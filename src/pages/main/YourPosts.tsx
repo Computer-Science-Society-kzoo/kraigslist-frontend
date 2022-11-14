@@ -36,14 +36,18 @@ export function YourPostsPage(): JSX.Element {
     return parsedPosts;
   }
 
-  async function myPosts(token: any) {
-    console.log(token);
-    axios
-      .get(`${RestAPIHOST}/api/posts/getMyPosts`,
-        { withCredentials: true
-         }
 
-      )
+  async function myPosts(token2: any) {
+
+
+    axios
+      .get(`${RestAPIHOST}/api/posts/getmyposts`, {
+        headers: {
+          Authorization: `Bearer ${token.auth}`,
+          Postid: 0
+          //page: page,
+        },
+      })
       .then((res) => {
         console.log(res.data);
         setPosts(parsePosts(res.data));
@@ -151,6 +155,7 @@ export function YourPostsPage(): JSX.Element {
           postID={post.postID}
           price={post.price}
           deadline={post.deadline}
+          key={post.postID}
         ></Post>
       ))}
     </div>

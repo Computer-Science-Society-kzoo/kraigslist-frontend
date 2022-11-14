@@ -259,16 +259,19 @@ function ProfileInfo(user: User): JSX.Element {
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [editIcon, setEditIcon] = useState(<EditIcon/>);
+  const [buttonText, setButtonText] = useState('Edit Profile');
 
 
   function editSave(){
     if(isDisabled){
       setIsDisabled(false);
       setEditIcon(<CheckIcon/>);
+      setButtonText('Save Profile');
     }
     else{
       setIsDisabled(true);
       setEditIcon(<EditIcon/>);
+      setButtonText('Edit Profile');
     }
   }
 
@@ -367,7 +370,7 @@ function ProfileInfo(user: User): JSX.Element {
             Delete Account
           </Button>
           <Button onClick={() => editSave()}>
-            Edit Profile
+            {buttonText}
           </Button>
           </ButtonGroup>
         </span>

@@ -12,6 +12,7 @@
     padding: 0 !important;
 }
 
+
 .PostContainer:hover{
     transform: scale(1.02);
     cursor: pointer;
@@ -75,4 +76,21 @@
         border-radius: 0px 0px 12px 12px;
     }
     
+}
+
+.MakePostFileInput:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+.MakePostFileInput{
+    padding: 16px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #edf1f5;
+    width: fit-content;
+    border-radius: 10px;
+    height: 40px;
+    opacity: 0.8;
 }

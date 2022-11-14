@@ -29,6 +29,8 @@ import {
 
 import { AttachmentIcon } from "@chakra-ui/icons";
 
+import "./Post.css";
+
 import axios from "axios";
 import e from "express";
 import { useState } from "react";
@@ -424,15 +426,28 @@ export function MakePost(): JSX.Element {
             </FormControl>
 
             <FormControl>
-              <FormLabel className="CreatePostLabels"> Image </FormLabel>
-              <span className="MakePostInput">
-                <input
+              <FormLabel className="CreatePostLabels">
+                Upload Image
+              </FormLabel>
+              <label className="MakePostFileInput">
+                  <AttachmentIcon
+                    color="var(--k-orange)"
+                    viewBox="0 0 24 24"
+                    boxSize="1.5em"
+                    mr={5}
+                  />
+                  Nothing Attached
+                  <input
                   type="file"
                   id="avatar"
                   name="avatar"
                   accept="image/png, image/jpeg, image/jpg"
                   onChange={(el) => handleImageUpload(el)}
-                />
+                  style={{ display: "none" }}
+                  />
+                </label>
+              <span className="MakePostInput">
+                
                  { isUploading && <Spinner color="orange.500" size="md" /> }
               </span>
             </FormControl>
@@ -447,6 +462,7 @@ export function MakePost(): JSX.Element {
                 closeAndCreatePost();
               }}
               mr={3}
+              id="upload-button"
             >
               Create Post
             </Button>

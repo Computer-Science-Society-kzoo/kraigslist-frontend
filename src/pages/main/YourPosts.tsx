@@ -40,7 +40,8 @@ export function YourPostsPage(): JSX.Element {
     console.log(token);
     axios
       .get(`${RestAPIHOST}/api/posts/getMyPosts`,
-        { withCredentials: true }
+        { withCredentials: true
+         }
 
       )
       .then((res) => {

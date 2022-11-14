@@ -40,8 +40,17 @@ interface Post {
   img: string;
   key: number;
 }
+let thisPostTitle = "";
+export { thisPostTitle };
+
+let thisPostText = "";
+export { thisPostText };
+
+let thisPostDate = "";
+export { thisPostDate };
 
 export function Post(post: Post): JSX.Element {
+  
   const dispatch = useDispatch();
   return (
     <>
@@ -49,6 +58,9 @@ export function Post(post: Post): JSX.Element {
         className="PostContainer"
         onClick={() => {
           dispatch(setOpenPost(true));
+          thisPostTitle = post.title;
+          thisPostText = post.text;
+          thisPostDate = post.date;
         }}
       >
         <div className="PostContainer-Internal">
@@ -338,7 +350,7 @@ export function MainPage(): JSX.Element {
             key={post.key}
           ></Post>
         ))}
-        <ModalPost />
+        <ModalPost/>
       </div>
     </Split>
   );

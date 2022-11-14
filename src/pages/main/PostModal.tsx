@@ -12,6 +12,9 @@ import { Modal,
 import  { useSelector, useDispatch } from "react-redux";
 import  { selectOpenPostSate } from "../../redux/coreReducer";
 import { setOpenPost } from "../../redux/coreReducer";
+import { thisPostTitle } from "./MainPage"
+import { thisPostText } from "./MainPage"
+import { thisPostDate } from "./MainPage"
 
 //Post Modal Interface
 interface ModalPost {
@@ -27,7 +30,6 @@ interface ModalPost {
 
 export function ModalPost(): JSX.Element {
 
-
     const isOpenRedux = useSelector(selectOpenPostSate);
     const dispatch = useDispatch();
 
@@ -36,10 +38,10 @@ export function ModalPost(): JSX.Element {
             <Modal isOpen={isOpenRedux} onClose={() => {dispatch(setOpenPost(false))}}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Test Post</ModalHeader>
+                    <ModalHeader>{thisPostTitle}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <p>Test Post</p>
+                        <p>{thisPostText}</p>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={() => {dispatch(setOpenPost(false))}}>

@@ -1,4 +1,23 @@
-import { Button, useToast, Heading, Divider, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, FormControl, FormLabel, Input, InputGroup, InputLeftAddon, IconButton } from "@chakra-ui/react";
+import {
+  Button,
+  useToast,
+  Heading,
+  Divider,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  IconButton,
+} from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import "./Header.css";
@@ -6,11 +25,13 @@ import { selectAuthState, setCreatePost } from "../redux/coreReducer";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { AnimateHeight } from "./animations/height/AnimateHeight";
-import { setAuthRedux } from '../redux/coreReducer'
+import { setAuthRedux } from "../redux/coreReducer";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectTotalMessagesState } from "../redux/messagesReducer";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Burger } from "./Burger";
 
 export function Header(): JSX.Element {
   // const [height, setHeight] = useState<number>(0)
@@ -18,14 +39,13 @@ export function Header(): JSX.Element {
   // const ref = useRef<HTMLDivElement>(null);
   // const refButtons = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
     // setHeight(Number(ref.current?.clientHeight))
     // setHeightButtons(Number(refButtons.current?.clientHeight))
     // console.log(height + " " + heightButtons)
     // let total = height + heightButtons
     document.documentElement.style.setProperty("--header-height", 152 + "px");
-  }, [])
+  }, []);
 
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
@@ -54,10 +74,20 @@ export function Header(): JSX.Element {
 
   const totalMessages = useSelector(selectTotalMessagesState);
 
+  const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
 
   return (
-      <header className={"Header"}>
-        <Heading className="tracking-in-expand-fwd-top " id="KRAIGSLIST-TEXT">
+    <>
+    <div className={ !showMobileMenu ? "MobileHeader HideWhenNONMobile" : "MobileHeader HideWhenNONMobile" } >
+      <Heading className="tracking-in-expand-fwd-top " id="KRAIGSLIST-TEXT">
+        <span>K</span>raigslist
+      </Heading>
+      <div className="MobileHeaderBurger" onClick={() =>setShowMobileMenu(!showMobileMenu)}>
+        <Burger />
+      </div>
+    </div>
+      <header className={showMobileMenu ? "Header HeaderOpen" : "Header" }>
+        <Heading className="tracking-in-expand-fwd-top HideWhenMobile" id="KRAIGSLIST-TEXT">
           <span>K</span>raigslist
         </Heading>
         <AnimateHeight
@@ -74,36 +104,46 @@ export function Header(): JSX.Element {
             className="Header-ButtonsContainer"
           >
             <Link to="/">
-              <Button className="Header-Button" variant={"link"}>
+              <Button onClick={() => setShowMobileMenu(false)} className="Header-Button" variant={"link"}>
                 Home
               </Button>
             </Link>
             <Link to="/YourPostsPage">
-              <Button className="Header-Button" variant={"link"}>
+              <Button onClick={() => setShowMobileMenu(false)} className="Header-Button" variant={"link"}>
                 Your Posts
               </Button>
             </Link>
             <Link to="/messages">
-              <Button className="Header-Button" variant={"link"} id="Messages">
+              <Button onClick={() => setShowMobileMenu(false)} className="Header-Button" variant={"link"} id="Messages">
                 Messages
-                  <div className={totalMessages > 0 ? "UnreadTotalMessageValue" : "UnreadMessageValueHide" }>
-                    <div>{totalMessages}</div>
-                  </div>
+                <div
+                  className={
+                    totalMessages > 0
+                      ? "UnreadTotalMessageValue"
+                      : "UnreadMessageValueHide"
+                  }
+                >
+                  <div>{totalMessages}</div>
+                </div>
               </Button>
-    
             </Link>
             <Link to="/profile">
-              <Button className="Header-Button" variant={"link"}>
+              <Button onClick={() => setShowMobileMenu(false)} className="Header-Button" variant={"link"}>
                 Your Profile
               </Button>
             </Link>
             <Link to="/Guidelines">
-              <Button className="Header-Button" variant={"link"}>
+              <Button onClick={() => setShowMobileMenu(false)} className="Header-Button" variant={"link"}>
                 Guidelines
               </Button>
             </Link>
-           
-            <Button onClick={() => {dispatch(setCreatePost(true))}} colorScheme="gray">
+
+            <Button
+              onClick={() => {
+                dispatch(setCreatePost(true));
+              }}
+              colorScheme="gray"
+            >
               Create Post
             </Button>
 
@@ -111,8 +151,9 @@ export function Header(): JSX.Element {
               Sign Out
             </Button>
           </motion.div>
-          </AnimateHeight>
+        </AnimateHeight>
         <Divider />
       </header>
+    </>
   );
 }

@@ -11,6 +11,7 @@ import { MakePost } from "./pages/main/makePost";
 import { MessagesPage } from "./pages/messages/MessagesPage";
 import { Profile } from "./pages/main/Profile";
 import { Guidelines } from "./pages/main/Guidelines";
+import { ModalPost } from "./pages/main/PostModal";
 
 function Footer(): JSX.Element {
   return <footer></footer>;
@@ -46,6 +47,8 @@ function HomePage(): JSX.Element {
         <Route path="/Guidelines" element={<Guidelines />} />
       </Routes>
       <MakePost />
+      <ModalPost />
+
       <Footer />
     </>
   );

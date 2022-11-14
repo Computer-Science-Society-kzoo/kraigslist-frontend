@@ -60,3 +60,15 @@
     display: none;
     right: 0;
 }
+
+@media screen and (max-width: 768px) {
+    .Header{
+        width: 100%;
+        margin: 0;
+    }
+
+    .Header-ButtonsContainer{
+        width: 100%;
+    }
+}
+    

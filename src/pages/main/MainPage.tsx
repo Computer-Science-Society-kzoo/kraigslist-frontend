@@ -46,7 +46,6 @@ export interface PostProps {
   deadline: string;
 }
 
-
 let thisPostTitle = "";
 export { thisPostTitle };
 
@@ -57,15 +56,14 @@ let thisPostDate = "";
 export { thisPostDate };
 
 export function Post(post: PostProps): JSX.Element {
-  
   const dispatch = useDispatch();
   return (
     <>
       <div
         className="PostContainer"
         onClick={() => {
-          dispatch(setPostModalRedux(
-            {
+          dispatch(
+            setPostModalRedux({
               title: post.title,
               text: post.text,
               username: post.username,
@@ -75,8 +73,8 @@ export function Post(post: PostProps): JSX.Element {
               userID: post.userID,
               postID: post.postID,
               price: 0,
-            }
-          ))
+            })
+          );
           dispatch(setOpenPost(true));
           thisPostTitle = post.title;
           thisPostText = post.text;
@@ -84,13 +82,19 @@ export function Post(post: PostProps): JSX.Element {
         }}
       >
         <div className="PostContainer-Internal">
-          <Heading className="PostContainer-Internal-Title" as={"h1"} size={"md"}>
+          <Heading
+            className="PostContainer-Internal-Title"
+            as={"h1"}
+            size={"md"}
+          >
             {post.title}
           </Heading>
           <Heading as={"h2"} size={"sm"}>
             {post.username}
           </Heading>
-          <Text className="PostContainer-Internal-Text" fontSize={"md"}>{post.text}</Text>
+          <Text className="PostContainer-Internal-Text" fontSize={"md"}>
+            {post.text}
+          </Text>
           <div className="PostContainer-Internal-BottomFlex">
             <Heading as={"h2"} size={"xs"}>
               {post.type}
@@ -100,7 +104,13 @@ export function Post(post: PostProps): JSX.Element {
             </Heading>
           </div>
         </div>
-        {(post.img !== "" && post.img !== null) && <img src={post.img} alt="post image" className="PostContainer-Internal-Image" />}
+        {post.img !== "" && post.img !== null && (
+          <img
+            src={post.img}
+            alt="post image"
+            className="PostContainer-Internal-Image"
+          />
+        )}
       </div>
     </>
   );
@@ -115,7 +125,6 @@ export function MainPage(): JSX.Element {
     let parsedPosts: PostProps[] = [];
     posts.forEach((post: any) => {
       parsedPosts.push({
-
         date_created: post.dt_created,
         title: post.title,
         username: post.username,
@@ -181,13 +190,33 @@ export function MainPage(): JSX.Element {
   const [filterCheck, setFilterCheck] = useState("");
 
   async function filterChange() {
-    if (checkedItems[0] && !checkedItems[1] && !checkedItems[2] && !checkedItems[3]) {
+    if (
+      checkedItems[0] &&
+      !checkedItems[1] &&
+      !checkedItems[2] &&
+      !checkedItems[3]
+    ) {
       setFilterCheck("Offer");
-    } else if (checkedItems[1] && !checkedItems[0] && !checkedItems[2] && !checkedItems[3]) {
+    } else if (
+      checkedItems[1] &&
+      !checkedItems[0] &&
+      !checkedItems[2] &&
+      !checkedItems[3]
+    ) {
       setFilterCheck("Request");
-    } else if (checkedItems[2] && !checkedItems[0] && !checkedItems[1] && !checkedItems[3]) {
+    } else if (
+      checkedItems[2] &&
+      !checkedItems[0] &&
+      !checkedItems[1] &&
+      !checkedItems[3]
+    ) {
       setFilterCheck("Information");
-    } else if (checkedItems[3] && !checkedItems[0] && !checkedItems[1] && !checkedItems[2]) {
+    } else if (
+      checkedItems[3] &&
+      !checkedItems[0] &&
+      !checkedItems[1] &&
+      !checkedItems[2]
+    ) {
       setFilterCheck("Other");
     } else {
       setFilterCheck("");
@@ -245,6 +274,8 @@ export function MainPage(): JSX.Element {
   //   });
   // }
 
+  const [show, setShow] = useState(false);
+
   return (
     <Split
       className="split MainPageContainer"
@@ -253,7 +284,11 @@ export function MainPage(): JSX.Element {
       minSize={[240, 500]}
       expandToMin={false}
     >
-      <div className="FiltersContainer">
+      <div
+        className={
+          !show ? "FiltersContainer" : "FiltersContainer FiltersContainerOpen"
+        }
+      >
         <div className="FiltersContainer-InnerContainer">
           <div className="FiltersContainer-InnerContainer-Category">
             <Heading as={"h3"} size={"xs"}>
@@ -264,7 +299,12 @@ export function MainPage(): JSX.Element {
               isIndeterminate={isIndeterminate}
               colorScheme="orange"
               onChange={(e) => {
-                setCheckedItems([e.target.checked, e.target.checked, e.target.checked, e.target.checked]);
+                setCheckedItems([
+                  e.target.checked,
+                  e.target.checked,
+                  e.target.checked,
+                  e.target.checked,
+                ]);
               }}
             >
               All
@@ -274,7 +314,12 @@ export function MainPage(): JSX.Element {
                 colorScheme="orange"
                 isChecked={checkedItems[0]} //making an onChange function
                 onChange={(e) => {
-                  setCheckedItems([e.target.checked, checkedItems[1], checkedItems[2], checkedItems[3]]);
+                  setCheckedItems([
+                    e.target.checked,
+                    checkedItems[1],
+                    checkedItems[2],
+                    checkedItems[3],
+                  ]);
                 }}
               >
                 Offer
@@ -283,7 +328,12 @@ export function MainPage(): JSX.Element {
                 colorScheme="orange"
                 isChecked={checkedItems[1]}
                 onChange={(e) => {
-                  setCheckedItems([checkedItems[0], e.target.checked, checkedItems[2], checkedItems[3]]);
+                  setCheckedItems([
+                    checkedItems[0],
+                    e.target.checked,
+                    checkedItems[2],
+                    checkedItems[3],
+                  ]);
                 }}
               >
                 Requests
@@ -292,7 +342,12 @@ export function MainPage(): JSX.Element {
                 colorScheme="orange"
                 isChecked={checkedItems[2]}
                 onChange={(e) => {
-                  setCheckedItems([checkedItems[0], checkedItems[1], e.target.checked, checkedItems[3]]);
+                  setCheckedItems([
+                    checkedItems[0],
+                    checkedItems[1],
+                    e.target.checked,
+                    checkedItems[3],
+                  ]);
                 }}
               >
                 Information
@@ -301,7 +356,12 @@ export function MainPage(): JSX.Element {
                 colorScheme="orange"
                 isChecked={checkedItems[3]}
                 onChange={(e) => {
-                  setCheckedItems([checkedItems[0], checkedItems[1], checkedItems[2], e.target.checked]);
+                  setCheckedItems([
+                    checkedItems[0],
+                    checkedItems[1],
+                    checkedItems[2],
+                    e.target.checked,
+                  ]);
                 }}
               >
                 Other
@@ -351,15 +411,23 @@ export function MainPage(): JSX.Element {
               Soonest to Latest
             </Checkbox>
             <Divider />
+            {show && 
+            <Button
+              className="FiltersContainerButton HideWhenNONMobile"
+              colorScheme="orange"
+              onClick={() => setShow(!show)}
+            >
+              Close filters
+            </Button>}
           </div>
         </div>
       </div>
-      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE">
-        <div>
+      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE MainPageContainer-PostsContainerMobile ">
+        <div className="MainPageContainer-PostsContainerInnerContainer">
           <Heading as="h2" size="xs" variant="outlined">
             <InputGroup
               size="sm"
-              width={768}
+              className="MainPageContainer-PostsContainer-SearchBar"
               borderRadius={"10px 10px 10px 10px"}
             >
               <IconButton
@@ -367,7 +435,7 @@ export function MainPage(): JSX.Element {
                 icon={<SearchIcon />}
                 borderRadius={"10px 0px 0px 10px"}
                 colorScheme="orange"
-                style={{  border: "1px solid #F6AD55" }}
+                style={{ border: "1px solid #F6AD55" }}
                 onClick={() =>
                   getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)
                 }
@@ -380,11 +448,18 @@ export function MainPage(): JSX.Element {
                   setText(e.target.value);
                 }}
                 focusBorderColor="orange.500"
-                style={{  height: "30px", marginTop: "1px" }}
+                style={{ height: "30px", marginTop: "1px" }}
                 _placeholder={{ color: "orange.500" }}
               />
             </InputGroup>
           </Heading>
+          <Button
+            colorScheme={"orange"}
+            className="FiltersContainerButton HideWhenNONMobile"
+            onClick={() => setShow(!show)}
+          >
+            Open filters
+          </Button>
         </div>
 
         {posts.map((post) => (
@@ -399,11 +474,10 @@ export function MainPage(): JSX.Element {
             img={post.img}
             postID={post.postID}
             price={post.price}
-            deadline={post.deadline} 
+            deadline={post.deadline}
             userID={post.userID}
-            ></Post>
+          ></Post>
         ))}
-        <ModalPost />
       </div>
     </Split>
   );

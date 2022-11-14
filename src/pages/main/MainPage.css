@@ -24,6 +24,10 @@
     margin: 0 !important;
 }
 
+.MainPageContainer-PostsContainerInnerContainer{
+    max-width: 768px;
+}
+
 .SearchBarContainer{
     background-color: white !important;
 }
@@ -37,4 +41,24 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+
+@media screen and (max-width: 768px) {
+    .MainPageContainer-PostsContainerInnerContainer{
+        width: 100%;
+    }
+
+    .MainPageContainer-PostsContainerMobile{
+        position: absolute;
+        width: 100vw !important;
+        padding-left: 32px;
+        padding-right: 32px;
+        margin: 0;
+    }
+
+    .MainPageContainer{
+        display: absolute;
+        width: 100%;
+    }
 }

@@ -294,6 +294,11 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   // const divRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    dispatch(setActiveConIDRedux(-1));
+  }, []);
+
+
    useEffect(() => {
     scroller.scrollTo("bottom", {
       containerId: "MessagesContainer-Scroll",

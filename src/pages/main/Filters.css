@@ -30,3 +30,27 @@
     width: 100%;
     text-align: center;
 }
+
+.FiltersContainerButton{
+    display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+    .FiltersContainer{
+        position: absolute;
+        left: 0;
+        width: 100% !important;
+        z-index: 2;
+        transform: translateX(-100%);
+        transition: all 0.2s ease-out;
+    }
+
+    .FiltersContainerButton{
+        display: default;
+    }
+
+    .FiltersContainerOpen {
+        transform: translateX(0%);
+    }
+}

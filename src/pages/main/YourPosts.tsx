@@ -139,7 +139,7 @@ export function YourPostsPage(): JSX.Element {
     //       </div>
     //     </div>
     //   </div>
-    <div className="MainPageContainer-PostsContainer">
+    <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMobile">
 
       {sortPostsbyDate(posts).map((post) => (
         <Post

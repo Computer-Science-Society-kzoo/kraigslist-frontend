@@ -70,14 +70,16 @@
 
 @media screen and (max-width: 900px) {
     .PostContainer{
-        max-width: 356px;
+        min-width: 100%;
         height: fit-content;
+        max-height: fit-content !important;
         flex-direction: column;    
     }
 
     .PostContainer-Internal{
         width: 100%; 
         padding: 16px 16px 16px 16px;
+        height: fit-content;
         border-radius : 12px;
         display: flex;
         flex-direction: column;    

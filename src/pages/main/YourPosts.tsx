@@ -158,6 +158,12 @@ export function YourPostsPage(): JSX.Element {
           key={post.postID}
         ></Post>
       ))}
+
+      {posts.length === 0 &&
+        <div className="MainPageContainer-PostsContainer-Empty">
+          <Text fontSize="xl" fontWeight="bold" >No posts yet</Text>
+        </div>
+      }
     </div>
     // </Split>
   );

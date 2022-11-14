@@ -221,7 +221,7 @@ export function Signup(): JSX.Element {
 
       <FormControl isRequired>
         <FormLabel> Email </FormLabel>
-        <Input isInvalid = {!validEmail} className={"default-transition " + shakeEmailStyle} onChange={(el) => {setEmail(el.target.value); setValidEmail(true)}} placeholder="Email" required />
+        <Input isInvalid = {!validEmail} className={"default-transition " + shakeEmailStyle} onChange={(el) => {setEmail(el.target.value); setValidEmail(true)}} placeholder="K College Email" required />
       </FormControl>
 
       <FormControl isRequired>

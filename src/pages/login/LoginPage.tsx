@@ -6,6 +6,10 @@ import {
   Tab,
   TabPanels,
   TabPanel,
+  AlertIcon,
+  Alert,
+  Stack,
+  Container,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import "./LoginPage.css";
@@ -27,7 +31,7 @@ export function LoginPage(): JSX.Element {
   }
 
   return (
-    <div className={"LoginSignupForm"}>
+    <><div className={"LoginSignupForm"}>
       <AnimatePresence>
         <Tabs
           index={tabIndex}
@@ -67,6 +71,18 @@ export function LoginPage(): JSX.Element {
           </TabPanels>
         </Tabs>
       </AnimatePresence>
-    </div>
+
+    </div><div>
+
+        <Stack spacing={3}  >
+          <Container maxW='md' >
+            <Alert status='info'  >
+              <AlertIcon />
+              First time here? Sign up with your K email to get started!
+            </Alert>
+          </Container>
+        </Stack>
+      </div></>
+
   );
 }

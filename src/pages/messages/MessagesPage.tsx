@@ -300,7 +300,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
 
    useEffect(() => {
-    scroller.scrollTo("bottom", {
+    scroller.scrollTo("bottomContainer", {
       containerId: "MessagesContainer-Scroll",
       duration: 0,
       smooth: false,
@@ -331,7 +331,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
               className="MessageContainer-Selected-Messages"
               id="MessagesContainer-Scroll"
             >
-              <div className="bottom"></div>
+              <div className="bottomContainer"></div>
               {messages.map((message) => {
                 let showDate = false;
                 let showFirstDate = false;

@@ -73,11 +73,24 @@ code {
   display: none !important;
 }
 
+.HideWhenMobile{
+  display: block !important;
+}
+
 .chakra-modal__close-btn{
   z-index: 100;
 }
 
 @media screen and (max-width: 768px) {
+
+  :root{
+ 
+    --header-height-full: 100px;
+   }
+
+  .HideWhenMobile{
+    display: none !important;
+  }
   .HideWhenNONMobile{
     display: block !important;
   }

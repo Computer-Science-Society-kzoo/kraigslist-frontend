@@ -148,7 +148,7 @@ export function MainPage(): JSX.Element {
       });
   }
 
-  const [checkedItems, setCheckedItems] = useState([false, false]);
+  const [checkedItems, setCheckedItems] = useState([true, true]);
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;

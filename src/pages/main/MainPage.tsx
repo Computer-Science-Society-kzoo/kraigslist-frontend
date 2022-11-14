@@ -187,7 +187,7 @@ export function MainPage(): JSX.Element {
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
-  const [filterCheck, setFilterCheck] = useState("");
+  const [filterCheck, setFilterCheck] = useState(["","",""]);
 
   async function filterChange() {
     if (
@@ -196,30 +196,101 @@ export function MainPage(): JSX.Element {
       !checkedItems[2] &&
       !checkedItems[3]
     ) {
-      setFilterCheck("Offer");
+      setFilterCheck(["Offer", "", ""]);
     } else if (
       checkedItems[1] &&
       !checkedItems[0] &&
       !checkedItems[2] &&
       !checkedItems[3]
     ) {
-      setFilterCheck("Request");
+      setFilterCheck(["Request", "", ""]);
     } else if (
       checkedItems[2] &&
       !checkedItems[0] &&
       !checkedItems[1] &&
       !checkedItems[3]
     ) {
-      setFilterCheck("Information");
+      setFilterCheck(["Information", "", ""]);
     } else if (
       checkedItems[3] &&
       !checkedItems[0] &&
       !checkedItems[1] &&
       !checkedItems[2]
     ) {
-      setFilterCheck("Other");
-    } else {
-      setFilterCheck("");
+      setFilterCheck(["Other", "", ""]);
+    } else if (
+      checkedItems[3] &&
+      checkedItems[0] &&
+      !checkedItems[1] &&
+      !checkedItems[2]
+    ) {
+      setFilterCheck(["Offer", "Other", ""]);
+    } else if (
+      checkedItems[0] &&
+      !checkedItems[1] &&
+      checkedItems[2] &&
+      !checkedItems[3]
+    ) {
+      setFilterCheck(["Offer", "Information", ""]);
+    } else if (
+      !checkedItems[0] &&
+      checkedItems[1] &&
+      checkedItems[2] &&
+      !checkedItems[3]
+    ) {
+      setFilterCheck(["Request", "Information", ""]);
+    } else if (
+      !checkedItems[0] &&
+      checkedItems[1] &&
+      !checkedItems[2] &&
+      checkedItems[3]
+    ) {
+      setFilterCheck(["Request", "Other", ""]);
+    } else if (
+      !checkedItems[0] &&
+      !checkedItems[1] &&
+      checkedItems[2] &&
+      checkedItems[3]
+    ) {
+      setFilterCheck(["Other", "Information", ""]);
+    } else if (
+      checkedItems[0] &&
+      checkedItems[1] &&
+      !checkedItems[2] &&
+      !checkedItems[3]
+    ) {
+      setFilterCheck(["Offer", "Request", ""]);
+    } else if (
+      checkedItems[0] &&
+      checkedItems[1] &&
+      checkedItems[2] &&
+      !checkedItems[3]
+    ) {
+      setFilterCheck(["Offer", "Request", "Information"]);
+    } else if (
+      checkedItems[0] &&
+      checkedItems[1] &&
+      !checkedItems[2] &&
+      checkedItems[3]
+    ) {
+      setFilterCheck(["Offer", "Request", "Other"]);
+    } else if (
+      checkedItems[0] &&
+      !checkedItems[1] &&
+      checkedItems[2] &&
+      checkedItems[3]
+    ) {
+      setFilterCheck(["Offer", "Other", "Information"]);
+    } else if (
+      !checkedItems[0] &&
+      checkedItems[1] &&
+      checkedItems[2] &&
+      checkedItems[3]
+    ) {
+      setFilterCheck(["Other", "Request", "Information"]);
+    }
+    else {
+      setFilterCheck(["", ""]);
     }
     //setFilterCheck(e.target.value);
     //filterData = filterCheck;

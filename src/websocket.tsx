@@ -129,7 +129,7 @@ export function WebSockets(): JSX.Element {
         if (auth) {
             setURL(`${WebSocketHOST}?access_token=` + token.auth);
         }
-    }, [auth]);
+    }, [auth, token.auth]);
 
     return (
         <div style={{display: "none", flexDirection: "column"}}>

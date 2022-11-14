@@ -113,7 +113,7 @@ export function BottomMessageContainer(
       title: title,
       description: desc,
       status: "error",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   }

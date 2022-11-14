@@ -65,7 +65,7 @@ export function Header(): JSX.Element {
       title: "Warning",
       description: "You are now logged out.",
       status: "warning",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   }

@@ -116,7 +116,7 @@ export function Login(props: LoginProps): JSX.Element {
       title: title,
       description: desc,
       status: "success",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
       position: "bottom"
     });
@@ -127,7 +127,7 @@ export function Login(props: LoginProps): JSX.Element {
       title: title,
       description: desc,
       status: "error",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
       position: "bottom"
     });

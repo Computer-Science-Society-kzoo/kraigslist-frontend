@@ -292,7 +292,7 @@ export function MakePost(): JSX.Element {
       title: title,
       description: desc,
       status: "success",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
       position: "bottom",
     });
@@ -303,7 +303,7 @@ export function MakePost(): JSX.Element {
       title: title,
       description: desc,
       status: "error",
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
       position: "bottom",
     });

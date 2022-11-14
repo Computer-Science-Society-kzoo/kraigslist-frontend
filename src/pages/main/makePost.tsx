@@ -51,6 +51,7 @@ export function MakePost(): JSX.Element {
   const [image, setImage] = useState<FileList | null>(null);
   const [image1, setImage1] = useState<File | null>(null);
 
+  const [imageBase64, setImageBase64] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
@@ -170,32 +171,48 @@ export function MakePost(): JSX.Element {
   // }
 
   function handleImageUpload(e: any) {
-    if (!process.env.REACT_APP_FREEIMAGE_API) {
-      console.log("No API key in the environment variables");
-      return;
-    } else {
-      setIsUploading(true);
-      axios
-        .post(
-          `https://freeimage.host/api/1/upload?key=${process.env.REACT_APP_FREEIMAGE_API}`,
-          {
-            source: e.target.files[0],
-            headers: {
+
+    const myFile = e.target.files[0];
+    try {
+        console.log("ping !");
+        setIsUploading(true);
+        
+        const myForm = new FormData();
+        myForm.append("image", myFile);
+    
+        axios
+          .post(
+            `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_FREEIMAGE_API}`,
+            myForm,
+            {
+              headers: {
                 "Content-Type": "multipart/form-data",
               },
-          }
-        )
-        .then((response) => {
-          setIsUploading(false);
-          console.log(response.data);
-          alert(response.data.image.medium.url);
-          setImageURL(response.data.image.medium.url);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }
+            }
+          )
+          .then((response) => {
+            console.log("Upload success");
+            setImageURL(response.data.data.medium.url);
+            setIsUploading(false);
+          })
+          .catch((err) => {
+            console.log("API error ↓");
+            setIsUploading(false);
+            console.log(err);
+    
+            if (err.response.data.error) {
+              console.log(err.response.data.error);
+              //When trouble shooting, simple informations about the error can be found in err.response.data.error so it's good to display it
+            }
+            
+          });
+      } catch (error) {
+        console.log(error);
+      }
+  
+}
+    
+  
 
   async function makePost(
     title: string,

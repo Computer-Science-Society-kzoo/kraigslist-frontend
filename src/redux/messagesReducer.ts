@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 
 
 export interface MessageProps {
+    sender?: string;
     message: string;
     yours: boolean;
     date: string;

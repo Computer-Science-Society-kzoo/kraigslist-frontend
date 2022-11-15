@@ -9,13 +9,20 @@ import { useDispatch } from "react-redux";
 import moment from "moment";
 import axios from "axios";
 import { RestAPIHOST, WebSocketHOST } from "./index";
+import { Box, color, createStandaloneToast, useToast, Text, Button } from '@chakra-ui/react'
+import { render } from "@testing-library/react";
+import { useLocation } from "react-router-dom";
+
 
 interface Message {
     type: string;
     data: any;
 }
 
+const { ToastContainer, toast } = createStandaloneToast()
+
 export function WebSockets(): JSX.Element {
+  let location = useLocation()
 
     // let websocket = new WebSocket('ws://localhost:8000');
 
@@ -62,6 +69,26 @@ export function WebSockets(): JSX.Element {
 
   const dispatch = useDispatch();
 
+
+
+  function pushNotification(user: string, message: string) {
+
+    console.log("Pushing notification: " + user + " " + message)
+
+    if (location.pathname !== "/messages") {
+      toast({
+        title: user,
+        description: message,
+        status: 'info',
+        duration: 6000,
+        isClosable: true,
+        position: "bottom-right",
+        variant: "subtle",
+      })
+    
+    }
+  
+  }
   
 
   useEffect(() => {
@@ -98,12 +125,15 @@ export function WebSockets(): JSX.Element {
                 const id = dataFromServer.data.conversationID
                 
                 const newMessage: MessageProps = {
+                    sender: dataFromServer.data.sender,
                     message: dataFromServer.data.message,
                     yours: false,
                     date: now.toString()
                 }
 
-                dispatch(pushNewIncomingMessageRedux({conId: id, message: newMessage}))       
+                dispatch(pushNewIncomingMessageRedux({conId: id, message: newMessage}))   
+                
+                pushNotification(dataFromServer.data.sender, dataFromServer.data.message)
 
                 break
             default:
@@ -132,7 +162,12 @@ export function WebSockets(): JSX.Element {
     }, [auth, token.auth]);
 
     return (
+      <>
         <div style={{display: "none", flexDirection: "column"}}>
+        <div className="ToastContainerAccess">
+          <ToastContainer />
+        </div>
+
           <span>The WebSocket is currently {connectionStatus}</span>
           {lastMessage ? <span>Last message: {lastMessage.data}</span> : null}
           <ul>
@@ -141,9 +176,12 @@ export function WebSockets(): JSX.Element {
             ))}
           </ul>
         </div>
+        </>
       );
 
 }
+
+
 
 
 // // When the connection is closed, print some data to the console.

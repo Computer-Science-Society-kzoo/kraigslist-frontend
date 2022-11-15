@@ -94,13 +94,19 @@
 
 .SelectedMessage > * {
     background-color: var(--k-orange);
+    color: white;
 }
 
 .UnreadMessage > * {
-    background-color: var(--orange-selection);
+    background-color: var(--chakra-colors-orange-100)
+}
+
+.ConversationContainer{
+    overflow: hidden;
 }
 
 .ConversationContainer-Conversation{
+    overflow: hidden;
     position: relative;
 }
 

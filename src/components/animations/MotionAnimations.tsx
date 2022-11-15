@@ -45,6 +45,7 @@ export function AnimatedMessageItem(props: {
 export function AnimateConversationsItems(props: {
     children: JSX.Element[];
     keyName: string;
+    classToPass: string;
     }): JSX.Element {
     return (
         <AnimatePresence exitBeforeEnter>
@@ -55,6 +56,7 @@ export function AnimateConversationsItems(props: {
                     animate={{ scale: 1, opacity: 1, x: 0, filter: "blur(0px)"}}
                     exit={{ opacity: 0, y: 0 }}
                     transition={{ duration: 0.25, delay: index * 0.1 }}
+                    className={props.classToPass}
                 >
                     {child}
                 </motion.div>

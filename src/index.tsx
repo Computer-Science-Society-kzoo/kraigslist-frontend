@@ -34,7 +34,6 @@ root.render(
     <Provider store={store}>
       <ColorModeScript/>
       <ChakraProvider>
-        <WebSockets/>
         <App />
       </ChakraProvider>
     </Provider>

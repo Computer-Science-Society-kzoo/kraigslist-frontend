@@ -527,7 +527,7 @@ export function MessagesPage(): JSX.Element {
               </div>
             )}
             {/* className="ConversationContainer-Conversation" */}
-            <AnimateConversationsItems keyName="Conversations">
+            <AnimateConversationsItems keyName="Conversations" classToPass="ConversationContainer-Conversation">
               {conversations.map((con) => (
                 <a
                   className={

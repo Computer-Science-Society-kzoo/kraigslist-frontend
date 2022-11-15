@@ -32,6 +32,7 @@ import { selectTotalMessagesState } from "../redux/messagesReducer";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Burger } from "./Burger";
+import { AnimateTitle } from "./animations/MotionAnimations";
 
 export function Header(): JSX.Element {
   // const [height, setHeight] = useState<number>(0)
@@ -80,9 +81,11 @@ export function Header(): JSX.Element {
   return (
     <>
     <div className={ !showMobileMenu ? "MobileHeader HideWhenNONMobile" : "MobileHeader HideWhenNONMobile" } >
-      <Heading className="tracking-in-expand-fwd-top NoSelection" id="KRAIGSLIST-TEXT">
-        <span>K</span>raigslist
-      </Heading>
+      <AnimateTitle keyName="Kraigslist">
+        <Heading className="tracking-in-expand-fwd-top NoSelection" id="KRAIGSLIST-TEXT">
+          <span>K</span>raigslist
+        </Heading>
+      </AnimateTitle>
       {useSelector(selectAuthState) &&
       <div className="MobileHeaderBurger NoSelection" onClick={() => { setShowMobileMenu(!showMobileMenu) }}>
         <Burger/>
@@ -93,9 +96,11 @@ export function Header(): JSX.Element {
     <Divider className="HideWhenNonMobile"/>
 
       <header className={showMobileMenu ? "Header HeaderOpen" : "Header" }>
+      <AnimateTitle keyName="Kraigslist">
         <Heading className="tracking-in-expand-fwd-top HideWhenMobile" id="KRAIGSLIST-TEXT">
           <span>K</span>raigslist
         </Heading>
+      </AnimateTitle>
         <AnimateHeight
           variants={variants}
           isVisible={useSelector(selectAuthState)}

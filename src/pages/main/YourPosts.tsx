@@ -9,6 +9,7 @@ import Split from 'react-split'
 import './Split.css';
 import { RestAPIHOST} from "../../index";
 import { Post, PostProps } from "./MainPage";
+import { AnimatePostItems } from "../../components/animations/MotionAnimations";
 
 export function YourPostsPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
@@ -139,30 +140,38 @@ export function YourPostsPage(): JSX.Element {
     //       </div>
     //     </div>
     //   </div>
-    <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMobile">
+    <div className="MainPageContainer-PostsContainerYOURPOSTS MainPageContainer-PostsContainer MainPageContainer-PostsContainerMobile">
 
-      {sortPostsbyDate(posts).map((post) => (
-        <Post
-          title={post.title}
-          username={post.username}
-          text={post.text}
-          date={post.date}
-          type={post.type}
-          categories={post.categories}
-          img={post.img}
-          date_created={post.date_created} 
-          userID={post.userID}
-          postID={post.postID}
-          price={post.price}
-          deadline={post.deadline}
-          key={post.postID}
-        ></Post>
-      ))}
+    
+    <AnimatePostItems keyName={"YourPosts"}>
+        {sortPostsbyDate(posts).map((post) => (
+          <Post
+            title={post.title}
+            username={post.username}
+            text={post.text}
+            date={post.date}
+            type={post.type}
+            categories={post.categories}
+            img={post.img}
+            date_created={post.date_created} 
+            userID={post.userID}
+            postID={post.postID}
+            price={post.price}
+            deadline={post.deadline}
+            key={post.postID}
+          ></Post>
+        ))}
+      </AnimatePostItems>
 
       {posts.length === 0 &&
-        <div className="MainPageContainer-PostsContainer-Empty">
-          <Text fontSize="xl" fontWeight="bold" >No posts yet</Text>
-        </div>
+        <div className="ConversationContainer-NoConversations">
+        <Text fontSize="xl" noOfLines={3}>
+          You have no posts published yet
+        </Text>
+        <Text fontSize="xs" noOfLines={3}>
+          Create a new post by clicking the button in the header / burger menu
+        </Text>
+      </div>
       }
     </div>
     // </Split>

@@ -4,16 +4,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    width: 100%;
-    max-width: 750px;
+    max-width: 600px;
     border : 1px solid #e2e8f0;
     border-radius : 12px;
     gap: 16px;
     background-color: white;
     margin: auto;
-    padding: 10px;
     margin-top: 30px;
+    padding: 16px 32px;
 }
 
 .Profile-Header {
@@ -28,20 +26,19 @@
 .Profile-Contents-Container{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
     height: 40px;
-    width: 450px;
     background-color: white;
     border-radius: 10px 10px 10px 10px;
-    outline: 2px solid #edeef0;
 }
 
 .Profile-LeftElt{
     display: flex;
     height: 40px;
-    width: 100px;
+    min-width: 100px !important;
     flex-direction: row;
-    background-color: #edeef0;
+    background-color: var(--k-orange);
+    color: white;
     justify-content: left;
     border-radius: 10px 0px 0px 10px;
     padding: 0;
@@ -52,7 +49,6 @@
 .Profile-MiddleElt{
     display: flex;
     height: 40px;
-    width: 350px;
     flex-direction: row;
     background-color: white;
     justify-content: center;
@@ -61,3 +57,26 @@
     margin-left: auto;
     text-align: center;
 }
+
+.ProfileBottomButtons{
+    margin-top: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    width: 450px;
+    height: 40px;
+    background-color: white;
+    border-radius: 0px 0px 10px 10px;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .Profile-Container{
+        max-width: 100%;
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+    

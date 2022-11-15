@@ -10,11 +10,14 @@
     transition: all 0.2s ease-out;
     background-color: white;
     padding: 0 !important;
+    
 }
 
 
 .PostContainer:hover{
     transform: scale(1.02);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
     cursor: pointer;
 }
 
@@ -66,11 +69,9 @@
 
 
 
-
-
 @media screen and (max-width: 900px) {
     .PostContainer{
-        min-width: 100%;
+        width: 100% !important;
         height: fit-content;
         max-height: fit-content !important;
         flex-direction: column;    

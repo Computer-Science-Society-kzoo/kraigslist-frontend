@@ -509,7 +509,7 @@ export function MainPage(): JSX.Element {
         </div>
       </AnimateFilterEntry>
 
-      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE MainPageContainer-PostsContainerMobile ZIndex100">
+      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE MainPageContainer-PostsContainerMobile ">
         <div className="MainPageContainer-PostsContainerInnerContainer">
           <Heading as="h2" size="xs" variant="outlined">
             <InputGroup
@@ -539,9 +539,12 @@ export function MainPage(): JSX.Element {
               />
             </InputGroup>
           </Heading>
-          <Button
+         
+        </div>
+        <div>
+        <Button
             colorScheme={"orange"}
-            className="OpenFiltersContainersButton HideWhenNONMobile"
+            className=" HideWhenNONMobile"
             onClick={() => setShow(!show)}
           >
             Open Filters

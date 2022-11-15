@@ -15,6 +15,7 @@
     "@types/node": "^16.11.64",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
+    "@types/react-helmet": "^6.1.5",
     "@types/react-redux": "^7.1.24",
     "@types/react-scroll": "^1.8.4",
     "@types/websocket": "^1.0.5",
@@ -71,7 +72,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-helmet": "^6.1.5",
     "@types/react-infinite-scroller": "^1.2.3"
   }
 }

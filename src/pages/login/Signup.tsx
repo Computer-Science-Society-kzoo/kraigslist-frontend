@@ -94,6 +94,13 @@ export function Signup(): JSX.Element {
     dispatch(setAuthRedux(true))
   }
 
+  //write a function to check if the email ends with @kzoo.edu
+  function checkEmail(email: string): boolean {
+    if (email.split("@").pop() === "kzoo.edu") 
+      return true; //email is valid
+    return false
+  }
+
   async function signup(email: string, password: string, firstname: string, lastname: string, preferredname: string, year: Number) {
     //alert("Email is: " + email + " Password is: " + password)
     if (email === "") {
@@ -124,12 +131,12 @@ export function Signup(): JSX.Element {
       //   "Blank field.",
       //   "Please provide a year."
       // );
-    } if (! email.includes("@kzoo.edu")) {
+    } if (checkEmail(email) === false) {
       
       shakeEmail();
       messageFailure(
         "Invalid email address.",
-        "Please provide a valid email address."
+        "Please provide a valid email address (username@kzoo.edu)"
       );
     
     } if (password === "") {
@@ -155,6 +162,10 @@ export function Signup(): JSX.Element {
         })
         .catch((err) => {
           console.log(err);
+          try {
+          if (err === undefined){
+            messageFailure("Error", "An unknown error has occured.");
+          }
           if (err.response.status === 401) {
             messageFailure(
               "Not a K-email.",
@@ -162,7 +173,16 @@ export function Signup(): JSX.Element {
             );
           } else if (err.response.status === 404) {
             messageFailure("Error", "The user does not exist.");
+          } else if (err.response.status === 409) {
+            messageFailure(
+              "Email already exists.",
+              "Please log in or use a different email."
+            );
           }
+        } catch (e) {
+          messageFailure("Error", "Something went wrong. Please try again later.");
+        }
+
         });
     }
   }
@@ -226,7 +246,7 @@ export function Signup(): JSX.Element {
 
       <FormControl isRequired>
         <FormLabel> Password </FormLabel>
-        <Input isInvalid = {!validPassword} className={"default-transition " + shakePasswordStyle} onChange={(el) => {setPassword(el.target.value); setValidPassword(true)}} placeholder="Password" required />
+        <Input type={"password"} isInvalid = {!validPassword} className={"default-transition " + shakePasswordStyle} onChange={(el) => {setPassword(el.target.value); setValidPassword(true)}} placeholder="Password" required />
       </FormControl>
 
       <FormControl>

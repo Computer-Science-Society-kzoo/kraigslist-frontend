@@ -94,6 +94,7 @@ export function Login(props: LoginProps): JSX.Element {
         })
         .catch((err) => {
           console.log(err);
+          try{
           if (err.response.status === 401) {
             messageFailure(
               "Incorrect login information",
@@ -105,6 +106,9 @@ export function Login(props: LoginProps): JSX.Element {
             shakeEmail()
             shakePassword()
           } else {
+            messageFailure("Error", "Something went wrong. Please try again later");
+          }}
+          catch{
             messageFailure("Error", "Something went wrong. Please try again later");
           }
         });

@@ -79,12 +79,14 @@ export function Header(): JSX.Element {
   return (
     <>
     <div className={ !showMobileMenu ? "MobileHeader HideWhenNONMobile" : "MobileHeader HideWhenNONMobile" } >
-      <Heading className="tracking-in-expand-fwd-top " id="KRAIGSLIST-TEXT">
+      <Heading className="tracking-in-expand-fwd-top NoSelection" id="KRAIGSLIST-TEXT">
         <span>K</span>raigslist
       </Heading>
-      <div className="MobileHeaderBurger" onClick={() =>setShowMobileMenu(!showMobileMenu)}>
-        <Burger />
+      {useSelector(selectAuthState) &&
+      <div className="MobileHeaderBurger NoSelection" onClick={() =>setShowMobileMenu(!showMobileMenu)}>
+        <Burger/>
       </div>
+      }
     </div>
       <header className={showMobileMenu ? "Header HeaderOpen" : "Header" }>
         <Heading className="tracking-in-expand-fwd-top HideWhenMobile" id="KRAIGSLIST-TEXT">

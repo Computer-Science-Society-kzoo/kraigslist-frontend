@@ -4,8 +4,9 @@ import 'burger-react/dist/style.css'
 export const Burger = () => {
     return (
         <BurgerButton
-        color="black"
-        hoverOpacity="0.8"
+            className="NoSelection"
+            size = { 65 }
+            color="black"
         />
     )
     }

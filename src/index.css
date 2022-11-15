@@ -44,6 +44,12 @@ code {
   font-size: 32px;
 }
 
+.NoSelection{
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
 
 
 #MessagesContainer-Scroll::-webkit-scrollbar-track
@@ -81,11 +87,20 @@ code {
   z-index: 100;
 }
 
+.Highlighted{
+  text-decoration: underline;
+}
+
+.Link{
+  color: var(--k-orange);
+  cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
 
   :root{
  
-    --header-height-full: 100px;
+    --header-height-full: 100px !important;
    }
 
   .HideWhenMobile{

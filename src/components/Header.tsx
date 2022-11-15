@@ -61,6 +61,7 @@ export function Header(): JSX.Element {
 
   function testSignOut() {
     removeToken("auth");
+    setShowMobileMenu(false);
     toast({
       title: "Warning",
       description: "You are now logged out.",
@@ -83,7 +84,7 @@ export function Header(): JSX.Element {
         <span>K</span>raigslist
       </Heading>
       {useSelector(selectAuthState) &&
-      <div className="MobileHeaderBurger NoSelection" onClick={() =>setShowMobileMenu(!showMobileMenu)}>
+      <div className="MobileHeaderBurger NoSelection" onClick={() => { setShowMobileMenu(!showMobileMenu) }}>
         <Burger/>
       </div>
       }
@@ -144,12 +145,12 @@ export function Header(): JSX.Element {
               onClick={() => {
                 dispatch(setCreatePost(true));
               }}
-              colorScheme="gray"
+              colorScheme="orange"
             >
               Create Post
             </Button>
 
-            <Button onClick={testSignOut} colorScheme="orange">
+            <Button onClick={testSignOut} colorScheme="gray">
               Sign Out
             </Button>
           </motion.div>

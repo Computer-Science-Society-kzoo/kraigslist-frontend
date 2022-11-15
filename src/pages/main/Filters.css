@@ -31,11 +31,13 @@
     text-align: center;
 }
 
-.FiltersContainerButton{
-    display: none;
-    margin-top: 20px;
-    justify-content: center;
-    align-items: center;
+.OpenFiltersContainersButton{
+    margin-top: 16px;
+
+}
+
+.CloseFiltersContainerButton{
+   height: fit-content !important;
 }
 
 
@@ -49,10 +51,7 @@
         transition: all 0.2s ease-out;
     }
 
-    .FiltersContainerButton{
-        display: default;
-    }
-
+   
     .FiltersContainerOpen {
         transform: translateX(0%);
     }

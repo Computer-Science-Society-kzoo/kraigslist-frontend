@@ -52,8 +52,9 @@
     .MainPageContainer-PostsContainerMobile{
         position: absolute;
         width: 100vw !important;
-        padding-left: 32px;
-        padding-right: 32px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 16px;
         margin: 0;
     }
 

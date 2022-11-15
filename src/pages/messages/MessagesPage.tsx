@@ -10,7 +10,7 @@ import {
   Button,
   Spinner,
 } from "@chakra-ui/react";
-import { ChatIcon } from "@chakra-ui/icons";
+import { ChatIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -31,18 +31,21 @@ import {
 import { ConversationProps, MessageProps } from "../../redux/messagesReducer";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import {
-  animateScroll as scroll,
-  scroller,
-} from "react-scroll";
+import { animateScroll as scroll, scroller } from "react-scroll";
 
 import { RestAPIHOST } from "../../index";
+import {
+  AnimateConversationsItems,
+  AnimatedMessageItem,
+  AnimateElement,
+} from "../../components/animations/MotionAnimations";
 
 interface MessageDetails {
   name: string;
   conID: number;
   comID: number;
   postID: number;
+  setConId: (conID: number) => void;
 }
 
 interface BoottomMessageContainerProps {
@@ -78,6 +81,10 @@ function TopMessageContainer(props: MessageDetails): JSX.Element {
       <Heading as="h1" size="lg">
         {props.name}
       </Heading>
+      <ChevronLeftIcon
+        className="TopMessageContainerBackButton"
+        onClick={() => {props.setConId(-1)}}
+      />
     </div>
   );
 }
@@ -214,7 +221,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
         date: con.date,
       });
     });
-    return parsedMessages
+    return parsedMessages;
   }
 
   //check if two dates share the same day
@@ -253,7 +260,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
     addMessage({ message: message, yours: true, date: now.toString() });
     props.updateLastMessage(props.conID, message);
   }
-
 
   //const [page, setPage] = useState(1);
   async function getMessages() {
@@ -298,22 +304,22 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
     dispatch(setActiveConIDRedux(-1));
   }, []);
 
-
-   useEffect(() => {
+  useEffect(() => {
     scroller.scrollTo("bottomContainer", {
       containerId: "MessagesContainer-Scroll",
       duration: 0,
       smooth: false,
       offset: 0,
     });
-    getMessages()
+    getMessages();
     //setPage(1)
   }, [props.conID]);
 
-
   let counter = 0;
+
+
   return (
-    <div className="MessageContainer">
+    <div className={ props.conID === -1 ? "MessageContainer HideWhenMobile"  : "MessageContainer"}> 
       {props.conID === -1 && (
         <div className="MessageContainer-NoSelection">
           <ChatIcon />
@@ -325,38 +331,35 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
       {props.conID !== -1 && (
         <div className="MessageContainer-Selected">
           <TopMessageContainer {...props} />
-          <AnimatePresence>
-            <div
-              // ref={divRef}
-              className="MessageContainer-Selected-Messages"
-              id="MessagesContainer-Scroll"
-            >
-              <div className="bottomContainer"></div>
-              {messages.map((message) => {
-                let showDate = false;
-                let showFirstDate = false;
-                if (messages.indexOf(message) !== 0) {
-                  if (
-                    !sameDay(
-                      new Date(message.date),
-                      new Date(messages[messages.indexOf(message) - 1].date)
-                    )
-                  ) {
-                    showDate = true;
-                  }
+          <div
+            // ref={divRef}
+            className="MessageContainer-Selected-Messages"
+            id="MessagesContainer-Scroll"
+          >
+            <div className="bottomContainer"></div>
+            {messages.map((message) => {
+              let showDate = false;
+              let showFirstDate = false;
+              if (messages.indexOf(message) !== 0) {
+                if (
+                  !sameDay(
+                    new Date(message.date),
+                    new Date(messages[messages.indexOf(message) - 1].date)
+                  )
+                ) {
+                  showDate = true;
                 }
-                if (messages.indexOf(message) === messages.length - 1) {
-                  showFirstDate = true;
-                }
+              }
+              if (messages.indexOf(message) === messages.length - 1) {
+                showFirstDate = true;
+              }
 
-                return (
-                  <motion.div
-                    key={counter++}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
+              return (
+                <AnimatedMessageItem
+                  keyName={"Messages"}
+                  index={messages.indexOf(message)}
+                >
+                  <>
                     {showFirstDate && (
                       <div className="MessageContainer-Selected-Messages-Date">
                         <Text fontSize="md">
@@ -382,10 +385,11 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                         </Text>
                       </div>
                     )}
-                  </motion.div>
-                );
-              })}
-              {/* {!loadMore && (
+                  </>
+                </AnimatedMessageItem>
+              );
+            })}
+            {/* {!loadMore && (
                 <motion.div onViewportEnter={lastElementReached}> </motion.div>
               )}
               {loadMore && (
@@ -393,8 +397,7 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
                   <Spinner size="xl" color="orange.500" />
                 </div>
               )} */}
-            </div>
-          </AnimatePresence>
+          </div>
           <BottomMessageContainer
             id={props.conID}
             postID={props.postID}
@@ -408,7 +411,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
 export function MessagesPage(): JSX.Element {
   const [token, setToken, removeToken] = useCookies(["auth"]);
-
 
   const dispatch = useDispatch();
   const conversations = useSelector(selectConversationsState);
@@ -426,6 +428,9 @@ export function MessagesPage(): JSX.Element {
   const selectedConversation = useSelector(selectActiveConIDState);
 
   function setSelectedConversation(conID: number) {
+    if (conID !== -1) {
+      dispatch(setActiveMessagesRedux([]));
+    }
     dispatch(setActiveConIDRedux(conID));
   }
   const [loading, setLoading] = useState<boolean>(true);
@@ -448,7 +453,7 @@ export function MessagesPage(): JSX.Element {
     });
   }
 
-   async function getConversations() {
+  async function getConversations() {
     console.log(token.auth);
     setLoading(true);
     axios
@@ -479,12 +484,9 @@ export function MessagesPage(): JSX.Element {
     setSelectedConversation(conID);
   }
 
-
   function updateLastMessage(conID: number, message: string) {
-
-  const date = moment().toDate().toString()
-  dispatch(setNewLastMessageRedux({conID, message, date}));
-  
+    const date = moment().toDate().toString();
+    dispatch(setNewLastMessageRedux({ conID, message, date }));
   }
 
   useEffect(() => {
@@ -496,46 +498,44 @@ export function MessagesPage(): JSX.Element {
   }, [conversationsTrigger]);
 
   return (
-    <div className="MessagesPageContainer">
-      <div className="MessagesPageContainer-Main">
-        <div className="ConversationContainer">
-          {conversations.length === 0 && loading === true && (
-            <div className="ConversationContainer-Loading">
-              <Text fontSize="xl" noOfLines={3}>
-                Loading...
-              </Text>
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="orange.500"
-                size="xl"
-              />
-            </div>
-          )}
-          {conversations.length === 0 && loading === false && (
-            <div className="ConversationContainer-NoConversations">
-              <Text fontSize="xl" noOfLines={3}>
-                You have no conversations
-              </Text>
-              <Text fontSize="xs" noOfLines={3}>
-                Start conversation by contacting posts's authors
-              </Text>
-            </div>
-          )}
-          <AnimatePresence>
-            {conversations.map((con) => (
-              <motion.div
-                key={con.conID}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-                className="ConversationContainer-Conversation"
-              >
+    <AnimateElement keyName={"MessageContainer"}>
+      <div className="MessagesPageContainer">
+        <div className="MessagesPageContainer-Main">
+          <div className={ selectedConversation === -1 ? "ConversationContainer" : "ConversationContainer HideWhenMobile"}>
+            {conversations.length === 0 && loading === true && (
+              <div className="ConversationContainer-Loading">
+                <Text fontSize="xl" noOfLines={3}>
+                  Loading...
+                </Text>
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="orange.500"
+                  size="xl"
+                />
+              </div>
+            )}
+            {conversations.length === 0 && loading === false && (
+              <div className="ConversationContainer-NoConversations">
+                <Text fontSize="xl" noOfLines={3}>
+                  You have no conversations
+                </Text>
+                <Text fontSize="xs" noOfLines={3}>
+                  Start conversation by contacting posts's authors
+                </Text>
+              </div>
+            )}
+            {/* className="ConversationContainer-Conversation" */}
+            <AnimateConversationsItems keyName="Conversations">
+              {conversations.map((con) => (
                 <a
                   className={
-                    (selectedConversation === con.conID ? "SelectedMessage" : 
-                    (con.numberOfUnreadMessages > 0 ? "UnreadMessage" : ""))
+                    selectedConversation === con.conID
+                      ? "SelectedMessage"
+                      : con.numberOfUnreadMessages > 0
+                      ? "UnreadMessage"
+                      : ""
                   }
                   onClick={() => {
                     selectConversation(
@@ -546,26 +546,32 @@ export function MessagesPage(): JSX.Element {
                     );
                   }}
                 >
-                  <div className={con.numberOfUnreadMessages > 0 ? "UnreadMessageValue" : "UnreadMessageValueHide" }>
+                  <div
+                    className={
+                      con.numberOfUnreadMessages > 0
+                        ? "UnreadMessageValue"
+                        : "UnreadMessageValueHide"
+                    }
+                  >
                     <div>{con.numberOfUnreadMessages}</div>
                   </div>
                   <ConversationItem {...con} />
-
                 </a>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+              ))}
+            </AnimateConversationsItems>
+          </div>
+          <Divider orientation="vertical" />
+          <MessageContainer
+            comID={comradeID}
+            conID={selectedConversation}
+            name={comradeName}
+            postID={postID}
+            updateLastMessage={updateLastMessage}
+            setConId={setSelectedConversation}
+          />
         </div>
-        <Divider orientation="vertical" />
-        <MessageContainer
-          comID={comradeID}
-          conID={selectedConversation}
-          name={comradeName}
-          postID={postID}
-          updateLastMessage={updateLastMessage}
-        />
       </div>
-    </div>
+    </AnimateElement>
   );
 }
 function toast(arg0: {
@@ -577,4 +583,3 @@ function toast(arg0: {
 }) {
   throw new Error("Function not implemented.");
 }
-

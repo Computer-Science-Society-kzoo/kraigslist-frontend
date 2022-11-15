@@ -200,6 +200,12 @@
     padding-top: 25px;
 }
 
+.TopMessageContainerBackButton{
+    width: 30px !important;
+    height: 30px !important;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1080px) {
     .MessagesPageContainer-Main{
         width: 100%;
@@ -212,4 +218,18 @@
         width: 100%;
         width: calc(100% - 48px);
     } 
+
+    .ConversationContainer{
+        width: 100% !important;
+    }
+
+    .MessageContainer{
+        width: 100%;
+    }
+
+    .TopMessageContainer{
+        flex-direction: row-reverse;
+        justify-content: left;
+    }
 }
+

@@ -30,6 +30,11 @@ import { ModalPost } from "./PostModal";
 import { RestAPIHOST } from "../../index";
 import Moment from "react-moment";
 import { setPostModalRedux } from "../../redux/postModalReducer";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimateFilterEntry,
+  AnimatePostItems,
+} from "../../components/animations/MotionAnimations";
 
 export interface PostProps {
   date_created: string;
@@ -360,148 +365,151 @@ export function MainPage(): JSX.Element {
       minSize={[240, 500]}
       expandToMin={false}
     >
-      <div
-        className={
-          !show ? "FiltersContainer" : "FiltersContainer FiltersContainerOpen"
-        }
-      >
-        <div className="FiltersContainer-InnerContainer">
-          <div className="FiltersContainer-InnerContainer-Category">
-            <Heading as={"h3"} size={"xs"}>
-              Type
-            </Heading>
-            <Checkbox
-              isChecked={allChecked}
-              isIndeterminate={isIndeterminate}
-              colorScheme="orange"
-              onChange={(e) => {
-                setCheckedItems([
-                  e.target.checked,
-                  e.target.checked,
-                  e.target.checked,
-                  e.target.checked,
-                ]);
-              }}
-            >
-              All
-            </Checkbox>
-            <Stack pl={6} mt={1} spacing={1}>
+      <AnimateFilterEntry keyName="MainFilter">
+        <div
+          className={
+            !show ? "FiltersContainer" : "FiltersContainer FiltersContainerOpen"
+          }
+        >
+          <div className="FiltersContainer-InnerContainer">
+            <div className="FiltersContainer-InnerContainer-Category">
+              <Heading as={"h3"} size={"xs"}>
+                Type
+              </Heading>
               <Checkbox
+                isChecked={allChecked}
+                isIndeterminate={isIndeterminate}
                 colorScheme="orange"
-                isChecked={checkedItems[0]} //making an onChange function
                 onChange={(e) => {
                   setCheckedItems([
                     e.target.checked,
-                    checkedItems[1],
-                    checkedItems[2],
-                    checkedItems[3],
-                  ]);
-                }}
-              >
-                Offer
-              </Checkbox>
-              <Checkbox
-                colorScheme="orange"
-                isChecked={checkedItems[1]}
-                onChange={(e) => {
-                  setCheckedItems([
-                    checkedItems[0],
                     e.target.checked,
-                    checkedItems[2],
-                    checkedItems[3],
-                  ]);
-                }}
-              >
-                Requests
-              </Checkbox>
-              <Checkbox
-                colorScheme="orange"
-                isChecked={checkedItems[2]}
-                onChange={(e) => {
-                  setCheckedItems([
-                    checkedItems[0],
-                    checkedItems[1],
                     e.target.checked,
-                    checkedItems[3],
-                  ]);
-                }}
-              >
-                Information
-              </Checkbox>
-              <Checkbox
-                colorScheme="orange"
-                isChecked={checkedItems[3]}
-                onChange={(e) => {
-                  setCheckedItems([
-                    checkedItems[0],
-                    checkedItems[1],
-                    checkedItems[2],
                     e.target.checked,
                   ]);
                 }}
               >
-                Other
+                All
               </Checkbox>
-            </Stack>
+              <Stack pl={6} mt={1} spacing={1}>
+                <Checkbox
+                  colorScheme="orange"
+                  isChecked={checkedItems[0]} //making an onChange function
+                  onChange={(e) => {
+                    setCheckedItems([
+                      e.target.checked,
+                      checkedItems[1],
+                      checkedItems[2],
+                      checkedItems[3],
+                    ]);
+                  }}
+                >
+                  Offer
+                </Checkbox>
+                <Checkbox
+                  colorScheme="orange"
+                  isChecked={checkedItems[1]}
+                  onChange={(e) => {
+                    setCheckedItems([
+                      checkedItems[0],
+                      e.target.checked,
+                      checkedItems[2],
+                      checkedItems[3],
+                    ]);
+                  }}
+                >
+                  Requests
+                </Checkbox>
+                <Checkbox
+                  colorScheme="orange"
+                  isChecked={checkedItems[2]}
+                  onChange={(e) => {
+                    setCheckedItems([
+                      checkedItems[0],
+                      checkedItems[1],
+                      e.target.checked,
+                      checkedItems[3],
+                    ]);
+                  }}
+                >
+                  Information
+                </Checkbox>
+                <Checkbox
+                  colorScheme="orange"
+                  isChecked={checkedItems[3]}
+                  onChange={(e) => {
+                    setCheckedItems([
+                      checkedItems[0],
+                      checkedItems[1],
+                      checkedItems[2],
+                      e.target.checked,
+                    ]);
+                  }}
+                >
+                  Other
+                </Checkbox>
+              </Stack>
 
-            <Divider />
-          </div>
-          <div className="FiltersContainer-InnerContainer-Category">
-            <Heading as={"h3"} size={"xs"}>
-              Price
-            </Heading>
+              <Divider />
+            </div>
+            <div className="FiltersContainer-InnerContainer-Category">
+              <Heading as={"h3"} size={"xs"}>
+                Price
+              </Heading>
 
-            <Checkbox
-              colorScheme="orange"
-              isChecked={checkedItems2[0]}
-              onChange={(e) => {
-                setCheckedItems2([e.target.checked, false]);
-              }}
-            >
-              Low to High
-            </Checkbox>
-            <Checkbox
-              colorScheme="orange"
-              isChecked={checkedItems2[1]}
-              onChange={(e) => {
-                setCheckedItems2([false, e.target.checked]);
-              }}
-            >
-              High to Low
-            </Checkbox>
-
-            <Divider />
-          </div>
-          <div className="FiltersContainer-InnerContainer-Category">
-            <Heading as={"h3"} size={"xs"}>
-              Deadline
-            </Heading>
-
-            <Checkbox
-              colorScheme="orange"
-              isChecked={checkedItems3[0]}
-              onChange={(e) => {
-                setCheckedItems3([e.target.checked, false]);
-              }}
-            >
-              Soonest to Latest
-            </Checkbox>
-            <Divider />
-          </div>
-          <div className="FiltersContainer-InnerContainer-Category">
-            {show && (
-              <Button
-                className="CloseFiltersContainerButton HideWhenNONMobile"
+              <Checkbox
                 colorScheme="orange"
-                onClick={() => setShow(!show)}
+                isChecked={checkedItems2[0]}
+                onChange={(e) => {
+                  setCheckedItems2([e.target.checked, false]);
+                }}
               >
-                Close Filters
-              </Button>
-            )}
+                Low to High
+              </Checkbox>
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems2[1]}
+                onChange={(e) => {
+                  setCheckedItems2([false, e.target.checked]);
+                }}
+              >
+                High to Low
+              </Checkbox>
+
+              <Divider />
+            </div>
+            <div className="FiltersContainer-InnerContainer-Category">
+              <Heading as={"h3"} size={"xs"}>
+                Deadline
+              </Heading>
+
+              <Checkbox
+                colorScheme="orange"
+                isChecked={checkedItems3[0]}
+                onChange={(e) => {
+                  setCheckedItems3([e.target.checked, false]);
+                }}
+              >
+                Soonest to Latest
+              </Checkbox>
+              <Divider />
+            </div>
+            <div className="FiltersContainer-InnerContainer-Category">
+              {show && (
+                <Button
+                  className="CloseFiltersContainerButton HideWhenNONMobile"
+                  colorScheme="orange"
+                  onClick={() => setShow(!show)}
+                >
+                  Close Filters
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE MainPageContainer-PostsContainerMobile ">
+      </AnimateFilterEntry>
+
+      <div className="MainPageContainer-PostsContainer MainPageContainer-PostsContainerMAINPAGE MainPageContainer-PostsContainerMobile ZIndex100">
         <div className="MainPageContainer-PostsContainerInnerContainer">
           <Heading as="h2" size="xs" variant="outlined">
             <InputGroup
@@ -514,14 +522,13 @@ export function MainPage(): JSX.Element {
                 icon={<SearchIcon />}
                 borderRadius={"10px 0px 0px 10px"}
                 colorScheme="orange"
-                style={{ border: "1px solid #F6AD55" }}
                 onClick={() =>
                   getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)
                 }
               />
               <Input
                 placeholder="Search"
-                outline="1px solid #F6AD55"
+                border={"0px solid #F6AD55"}
                 borderRadius={"0px 10px 10px 0px"}
                 onChange={(e) => {
                   setText(e.target.value);
@@ -541,22 +548,24 @@ export function MainPage(): JSX.Element {
           </Button>
         </div>
 
-        {posts.map((post) => (
-          <Post
-            date_created={post.date_created}
-            title={post.title}
-            username={post.username}
-            text={post.text}
-            date={post.date}
-            type={post.type}
-            categories={post.categories}
-            img={post.img}
-            postID={post.postID}
-            price={post.price}
-            deadline={post.deadline}
-            userID={post.userID}
-          ></Post>
-        ))}
+        <AnimatePostItems keyName="MainPagePosts">
+          {posts.map((post) => (
+            <Post
+              date_created={post.date_created}
+              title={post.title}
+              username={post.username}
+              text={post.text}
+              date={post.date}
+              type={post.type}
+              categories={post.categories}
+              img={post.img}
+              postID={post.postID}
+              price={post.price}
+              deadline={post.deadline}
+              userID={post.userID}
+            ></Post>
+          ))}
+        </AnimatePostItems>
       </div>
     </Split>
   );

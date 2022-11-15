@@ -26,6 +26,8 @@
 
 .MainPageContainer-PostsContainerInnerContainer{
     max-width: 768px;
+    background-color: white;
+    border-radius: 12px;
 }
 
 .SearchBarContainer{

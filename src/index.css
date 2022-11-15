@@ -20,6 +20,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-color) !important;
+  background-repeat: repeat !important;
 }
 
 
@@ -94,6 +95,10 @@ code {
 .Link{
   color: var(--k-orange);
   cursor: pointer;
+}
+
+.ZIndex100{
+  z-index: 100 !important;
 }
 
 @media screen and (max-width: 768px) {

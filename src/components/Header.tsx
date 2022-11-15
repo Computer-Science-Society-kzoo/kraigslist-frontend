@@ -88,7 +88,10 @@ export function Header(): JSX.Element {
         <Burger/>
       </div>
       }
+      
     </div>
+    <Divider className="HideWhenNonMobile"/>
+
       <header className={showMobileMenu ? "Header HeaderOpen" : "Header" }>
         <Heading className="tracking-in-expand-fwd-top HideWhenMobile" id="KRAIGSLIST-TEXT">
           <span>K</span>raigslist

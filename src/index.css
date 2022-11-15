@@ -7,6 +7,7 @@
  --background-color: #EDEEF0;
  --header-height: 96px;
  --header-height-full: 156px;
+ --negative-header-full: -156px;
  --message-background: #6ca2b659;
  --chakra-colors-blue-100: var(--chakra-colors-orange-100) !important;
  --chakra-colors-blue-500: var(--chakra-colors-orange-500) !important;
@@ -113,7 +114,8 @@ code {
 
   :root{
  
-    --header-height-full: 100px !important;
+    --header-height-full: 80px !important;
+    --negative-header-height-full: -80px !important;
    }
 
   .HideWhenMobile{

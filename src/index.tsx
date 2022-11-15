@@ -10,12 +10,27 @@ import { customTheme } from './ChakraTheme';
 import { ColorModeScript } from '@chakra-ui/react'
 import { WebSockets } from './websocket'; 
 
+export const MOBILE_DEVELOPMENT = true;
 
-export const RestAPIHOST = (process.env.NODE_ENV === "production") ? "https://bkl1.kzoocss.org" : "http://localhost:3000" 
-export const WebSocketHOST = (process.env.NODE_ENV === "production") ? "wss://bkl1.kzoocss.org/ws/" : "ws://localhost:4500"
+let ONLINE_REST_HOST = "https://bkl1.kzoocss.org";
+let ONLINE_WS_HOST ="wss://bkl1.kzoocss.org/ws/"
+
+let LOCAL_REST_HOST = "http://localhost:3000"
+let LOCAL_WS_HOST = "ws://localhost:4500"
+
+if (MOBILE_DEVELOPMENT) {
+  console.log("WARNING: Mobile Development Mode is enabled. This should only be used for testing on a mobile device. Real server is in use.");
+  LOCAL_REST_HOST = ONLINE_REST_HOST
+  LOCAL_WS_HOST = LOCAL_WS_HOST
+}
+
+
+export const RestAPIHOST = (process.env.NODE_ENV === "production") ? ONLINE_REST_HOST : LOCAL_REST_HOST 
+export const WebSocketHOST = (process.env.NODE_ENV === "production") ? "wss://bkl1.kzoocss.org/ws/" : LOCAL_WS_HOST
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 
 
 

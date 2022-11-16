@@ -10,7 +10,7 @@ import { customTheme } from './ChakraTheme';
 import { ColorModeScript } from '@chakra-ui/react'
 import { WebSockets } from './websocket'; 
 
-export const MOBILE_DEVELOPMENT = true;
+export const MOBILE_DEVELOPMENT = false;
 
 let ONLINE_REST_HOST = "https://bkl1.kzoocss.org";
 let ONLINE_WS_HOST ="wss://bkl1.kzoocss.org/ws/"

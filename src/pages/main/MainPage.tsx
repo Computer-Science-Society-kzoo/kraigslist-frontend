@@ -357,6 +357,16 @@ export function MainPage(): JSX.Element {
 
   const [show, setShow] = useState(false);
 
+  function localSearch(query: string){
+    let temp = [...posts];
+    temp = temp.filter((post) => {
+      return post.title.toLowerCase().includes(query.toLowerCase()) ||
+      post.text.toLowerCase().includes(query.toLowerCase()) 
+    })
+    console.log(temp);
+    setPosts(temp);
+  }
+
   return (
     <Split
       className="split MainPageContainer"
@@ -523,7 +533,8 @@ export function MainPage(): JSX.Element {
                 borderRadius={"10px 0px 0px 10px"}
                 colorScheme="orange"
                 onClick={() =>
-                  getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)
+                  localSearch(text)
+                  //getPostsMaster(text, filterCheck, filterCheck2, filterCheck3)
                 }
               />
               <Input

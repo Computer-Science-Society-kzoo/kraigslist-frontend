@@ -49,7 +49,7 @@ function HomePage(): JSX.Element {
   const totalMessages = useSelector(selectTotalMessagesState);
  
   function newMesssagesOrTitle() {
-    if (totalMessages !== 0) {
+    if (totalMessages !> 0) {
       if (totalMessages === 1) {
         return `* New message | Kraigslist`;
       } else {

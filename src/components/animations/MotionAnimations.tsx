@@ -5,13 +5,13 @@ export function AnimatePostItems(props: {
   keyName: string;
 }): JSX.Element {
   return (
-    <AnimatePresence exitBeforeEnter>
+    <AnimatePresence initial={false} exitBeforeEnter>
       {props.children.map((child: JSX.Element, index: number) => (
         <motion.div
           key={props.keyName + index}
           initial={{ scale: 1.25, opacity: 0, y: 0 , filter: "blur(1px)"}}
           animate={{ scale: 1, opacity: 1, y: 0, filter: "blur(0px)"}}
-          exit={{ opacity: 0, y: 0 }}
+          exit={{ scale: 1, opacity: 1, x: 2000, y: 0 , filter: "blur(1px)", transition: { duration: 0.8, delay: 0},}}
           transition={{ duration: 0.25, delay: index * 0.1 }}
         >
           {child}

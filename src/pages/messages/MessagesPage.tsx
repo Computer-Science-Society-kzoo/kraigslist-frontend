@@ -12,15 +12,13 @@ import {
 } from "@chakra-ui/react";
 import { ChatIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import Moment from "react-moment";
 import {
   setActiveConIDRedux,
-  eraseActiveMessagesRedux,
   pushActiveMessageRedux,
-  pushMoreMessagesRedux,
   setNewLastMessageRedux,
   selectActiveMessagesState,
   selectConversationsState,
@@ -31,7 +29,7 @@ import {
 import { ConversationProps, MessageProps } from "../../redux/messagesReducer";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import { animateScroll as scroll, scroller } from "react-scroll";
+import { scroller } from "react-scroll";
 
 import { RestAPIHOST } from "../../index";
 import {
@@ -125,7 +123,9 @@ export function BottomMessageContainer(
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
+
   const [message, setMessage] = useState<string>("");
   async function sendMessage() {
     if (message !== "") {
@@ -195,13 +195,13 @@ export function BottomMessageContainer(
   );
 }
 function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const dispatch = useDispatch();
 
   const messages = useSelector(selectActiveMessagesState);
-
-  const testMessages = messages.slice();
 
   function setMessages(messages: MessageProps[]) {
     dispatch(setActiveMessagesRedux(messages));
@@ -214,7 +214,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
   function parseMessages(newMessages: any) {
     let parsedMessages: MessageProps[] = [];
     newMessages.forEach((con: any) => {
-      const date = new Date(con.date);
       parsedMessages.push({
         message: con.message,
         yours: con.receiverUID === props.comID ? true : false,
@@ -233,28 +232,6 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
     );
   }
 
-  //check if the date is today
-  function isToday(date: Date) {
-    return sameDay(date, new Date());
-  }
-
-  //check if the date is yesterday
-  function isYesterday(date: Date) {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    return sameDay(date, yesterday);
-  }
-
-  //return Today or Yesterday or the date
-  function formatDate(date: Date) {
-    if (isToday(date)) {
-      return "Today";
-    } else if (isYesterday(date)) {
-      return "Yesterday";
-    }
-    return date.toLocaleDateString();
-  }
-
   function addNewMessage(message: string) {
     const now = moment().toDate();
     addMessage({ message: message, yours: true, date: now.toString() });
@@ -263,7 +240,9 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   //const [page, setPage] = useState(1);
   async function getMessages() {
-    console.log(props.postID);
+    if (props.conID <= 0) {
+      return
+    }
     axios
       .get(`${RestAPIHOST}/api/messages/allmessages`, {
         headers: {
@@ -302,7 +281,8 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 
   useEffect(() => {
     dispatch(setActiveConIDRedux(-1));
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   useEffect(() => {
     scroller.scrollTo("bottomContainer", {
@@ -313,10 +293,8 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
     });
     getMessages();
     //setPage(1)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.conID]);
-
-  let counter = 0;
-
 
   return (
     <div className={ props.conID === -1 ? "MessageContainer HideWhenMobile"  : "MessageContainer"}> 
@@ -410,6 +388,8 @@ function MessageContainer(props: conversationWithUpdateFunction): JSX.Element {
 }
 
 export function MessagesPage(): JSX.Element {
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const dispatch = useDispatch();
@@ -419,8 +399,8 @@ export function MessagesPage(): JSX.Element {
     dispatch(setConversationsRedux(conversations));
   }
 
-  const [conversationsTrigger, setconversationsTrigger] =
-    useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [conversationsTrigger, setconversationsTrigger] = useState<boolean>(false);
   const [comradeID, setComradeID] = useState<number>(-1);
   const [comradeName, setComradeName] = useState<string>("");
   const [postID, setPostID] = useState<number>(-1);
@@ -454,7 +434,6 @@ export function MessagesPage(): JSX.Element {
   }
 
   async function getConversations() {
-    console.log(token.auth);
     setLoading(true);
     axios
       .get(`${RestAPIHOST}/api/messages/allconversations`, {
@@ -491,11 +470,8 @@ export function MessagesPage(): JSX.Element {
 
   useEffect(() => {
     getConversations();
-  }, []);
-
-  useEffect(() => {
-    console.log("Conversations updated");
-  }, [conversationsTrigger]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   return (
     <AnimateElement keyName={"MessageContainer"}>
@@ -529,6 +505,7 @@ export function MessagesPage(): JSX.Element {
             {/* className="ConversationContainer-Conversation" */}
             <AnimateConversationsItems keyName="Conversations" classToPass="ConversationContainer-Conversation">
               {conversations.map((con) => (
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 <a
                   className={
                     selectedConversation === con.conID

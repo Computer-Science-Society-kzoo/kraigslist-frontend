@@ -5,10 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { extendTheme, ChakraProvider, ThemeConfig } from '@chakra-ui/react'
-import { customTheme } from './ChakraTheme';
+import { ChakraProvider } from '@chakra-ui/react'
 import { ColorModeScript } from '@chakra-ui/react'
-import { WebSockets } from './websocket'; 
 
 export const MOBILE_DEVELOPMENT = false;
 
@@ -21,7 +19,7 @@ let LOCAL_WS_HOST = "ws://localhost:4500"
 if (MOBILE_DEVELOPMENT) {
   console.log("WARNING: Mobile Development Mode is enabled. This should only be used for testing on a mobile device. Real server is in use.");
   LOCAL_REST_HOST = ONLINE_REST_HOST
-  LOCAL_WS_HOST = LOCAL_WS_HOST
+  LOCAL_WS_HOST = ONLINE_WS_HOST
 }
  
 
@@ -32,16 +30,6 @@ const root = ReactDOM.createRoot(
 );
 
 
-
-
-const config: ThemeConfig = {
-
-  initialColorMode: "light",
-  useSystemColorMode: false,
-
-}
-
-const theme = extendTheme({ config })
 
 
 root.render(

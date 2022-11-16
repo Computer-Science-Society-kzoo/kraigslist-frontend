@@ -1,13 +1,11 @@
 import {
   Button,
   Checkbox,
-  Container,
   Divider,
   Heading,
   IconButton,
   Input,
   InputGroup,
-  Modal,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -19,18 +17,14 @@ import { useCookies } from "react-cookie";
 //import { FiltersMenu } from "./Filters";
 import Split from "react-split";
 import "./Split.css";
-import { MakePost } from "./makePost";
-import { SearchBar } from "../../components/SearchBar";
 import { SearchIcon } from "@chakra-ui/icons";
 //import { filterData } from "./Filters";
 import "./Filters.css";
-import { selectOpenPostSate, selectPullNewPosts, setOpenPost } from "../../redux/coreReducer";
+import { selectPullNewPosts, setOpenPost } from "../../redux/coreReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { ModalPost } from "./PostModal";
 import { RestAPIHOST } from "../../index";
 import Moment from "react-moment";
 import { setPostModalRedux } from "../../redux/postModalReducer";
-import { AnimatePresence, motion } from "framer-motion";
 import {
   AnimateFilterEntry,
   AnimatePostItems,
@@ -112,7 +106,7 @@ export function Post(post: PostProps): JSX.Element {
         {post.img !== "" && post.img !== null && (
           <img
             src={post.img}
-            alt="post image"
+            alt={post.title + "image"}
             className="PostContainer-Internal-Image"
           />
         )}
@@ -122,6 +116,8 @@ export function Post(post: PostProps): JSX.Element {
 }
 
 export function MainPage(): JSX.Element {
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -147,16 +143,6 @@ export function MainPage(): JSX.Element {
     return parsedPosts;
   }
 
-  async function getPosts() {
-    console.log(token.auth);
-    axios
-      .get(`${RestAPIHOST}/api/posts`, { withCredentials: true })
-      .then((res) => {
-        console.log(res.data);
-        setPosts(parsePosts(res.data));
-      });
-  }
-
   const [text, setText] = useState("");
 
   async function getPostsMaster(
@@ -165,11 +151,6 @@ export function MainPage(): JSX.Element {
     filterCheck2: any,
     filterCheck3: any
   ) {
-    console.log(text);
-    console.log(filterCheck);
-    console.log(filterCheck2);
-    console.log(filterCheck3);
-    // console.log(token.auth);
 
     axios
       .get(`${RestAPIHOST}/api/posts/master`, {
@@ -185,7 +166,6 @@ export function MainPage(): JSX.Element {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setPosts(parsePosts(res.data));
       })
       .catch((err) => {
@@ -309,9 +289,6 @@ export function MainPage(): JSX.Element {
   //filters for price
   const [checkedItems2, setCheckedItems2] = useState([false, false]);
 
-  const allChecked2 = checkedItems2.every(Boolean);
-  const isIndeterminate2 = checkedItems2.some(Boolean) && !allChecked2;
-
   const [filterCheck2, setFilterCheck2] = useState("");
 
   async function filterChange2() {
@@ -327,8 +304,6 @@ export function MainPage(): JSX.Element {
   //filters for deadline
   const [checkedItems3, setCheckedItems3] = useState([false, false]);
 
-  const allChecked3 = checkedItems3.every(Boolean);
-
   const [filterCheck3, setFilterCheck3] = useState("");
 
   async function filterChange3() {
@@ -343,12 +318,14 @@ export function MainPage(): JSX.Element {
     filterChange();
     filterChange2();
     filterChange3();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedItems, checkedItems2, checkedItems3]);
 
   const remoteTrigger = useSelector(selectPullNewPosts)
 
   useEffect(() => {
     getPostsMaster(text, filterCheck, filterCheck2, filterCheck3);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, filterCheck, filterCheck2, filterCheck3]);
   //trying out something with onChange and filters
   // handleChange = (e) => {
@@ -359,6 +336,7 @@ export function MainPage(): JSX.Element {
 
   useEffect(() => {
     getPostsMaster(text, filterCheck, filterCheck2, filterCheck3);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remoteTrigger]);
 
   const [show, setShow] = useState(false);
@@ -369,7 +347,6 @@ export function MainPage(): JSX.Element {
       return post.title.toLowerCase().includes(query.toLowerCase()) ||
       post.text.toLowerCase().includes(query.toLowerCase()) 
     })
-    console.log(temp);
     setPosts(temp);
   }
 

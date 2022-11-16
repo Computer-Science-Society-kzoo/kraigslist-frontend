@@ -1,17 +1,18 @@
-import { Checkbox, Container, Divider, Heading, Stack, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import "./MainPage.css";
 import "./Post.css"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 //import { FiltersMenu } from "./Filters";
-import Split from 'react-split'
 import './Split.css';
 import { RestAPIHOST} from "../../index";
 import { Post, PostProps } from "./MainPage";
 import { AnimatePostItems } from "../../components/animations/MotionAnimations";
 
 export function YourPostsPage(): JSX.Element {
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -38,7 +39,7 @@ export function YourPostsPage(): JSX.Element {
   }
 
 
-  async function myPosts(token2: any) {
+  async function myPosts() {
 
 
     axios
@@ -50,7 +51,6 @@ export function YourPostsPage(): JSX.Element {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setPosts(parsePosts(res.data));
       })
       .catch((err) => {
@@ -58,42 +58,10 @@ export function YourPostsPage(): JSX.Element {
       });
   }
 
-
-
-
-  //write a function to filter parsedPosts based on the given username
-  // function filterPostsbyUsername(posts: Post[], username: string) {
-  //   let filteredPosts: Post[] = posts.filter((post) => post.username === username);
-  //   return filteredPosts
-  // }
-
-  // async function myPosts() {
-  //   axios
-  //     .get(`${RestAPIHOST}/api/posts/myPosts`, {
-  //       params: { token: token["auth"] },
-  //     },
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setPosts(parsePosts(res.data));
-
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     }
-  //     );
-  // }
-
-  const [checkedItems, setCheckedItems] = useState([false, false]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
-  const [filterCheck, setFilterCheck] = useState("");
-
   useEffect(() => {
-    myPosts(token["auth"]);
-  }, []);
+    myPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   //write a function that sorts the posts by date
   function sortPostsbyDate(posts: PostProps[]) {

@@ -1,5 +1,4 @@
 import BurgerButton from 'burger-react'
-import 'burger-react/dist/style.css'
 
 export const Burger = () => {
     return (

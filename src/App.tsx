@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
   useLocation,
 } from "react-router-dom";
 import { LoginPage } from "./pages/login/LoginPage";
@@ -31,6 +30,7 @@ function LoginOrHome(): JSX.Element {
 
   const auth = useSelector(selectAuthState);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   useEffect(() => {
@@ -39,6 +39,7 @@ function LoginOrHome(): JSX.Element {
     } else {
       dispatch(setAuthRedux(false));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, token]);
 
   return <>{auth ? <HomePage /> : <LoginPage />}</>; // If the auth state is true, show the main page, otherwise show the login page

@@ -12,7 +12,6 @@ export function SearchBar(): JSX.Element {
 
   async function search(text: string) {
 
-    console.log(text);        
     if (text === "") {
       return
         //messageFailure("Missing infomration", "Please provide a text to search.");
@@ -23,7 +22,6 @@ export function SearchBar(): JSX.Element {
             
             )
             .then((res) => {
-                console.log(res.data);
 
             })
             .catch((err) => {

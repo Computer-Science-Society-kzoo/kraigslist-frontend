@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { useCookies } from 'react-cookie';
 import { RootState } from './store';
 
 export interface coreState {
@@ -31,7 +30,6 @@ export const coresSlice = createSlice({
           state.openPost = action.payload; 
         },
         reduxPullNewPosts: (state, action) => {
-          console.log("reduxPullNewPosts: " + state.pullNewPosts)
           state.pullNewPosts = action.payload
         }
     }

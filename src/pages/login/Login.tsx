@@ -1,17 +1,12 @@
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
-  ButtonGroup,
   useToast,
-  Heading,
 } from "@chakra-ui/react";
 
 import axios from "axios";
-import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
@@ -57,7 +52,9 @@ export function Login(props: LoginProps): JSX.Element {
   // }
 
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth", "myid"]);
+
   const dispatch = useDispatch();
   function setAuth(token: string, id: number) {
     setToken("auth", token, { path: "/", maxAge: 43200 });

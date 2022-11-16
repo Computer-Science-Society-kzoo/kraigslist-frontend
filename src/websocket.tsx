@@ -1,16 +1,14 @@
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { selectAuthState } from "./redux/coreReducer";
 import { useSelector } from "react-redux";
-import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useCallback, useEffect, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactFragment, ReactPortal, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { pushNewIncomingMessageRedux, selectActiveMessagesState, pushActiveMessageRedux, setActiveMessagesRedux, MessageProps, setTotalUnreadMessagesRedux } from "./redux/messagesReducer";
+import { pushNewIncomingMessageRedux, MessageProps, setTotalUnreadMessagesRedux } from "./redux/messagesReducer";
 import { useDispatch } from "react-redux";
 import moment from "moment";
 import axios from "axios";
 import { RestAPIHOST, WebSocketHOST } from "./index";
-import { Box, color, createStandaloneToast, useToast, Text, Button } from '@chakra-ui/react'
-import { render } from "@testing-library/react";
+import { createStandaloneToast } from '@chakra-ui/react'
 import { useLocation } from "react-router-dom";
 
 
@@ -24,56 +22,21 @@ const { ToastContainer, toast } = createStandaloneToast()
 export function WebSockets(): JSX.Element {
   let location = useLocation()
 
-    // let websocket = new WebSocket('ws://localhost:8000');
-
-    
-    // websocket.onopen = () => {
-    //     //console.log('Websocket connected');
-    // };
-
-
-    // websocket.onmessage = (message) => {
-    //     console.log(message)
-    //     let data = JSON.parse(message.data);
-    //     const dataFromServer: Message = data
-    //     console.log(dataFromServer)
-    //     switch (dataFromServer.type) {
-    //         case "connected":
-    //             console.log("Connected to the WebSocket server");
-    //             break;
-    //         case "newMessage":
-    //             console.log(dataFromServer)
-    //             const data = {
-    //                 conID: dataFromServer.data.conversationID,
-    //                 message: dataFromServer.data.message
-    //             }
-    //             break
-    //         default:
-    //             console.log("Undefined message type: ", message.data);
-    //             break
-    //     }
-    // };
-
-      //Public API that will echo messages sent to it back to the client
-
   let auth = useSelector(selectAuthState);
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const [URL, setURL] = useState(`${WebSocketHOST}`);
 
   const [messageHistory, setMessageHistory] = useState<any>([]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { sendMessage, lastMessage, readyState } = useWebSocket(URL);
   
-  let allMessages = useSelector(selectActiveMessagesState);
-
-
   const dispatch = useDispatch();
-
-
 
   function pushNotification(user: string, message: string) {
 
-    console.log("Pushing notification: " + user + " " + message)
 
     if (location.pathname !== "/messages") {
       toast({
@@ -87,9 +50,7 @@ export function WebSockets(): JSX.Element {
       })
     
     }
-  
   }
-  
 
   useEffect(() => {
     if (lastMessage !== null) {
@@ -100,7 +61,6 @@ export function WebSockets(): JSX.Element {
         const dataFromServer: Message = data
         switch (dataFromServer.type) {
             case "connected":
-                console.log("Connected to the WebSocket server");
                 axios
                 .get(`${RestAPIHOST}/api/messages/totalmessages`, {
                   headers: {
@@ -109,13 +69,11 @@ export function WebSockets(): JSX.Element {
                   },
                 })
                 .then((res) => {
-                    console.log(res.data);
                     dispatch(setTotalUnreadMessagesRedux(res.data));
                 });
 
                 break;
             case "newMessage":
-                console.log(dataFromServer)
         
                 
                 const now = moment().toDate()
@@ -142,10 +100,8 @@ export function WebSockets(): JSX.Element {
         }
         
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastMessage, setMessageHistory]);
-
-
-  const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: 'Connecting',
@@ -178,48 +134,4 @@ export function WebSockets(): JSX.Element {
         </div>
         </>
       );
-
 }
-
-
-
-
-// // When the connection is closed, print some data to the console.
-// let websocket = new WebSocket("ws://localhost:8000");
-  
-// export function createWebSocketConnection() {
-//     return websocket;
-// }
-
-
-// // When the connection is open, print some data to the console.
-// websocket.onopen = () => {
-//     console.log('WebSocket Client Connected');
-// };
-  
-// FORMAT OF MESSAGE (JSON)
-// {
-//     "type": "SMTH",
-//     "data": {
-//         ...
-//     }
-// }
-
-
-
-// websocket.onmessage = (message) => {
-
-//     const dataFromServer: Message = JSON.parse(message.data?.toString());
-//     switch (dataFromServer.type) {
-//         case "newMessage":
-//             console.log("newMessage: ", message.data);
-//             const data = {
-//                 conID: dataFromServer.data.conversationID,
-//                 message: dataFromServer.data.message
-//             }
-//             break
-//         default:
-//             console.log("Undefined message type: ", message.data);
-//             break
-//     }
-// }

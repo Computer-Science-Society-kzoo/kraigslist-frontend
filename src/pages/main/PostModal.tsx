@@ -2,7 +2,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
   ModalFooter,
@@ -10,16 +9,12 @@ import {
   Heading,
   Text,
   InputGroup,
-  InputRightElement,
   Input,
-  Spinner,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectOpenPostSate } from "../../redux/coreReducer";
 import { setOpenPost } from "../../redux/coreReducer";
 import { selectPostModalRedux } from "../../redux/postModalReducer";
-import { PostProps, thisPostTitle } from "./MainPage";
-import { thisPostText } from "./MainPage";
 import Moment from "react-moment"
 import './PostModal.css'
 import axios from "axios";
@@ -45,6 +40,7 @@ export function ModalPost(): JSX.Element {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth", "myid"]);
 
   const myid = Number(token["myid"]);
@@ -116,7 +112,7 @@ export function ModalPost(): JSX.Element {
               {post.img !== "" && post.img !== null && (
                 <img
                   src={post.img}
-                  alt="post image"
+                  alt={post.title + " image"}
                   className="PostModalContainer-Internal-Image"
                 />
               )}

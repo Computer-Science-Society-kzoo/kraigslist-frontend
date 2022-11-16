@@ -2,29 +2,19 @@ import {
   Text,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Button,
-  ButtonGroup,
   useToast,
-  Heading,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton,
-  useDisclosure,
   Select,
-  InputRightElement,
   InputLeftElement,
   InputGroup,
   Textarea,
-  IconButton,
-  InputLeftAddon,
-  Icon,
   Spinner,
 } from "@chakra-ui/react";
 
@@ -34,7 +24,6 @@ import { reduxPullNewPosts, selectPullNewPosts } from "../../redux/coreReducer";
 import "./Post.css";
 
 import axios from "axios";
-import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { setCreatePost } from "../../redux/coreReducer";
@@ -42,9 +31,10 @@ import { selectCreatePostSate } from "../../redux/coreReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RestAPIHOST } from "../../index";
-import { setPostModalRedux } from "../../redux/postModalReducer";
 
 export function MakePost(): JSX.Element {
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const toast = useToast();
@@ -53,10 +43,7 @@ export function MakePost(): JSX.Element {
   const [type, setType] = useState("");
   const [offer_deadline, setOfferDeadline] = useState<Date | null>(null);
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState<FileList | null>(null);
-  const [image1, setImage1] = useState<File | null>(null);
 
-  const [imageBase64, setImageBase64] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
@@ -84,110 +71,18 @@ export function MakePost(): JSX.Element {
     }, 800);
   }
 
-  //A function that converts Uint8Array to bytes
-  // function uint8ArrayToBase64(array: Uint8Array) {
-  //     var CHUNK_SIZE = 0x8000; //arbitrary number
-  //     var index = 0;
-  //     var length = array.length;
-  //     var result: string = '';
-  //     var slice;
-  //     while (index < length) {
-  //         slice = array.slice(index, Math.min(index + CHUNK_SIZE, length)); // `Math.min` is not really necessary here I think
-  //         result += String.fromCharCode.apply(null, slice);
-  //         index += CHUNK_SIZE;
-  //     }
-  //     return btoa(result);
-  // }
-
-  var bytee: string;
-  //A function that converts array of bytes to base64
-  function bytesToBase64(bytes: any) {
-    var binary = "";
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    bytee = btoa(binary);
-    return btoa(binary);
-  }
-
-  // function test(value: string){
-  //   setEmail(value)
-  //   console.log(email)
-  // }
-  var imageBuffer: Buffer;
-  let bytes: any = [];
-  let binaryString: any;
-  let buffer: any = null;
-  let view: any = null;
   var picture: any | null = null;
-  var picture1: string;
   const dispatch = useDispatch();
-
-  // //Image compression function
-  // async function handleImageUpload(e: any) {
-
-  //     //const imageFile = e.target.files[0];
-  //     const imageFile = e.target.files[0];
-  //     console.log('originalFile instanceof Blob', imageFile instanceof Blob); // true
-  //     console.log(`originalFile size ${imageFile.size / 1024 / 1024} MB`);
-
-  //     const options = {
-  //         maxSizeMB: 1,
-  //         maxWidthOrHeight: 1920,
-  //         useWebWorker: true
-  //     }
-  //     try {
-  //         const compressedFile = await imageCompression(imageFile, options);
-  //         console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-  //         console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-
-  //         //await uploadToServer(compressedFile); // write your own logic
-  //         //setImage1(compressedFile);
-  //         picture = compressedFile;
-
-  //         const reader = new FileReader();
-  //         reader.readAsArrayBuffer(picture);
-  //         reader.onload = () => {
-  //             console.log(reader.result);
-  //             bytesToBase64(new Uint8Array(reader.result as ArrayBuffer));
-  //             picture = reader.result;
-  //             //picture1 = reader.result.toString('base64');
-  //             //picture = compressedFile;
-  //             //var newBuff = btoa([].reduce.call(new Uint8Array(buffer),function(p,c){return p+String.fromCharCode(c)},''))
-
-  //             // view = new Uint32Array(buffer);
-  //             //imageBuffer = Buffer.from(reader.result as ArrayBuffer);
-  //             //binaryString = imageBuffer
-  //             bytes = new Uint8Array(reader.result as ArrayBuffer);
-  //             //console.log(binaryString);
-  //             // console.log(bytes);
-  //             // console.log(String.fromCharCode(bytes));
-  //             console.log(picture);
-  //             //console.log(imageBuffer);
-  //         };
-  //         //reader.readAsArrayBuffer(picture);
-  //         console.log("Array contains", bytes.byteLength, "bytes.");
-  //         // console.log(picture);
-  //         //axios.post("http://localhost:8000/api/posts/", {
-  //         //return(compressedFile);
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-
-  // }
 
   function handleImageUpload(e: any) {
 
     const myFile = e.target.files[0];
     setAttachement(myFile.name);
     try {
-      console.log("ping !");
       setIsUploading(true);
 
       const myForm = new FormData();
       myForm.append("image", myFile);
-      console.log(myForm);
 
       axios
         .post(
@@ -200,8 +95,6 @@ export function MakePost(): JSX.Element {
           }
         )
         .then((response) => {
-          console.log("Upload success");
-          console.log(response.data.data.image.url);
           setImageURL(response.data.data.image.url);
           setIsUploading(false);
         })
@@ -234,18 +127,7 @@ export function MakePost(): JSX.Element {
     price: number,
     picture: string
   ) {
-    //alert("Email is: " + email + " Password is: " + password)
-    // var r = new global.FileReader();
-    // //r.onload = function(){ alert(r.result); };
-    // if (picture) {
-    //     r.readAsArrayBuffer(picture);
-    //     console.log(r);
-    // }
 
-
-    console.log(picture);
-
-    console.log(token.auth);
     if (title === "") {
       messageFailure(
         "Missing infomration",

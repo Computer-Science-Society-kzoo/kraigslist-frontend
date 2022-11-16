@@ -3,20 +3,6 @@ import {
   useToast,
   Heading,
   Divider,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  IconButton,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
@@ -25,8 +11,7 @@ import { selectAuthState, setCreatePost } from "../redux/coreReducer";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { AnimateHeight } from "./animations/height/AnimateHeight";
-import { setAuthRedux } from "../redux/coreReducer";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectTotalMessagesState } from "../redux/messagesReducer";
 
@@ -35,19 +20,13 @@ import { Burger } from "./Burger";
 import { AnimateTitle } from "./animations/MotionAnimations";
 
 export function Header(): JSX.Element {
-  // const [height, setHeight] = useState<number>(0)
-  // const [heightButtons, setHeightButtons] = useState<number>(0)
-  // const ref = useRef<HTMLDivElement>(null);
-  // const refButtons = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // setHeight(Number(ref.current?.clientHeight))
-    // setHeightButtons(Number(refButtons.current?.clientHeight))
-    // console.log(height + " " + heightButtons)
-    // let total = height + heightButtons
     document.documentElement.style.setProperty("--header-height", 152 + "px");
   }, []);
 
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
   const toast = useToast();
 

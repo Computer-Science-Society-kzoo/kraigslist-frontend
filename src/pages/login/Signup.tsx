@@ -1,17 +1,13 @@
 import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
   Select,
   Button,
   useToast,
-  ButtonGroup,
 } from "@chakra-ui/react";
 
 import axios from "axios";
-import e from "express";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useDispatch } from "react-redux";
@@ -21,7 +17,6 @@ import { RestAPIHOST } from "../../index"
 
 export function Signup(): JSX.Element {
   const toast = useToast();
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstname] = useState("");
@@ -80,13 +75,9 @@ export function Signup(): JSX.Element {
     }, 800);
   }
 
-
-  // function test(value: string){
-  //   setEmail(value)
-  //   console.log(email)
-  // }
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth", "myid"]);
+
   const dispatch = useDispatch();
   function setAuth(token: string, myid: number) {
     setToken("auth", token, { secure: true, sameSite: "strict" });
@@ -155,10 +146,8 @@ export function Signup(): JSX.Element {
           preferred_name: preferredname,
         })
         .then((res) => {
-          console.log(res);
           setAuth(res.data.token, res.data.id);
           messageSuccess("Success!", "You have successfully signed up.");
-          console.log(res);
         })
         .catch((err) => {
           console.log(err);

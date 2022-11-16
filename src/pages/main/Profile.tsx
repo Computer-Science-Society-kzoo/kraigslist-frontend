@@ -1,38 +1,16 @@
 import {
-  EditIcon,
-  CheckIcon,
-  CloseIcon,
-  EmailIcon,
-  TimeIcon,
-  StarIcon,
-} from "@chakra-ui/icons";
-import {
-  FormControl,
-  FormLabel,
   Heading,
-  IconButton,
   Input,
-  InputGroup,
-  InputRightAddon,
-  Stack,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  useEditableControls,
   ButtonGroup,
   Button,
-  useToast,
-  InputLeftElement,
+  useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Form } from "react-router-dom";
-import { parseIsolatedEntityName } from "typescript";
 import { setAuthRedux } from "../../redux/coreReducer";
 import "./Profile.css";
 import { RestAPIHOST } from "../../index";
-import { read } from "fs";
 import { AnimateElement } from "../../components/animations/MotionAnimations";
 
 interface User {
@@ -46,9 +24,9 @@ interface User {
 
 export function Profile(): JSX.Element {
   const [users, setUsers] = useState<User[]>([]);
-  const [token, setToken, removeToken] = useCookies(["auth"]);
 
-  const toast = useToast();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [token, setToken, removeToken] = useCookies(["auth"]);
 
   function parseUser(user: any) {
     let parsedUser: User[] = [];
@@ -64,8 +42,7 @@ export function Profile(): JSX.Element {
   }
 
   //get username
-  async function getPosts(token2: any) {
-    console.log(token);
+  async function getPosts() {
     axios
       .get(`${RestAPIHOST}/api/account/getusername`, {
         headers: {
@@ -75,7 +52,6 @@ export function Profile(): JSX.Element {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setUsers(parseUser(res.data));
       })
       .catch((err) => {
@@ -84,8 +60,9 @@ export function Profile(): JSX.Element {
   }
 
   useEffect(() => {
-    getPosts(token["auth"]);
-  }, []);
+    getPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
 
   return (
     <div>
@@ -111,30 +88,6 @@ function Header(): JSX.Element {
   );
 }
 
-function EditControl() {
-  const {
-    isEditing,
-    getSubmitButtonProps,
-    getCancelButtonProps,
-    getEditButtonProps,
-  } = useEditableControls();
-
-  return isEditing ? (
-    <ButtonGroup
-      justifyContent="left"
-      size="sm"
-      w="full"
-      spacing={2}
-      mt={2}
-      className="Profile-RightElt"
-    >
-      <Button aria-label="check" {...getSubmitButtonProps()} />
-      <IconButton aria-label="close" {...getCancelButtonProps()} />
-    </ButtonGroup>
-  ) : (
-    <IconButton aria-label="edit" {...getEditButtonProps()} />
-  );
-}
 
 function ProfileInfo(user: User): JSX.Element {
   const [firstnameChange, setFirstname] = useState(user.first_name);
@@ -144,6 +97,7 @@ function ProfileInfo(user: User): JSX.Element {
   const [yearChange, setYear] = useState(user.year);
   const [deleteCheck, setDeleteCheck] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [token, setToken, removeToken] = useCookies(["auth"]);
 
   const toast = useToast();
@@ -160,8 +114,7 @@ function ProfileInfo(user: User): JSX.Element {
   //   });
   // }
 
-  async function deleteAccount(token2: any) {
-    console.log(token);
+  async function deleteAccount() {
     //setAuthRedux(false);
     axios
       .post(`${RestAPIHOST}/api/account/delete`, {
@@ -171,7 +124,6 @@ function ProfileInfo(user: User): JSX.Element {
         },
       })
       .then((res) => {
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -188,8 +140,7 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   //function that updates the first name
-  async function updateFirstName(token2: any) {
-    console.log(token);
+  async function updateFirstName() {
     axios
       .post(
         `${RestAPIHOST}/api/account/changeFirstName`,
@@ -201,7 +152,6 @@ function ProfileInfo(user: User): JSX.Element {
           }
       )
       .then((res) => {
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -209,8 +159,7 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   //function that updates the last name
-  async function updateLastName(token2: any) {
-    console.log(token);
+  async function updateLastName() {
     axios
       .post(
         `${RestAPIHOST}/api/account/changeSurname`,
@@ -222,7 +171,6 @@ function ProfileInfo(user: User): JSX.Element {
           }
       )
       .then((res) => {
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -231,8 +179,7 @@ function ProfileInfo(user: User): JSX.Element {
 
 
   //function that updates the email
-  async function updateEmail(token2: any) {
-    console.log(token);
+  async function updateEmail() {
     axios
       .post(
         `${RestAPIHOST}/api/account/changeEmail`,
@@ -246,7 +193,6 @@ function ProfileInfo(user: User): JSX.Element {
         }
       )
       .then((res) => {
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -254,8 +200,7 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   //function that updates the year
-  async function updateYear(token2: any) {
-    console.log(token);
+  async function updateYear() {
     axios
       .post(
         `${RestAPIHOST}/api/account/changeYear`,
@@ -267,7 +212,6 @@ function ProfileInfo(user: User): JSX.Element {
           }
       )
       .then((res) => {
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -275,47 +219,49 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   useEffect(() => {
-    if (firstnameChange != user.first_name) {
-      updateFirstName(token["auth"]);
+    if (firstnameChange !== user.first_name) {
+      updateFirstName();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firstnameChange]);
 
   useEffect(() => {
-    if (lastnameChange != user.last_name) {
-      updateLastName(token["auth"]);
+    if (lastnameChange !== user.last_name) {
+      updateLastName();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastnameChange]);
 
   useEffect(() => {
-    if (emailChange != user.email) {
-      updateEmail(token["auth"]);
+    if (emailChange !== user.email) {
+      updateEmail();
     }
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [emailChange]);
 
   useEffect(() => {
-    if (yearChange != user.year) {
-      updateYear(token["auth"]);
+    if (yearChange !== user.year) {
+      updateYear();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [yearChange]);
 
   useEffect(() => {
-    if (deleteCheck == true) {
-      deleteAccount(token["auth"]);
+    if (deleteCheck === true) {
+      deleteAccount();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deleteCheck]);
 
   const [isDisabled, setIsDisabled] = useState(true);
-  const [editIcon, setEditIcon] = useState(<EditIcon />);
   const [buttonText, setButtonText] = useState("Edit Profile");
 
   function editSave() {
     if (isDisabled) {
       setIsDisabled(false);
-      setEditIcon(<CheckIcon />);
       setButtonText("Save Profile");
     } else {
       setIsDisabled(true);
-      setEditIcon(<EditIcon />);
       setButtonText("Edit Profile");
     }
   }

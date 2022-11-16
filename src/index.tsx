@@ -23,7 +23,7 @@ if (MOBILE_DEVELOPMENT) {
   LOCAL_REST_HOST = ONLINE_REST_HOST
   LOCAL_WS_HOST = LOCAL_WS_HOST
 }
-
+ 
 
 export const RestAPIHOST = (process.env.NODE_ENV === "production") ? ONLINE_REST_HOST : LOCAL_REST_HOST 
 export const WebSocketHOST = (process.env.NODE_ENV === "production") ? "wss://bkl1.kzoocss.org/ws/" : LOCAL_WS_HOST

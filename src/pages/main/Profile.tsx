@@ -192,7 +192,7 @@ function ProfileInfo(user: User): JSX.Element {
     console.log(token);
     axios
       .post(
-        "http://localhost:3000/api/account/changeFirstName",
+        `${RestAPIHOST}/api/account/changeFirstName`,
         { firstname: firstnameChange },
         {
             headers: {
@@ -213,7 +213,7 @@ function ProfileInfo(user: User): JSX.Element {
     console.log(token);
     axios
       .post(
-        "http://localhost:3000/api/account/changeSurname",
+        `${RestAPIHOST}/api/account/changeSurname`,
         { lastname: lastnameChange },
         {
             headers: {
@@ -235,7 +235,7 @@ function ProfileInfo(user: User): JSX.Element {
     console.log(token);
     axios
       .post(
-        "http://localhost:3000/api/account/changeEmail",
+        `${RestAPIHOST}/api/account/changeEmail`,
         { 
           email: emailChange 
         },
@@ -258,7 +258,7 @@ function ProfileInfo(user: User): JSX.Element {
     console.log(token);
     axios
       .post(
-        "http://localhost:3000/api/account/changeYear",
+        `${RestAPIHOST}/api/account/changeYear`,
         { year: yearChange },
         {
             headers: {

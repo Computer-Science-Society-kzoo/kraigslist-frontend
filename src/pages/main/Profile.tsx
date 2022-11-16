@@ -160,7 +160,7 @@ function ProfileInfo(user: User): JSX.Element {
   //   });
   // }
 
-  async function deleteAccount(token: any) {
+  async function deleteAccount(token2: any) {
     console.log(token);
     //setAuthRedux(false);
     axios
@@ -188,13 +188,17 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   //function that updates the first name
-  async function updateFirstName(token: any) {
+  async function updateFirstName(token2: any) {
     console.log(token);
     axios
       .post(
         "http://localhost:3000/api/account/changeFirstName",
         { firstname: firstnameChange },
-        { withCredentials: true }
+        {
+            headers: {
+              Authorization: "Bearer " + token.auth,
+            },
+          }
       )
       .then((res) => {
         console.log(res.data);
@@ -205,13 +209,17 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   //function that updates the last name
-  async function updateLastName(token: any) {
+  async function updateLastName(token2: any) {
     console.log(token);
     axios
       .post(
         "http://localhost:3000/api/account/changeSurname",
         { lastname: lastnameChange },
-        { withCredentials: true }
+        {
+            headers: {
+              Authorization: "Bearer " + token.auth,
+            },
+          }
       )
       .then((res) => {
         console.log(res.data);
@@ -221,14 +229,21 @@ function ProfileInfo(user: User): JSX.Element {
       });
   }
 
+
   //function that updates the email
-  async function updateEmail(token: any) {
+  async function updateEmail(token2: any) {
     console.log(token);
     axios
       .post(
         "http://localhost:3000/api/account/changeEmail",
-        { email: emailChange },
-        { withCredentials: true }
+        { 
+          email: emailChange 
+        },
+        {
+            headers: {
+              Authorization: "Bearer " + token.auth,
+            },
+        }
       )
       .then((res) => {
         console.log(res.data);
@@ -239,13 +254,17 @@ function ProfileInfo(user: User): JSX.Element {
   }
 
   //function that updates the year
-  async function updateYear(token: any) {
+  async function updateYear(token2: any) {
     console.log(token);
     axios
       .post(
         "http://localhost:3000/api/account/changeYear",
         { year: yearChange },
-        { withCredentials: true }
+        {
+            headers: {
+              Authorization: "Bearer " + token.auth,
+            },
+          }
       )
       .then((res) => {
         console.log(res.data);

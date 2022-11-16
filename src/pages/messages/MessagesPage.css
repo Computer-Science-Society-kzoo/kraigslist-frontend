@@ -68,6 +68,14 @@
     transition: all 0.1s ease-out;
 }
 
+.ConversationItem > div{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .MessageContainer{
     width: 70%;
     display: flex;

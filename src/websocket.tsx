@@ -41,7 +41,7 @@ export function WebSockets(): JSX.Element {
     if (location.pathname !== "/messages") {
       toast({
         title: user,
-        description: message,
+        description: trimMessage(message),
         status: 'info',
         duration: 6000,
         isClosable: true,
@@ -51,6 +51,16 @@ export function WebSockets(): JSX.Element {
     
     }
   }
+
+  //write a function that trims the message history to 40 characters
+  function trimMessage(message: string) {
+    if (message.length > 30) {
+      return message.slice(0, 30) + "...";
+    } else {
+      return message;
+    }
+  }
+
 
   useEffect(() => {
     if (lastMessage !== null) {

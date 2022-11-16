@@ -6,13 +6,15 @@ export interface coreState {
     auth: boolean;
     createPost: boolean;
     openPost: boolean;
+    pullNewPosts: boolean;
 }
 
 
 const initialState: coreState = {
     auth: false,
     createPost: false,
-    openPost: false
+    openPost: false,
+    pullNewPosts: false,
 };
 
 export const coresSlice = createSlice({
@@ -27,14 +29,19 @@ export const coresSlice = createSlice({
         },
         setOpenPost: (state, action) => {
           state.openPost = action.payload; 
+        },
+        reduxPullNewPosts: (state, action) => {
+          console.log("reduxPullNewPosts: " + state.pullNewPosts)
+          state.pullNewPosts = action.payload
         }
     }
   })
   
-export const { setAuthRedux, setCreatePost, setOpenPost } = coresSlice.actions
+export const { setAuthRedux, setCreatePost, setOpenPost, reduxPullNewPosts } = coresSlice.actions
 export const selectAuthState = (state: RootState) => state.core.auth;
 export const selectCreatePostSate = (state: RootState) => state.core.createPost;
 export const selectOpenPostSate = (state: RootState) => state.core.openPost;
+export const selectPullNewPosts = (state: RootState) => state.core.pullNewPosts;
 export default coresSlice.reducer
 
 

@@ -24,7 +24,7 @@ import { SearchBar } from "../../components/SearchBar";
 import { SearchIcon } from "@chakra-ui/icons";
 //import { filterData } from "./Filters";
 import "./Filters.css";
-import { selectOpenPostSate, setOpenPost } from "../../redux/coreReducer";
+import { selectOpenPostSate, selectPullNewPosts, setOpenPost } from "../../redux/coreReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { ModalPost } from "./PostModal";
 import { RestAPIHOST } from "../../index";
@@ -345,6 +345,8 @@ export function MainPage(): JSX.Element {
     filterChange3();
   }, [checkedItems, checkedItems2, checkedItems3]);
 
+  const remoteTrigger = useSelector(selectPullNewPosts)
+
   useEffect(() => {
     getPostsMaster(text, filterCheck, filterCheck2, filterCheck3);
   }, [text, filterCheck, filterCheck2, filterCheck3]);
@@ -354,6 +356,10 @@ export function MainPage(): JSX.Element {
   //     [e.target.name]: e.target.value,
   //   });
   // }
+
+  useEffect(() => {
+    getPostsMaster(text, filterCheck, filterCheck2, filterCheck3);
+  }, [remoteTrigger]);
 
   const [show, setShow] = useState(false);
 

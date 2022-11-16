@@ -1,4 +1,5 @@
 import {
+  Text,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -28,6 +29,7 @@ import {
 } from "@chakra-ui/react";
 
 import { AttachmentIcon } from "@chakra-ui/icons";
+import { reduxPullNewPosts, selectPullNewPosts } from "../../redux/coreReducer";
 
 import "./Post.css";
 
@@ -63,6 +65,8 @@ export function MakePost(): JSX.Element {
   const [validType, setValidType] = useState(true);
 
   const [shakeTitleStyle, setShakeTitleStyle] = useState("");
+
+
   function shakeTitle() {
     setValidTitle(false);
     setShakeTitleStyle("jello-vertical");
@@ -183,6 +187,7 @@ export function MakePost(): JSX.Element {
 
       const myForm = new FormData();
       myForm.append("image", myFile);
+      console.log(myForm);
 
       axios
         .post(
@@ -196,7 +201,8 @@ export function MakePost(): JSX.Element {
         )
         .then((response) => {
           console.log("Upload success");
-          setImageURL(response.data.data.medium.url);
+          console.log(response.data.data.image.url);
+          setImageURL(response.data.data.image.url);
           setIsUploading(false);
         })
         .catch((err) => {
@@ -217,6 +223,8 @@ export function MakePost(): JSX.Element {
   }
 
 
+  const postsPulled = useSelector(selectPullNewPosts);
+
 
   async function makePost(
     title: string,
@@ -233,6 +241,7 @@ export function MakePost(): JSX.Element {
     //     r.readAsArrayBuffer(picture);
     //     console.log(r);
     // }
+
 
     console.log(picture);
 
@@ -275,7 +284,9 @@ export function MakePost(): JSX.Element {
         )
         .then((res) => {
           console.log(res);
+          dispatch(reduxPullNewPosts(!postsPulled))
           messageSuccess("Success!", "You have successfully made a post");
+
         })
         .catch((err) => {
           console.log(err);
@@ -336,6 +347,7 @@ export function MakePost(): JSX.Element {
       dispatch(setCreatePost(false));
       toHomepage("/");
     }
+    
   }
 
   const [attachement, setAttachement] = useState("Nothing Attached");
@@ -435,27 +447,31 @@ export function MakePost(): JSX.Element {
               <FormLabel className="CreatePostLabels">
                 Upload Image
               </FormLabel>
-              <label className="MakePostFileInput">
-                <AttachmentIcon
-                  color="var(--k-orange)"
-                  viewBox="0 0 24 24"
-                  boxSize="1.5em"
-                  mr={5}
-                />
-                {attachement}
-                <input
-                  type="file"
-                  id="avatar"
-                  name="avatar"
-                  accept="image/png, image/jpeg, image/jpg"
-                  onChange={(el) => handleImageUpload(el)}
-                  style={{ display: "none" }}
-                />
-              </label>
-              <span className="MakePostInput">
+              <div className="FlexRow">
+                <label className="MakePostFileInput">
+                  <AttachmentIcon
+                    color="var(--k-orange)"
+                    viewBox="0 0 24 24"
+                    boxSize="1.5em"
+                    mr={5}
+                  />
+                  {attachement}
+                  <input
+                    type="file"
+                    id="avatar"
+                    name="avatar"
+                    accept="image/png, image/jpeg, image/jpg"
+                    onChange={(el) => handleImageUpload(el)}
+                    style={{ display: "none" }}
+                  />
+                </label>
 
-                {isUploading && <Spinner color="orange.500" size="md" />}
-              </span>
+                <div style={{marginLeft: "auto"}}>
+                  {isUploading && <Spinner color="orange.500" size="md" />}
+                </div>
+              </div>
+              <Text className="TextItalic" fontSize={"xs"} ><span style={{color: "red"}}>*</span>Your image will be uploaded as soon as you select file</Text>
+
             </FormControl>
           </ModalBody>
           <ModalFooter>
@@ -486,3 +502,4 @@ export function MakePost(): JSX.Element {
     </div>
   );
 }
+

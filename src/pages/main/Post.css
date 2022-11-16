@@ -1,7 +1,7 @@
 .PostContainer{
     max-width: 768px;
-    height: fit-content !important;
-    max-height: 300px !important;
+    height: fit-content;
+    max-height: 500px;
     border : 1px solid #e2e8f0;
     border-radius : 12px;
     display: flex;
@@ -9,7 +9,7 @@
     gap: 16px;
     transition: all 0.2s ease-out;
     background-color: white;
-    padding: 0 !important;
+    padding: 0;
     
 }
 
@@ -17,20 +17,18 @@
 .PostContainer:hover{
     transform: scale(1.02);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-
     cursor: pointer;
 }
 
 .PostContainer-Internal{
     width: 768px;
     max-width: 768px;
-    max-height: 300px !important;
     padding: 16px !important;
     border-radius : 12px;
     display: flex;
     flex-direction: column;    
+    justify-content: space-between !important;
     gap: 16px;
-    height: 100%;
 }
 
 
@@ -61,7 +59,7 @@
 
 .PostContainer-Internal-BottomFlex{
     display: flex;
-    margin-top: auto;
+    margin-top: auto !important;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -80,7 +78,6 @@
     .PostContainer-Internal{
         width: 100%; 
         padding: 16px 16px 16px 16px;
-        height: fit-content;
         border-radius : 12px;
         display: flex;
         flex-direction: column;    

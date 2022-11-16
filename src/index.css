@@ -110,6 +110,17 @@ code {
   background-color: #6ca2b659 !important;
 }
 
+.FlexRow{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+
+.TextItalic{
+  font-style: italic;
+}
+
 @media screen and (max-width: 768px) {
 
   :root{

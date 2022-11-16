@@ -57,6 +57,7 @@ export function ModalPost(): JSX.Element {
             Authorization: "Bearer " + token.auth,
         }}).then((res) => {
             setSending(false)
+            setMessage("")
             dispatch(setOpenPost(false))
         }).catch((err) => {
             setSending(false)

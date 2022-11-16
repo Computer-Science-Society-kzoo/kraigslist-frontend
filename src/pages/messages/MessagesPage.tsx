@@ -9,6 +9,7 @@ import {
   InputRightElement,
   Button,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { ChatIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { useCookies } from "react-cookie";
@@ -37,6 +38,7 @@ import {
   AnimatedMessageItem,
   AnimateElement,
 } from "../../components/animations/MotionAnimations";
+
 
 interface MessageDetails {
   name: string;
@@ -112,6 +114,8 @@ export function BottomMessageContainer(
   props: BoottomMessageContainerProps
 ): JSX.Element {
   const [sending, setSending] = useState(false);
+
+  let toast = useToast()
 
   function messageFailure(title: string, desc: string) {
     toast({
@@ -551,12 +555,4 @@ export function MessagesPage(): JSX.Element {
     </AnimateElement>
   );
 }
-function toast(arg0: {
-  title: string;
-  description: string;
-  status: string;
-  duration: number;
-  isClosable: boolean;
-}) {
-  throw new Error("Function not implemented.");
-}
+

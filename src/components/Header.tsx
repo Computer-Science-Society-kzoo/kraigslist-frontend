@@ -14,6 +14,7 @@ import { AnimateHeight } from "./animations/height/AnimateHeight";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectTotalMessagesState } from "../redux/messagesReducer";
+import { Turn as Hamburger } from 'hamburger-react'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Burger } from "./Burger";
@@ -67,7 +68,7 @@ export function Header(): JSX.Element {
       </AnimateTitle>
       {useSelector(selectAuthState) &&
       <div className="MobileHeaderBurger NoSelection" onClick={() => { setShowMobileMenu(!showMobileMenu) }}>
-        <Burger/>
+        <Hamburger toggled={showMobileMenu} />
       </div>
       }
       

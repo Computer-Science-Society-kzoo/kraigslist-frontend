@@ -21,9 +21,8 @@ import Moment from "react-moment";
 import "./PostModal.css";
 import axios from "axios";
 import { RestAPIHOST } from "../..";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
-import Typewriter from "react-ts-typewriter";
 
 //Post Modal Interface
 export function ModalPost(): JSX.Element {

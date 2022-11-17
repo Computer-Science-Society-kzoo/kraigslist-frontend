@@ -17,6 +17,8 @@ import {
   Textarea,
   Spinner,
 } from "@chakra-ui/react";
+import Typewriter from 'react-ts-typewriter';
+
 
 import { AttachmentIcon } from "@chakra-ui/icons";
 import { reduxPullNewPosts, selectPullNewPosts } from "../../redux/coreReducer";
@@ -24,7 +26,7 @@ import { reduxPullNewPosts, selectPullNewPosts } from "../../redux/coreReducer";
 import "./Post.css";
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { setCreatePost } from "../../redux/coreReducer";
 import { selectCreatePostSate } from "../../redux/coreReducer";
@@ -119,6 +121,7 @@ export function MakePost(): JSX.Element {
 
 
   const postsPulled = useSelector(selectPullNewPosts);
+
 
 
   async function makePost(
@@ -233,6 +236,41 @@ export function MakePost(): JSX.Element {
     
   }
 
+  const [aiAssistanceLoading, setAiAssistanceLoading] = useState(false);
+
+  function getAIAssistance() {
+    if (text === ""){
+      return;
+    }
+    setAiAssistanceLoading(true);
+    axios
+      .post(
+        `${RestAPIHOST}/api/openai/aiassistpost`,
+        {
+          text: text,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + token.auth,
+          },
+        }
+      )
+      .then((res) => {
+        setAiAssistanceLoading(false);
+        const data = text + " " + res.data.replace(/(\r\n|\n|\r)/gm, "");
+        setText(data)
+      })
+      .catch((err) => {
+        setAiAssistanceLoading(false);
+        console.log(err);
+        messageFailure(
+          "Error",
+          "Something went wrong. Please try again later"
+        );
+      });
+  }
+            
+
   const [attachement, setAttachement] = useState("Nothing Attached");
 
   return (
@@ -270,10 +308,26 @@ export function MakePost(): JSX.Element {
                   setValidText(true);
                 }}
                 placeholder="Description"
+                value={text}
                 required
               />
             </FormControl>
-
+            <div className="AIAssistContainer">
+              <div className="div_button">
+                <Button
+                  className="button-85"
+                  colorScheme={"purple"}
+                  size="sm"
+                  onClick={() => {getAIAssistance()}}
+                  borderRadius={"6px 6px 6px 6px"}
+                  disabled={aiAssistanceLoading}
+                >
+                AI Assist
+              </Button>
+                </div>
+                <Text fontSize={"xs"} className="TextItalic"> <Typewriter text={"Start typing, click the button, see the magic!"}/></Text>
+                {aiAssistanceLoading && <Spinner style={{marginLeft: "auto", marginTop: "auto"}} color="purple.500" size="md" />}
+              </div>
             <FormControl isRequired>
               <FormLabel className="CreatePostLabels"> Type </FormLabel>
               <span className="LoginSignupForm-Inline">

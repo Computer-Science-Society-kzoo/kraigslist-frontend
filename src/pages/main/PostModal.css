@@ -69,6 +69,9 @@
     background-color: var(--primary-color);
     cursor: pointer;
 }
+.PostModalStartConversationAI{
+    flex-direction: column;
+}
 
 .PostModalStartConversation > button {
    padding-left: 24px;
@@ -76,3 +79,116 @@
    border-radius: 0px 12px 12px 0px;
    height: 42px !important;
 }
+
+
+.button-85:before {
+  content: "";
+  background: linear-gradient(
+    45deg,
+    #ff0000,
+    #ff7300,
+    #fffb00,
+    #48ff00,
+    #00ffd5,
+    #002bff,
+    #7a00ff,
+    #ff00c8,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing-button-85 20s linear infinite;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+@keyframes glowing-button-85 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.button-85{
+    transition: all 0.5s ease-out;
+}
+
+.button-85:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  left: 0;
+  top: 0;
+  border-radius: 6px !important;
+  -webkit-border-radius: 6px !important;
+  overflow: hidden;
+}
+
+
+.AIAssistContainer{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: left;
+    gap: 12px;
+    align-items: baseline;
+}
+
+
+.AIAssistContainerMessage{
+    margin-top: 12px;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.AIAssistContainerMessage > * {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+}
+
+.AIAssistContainerMessage > * > * {
+    margin-top: 0px !important;
+    gap: 12px
+}
+
+
+.div_button{
+    margin-top: 12px;
+    width: fit-content;
+    height: fit-content;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    overflow: hidden !important;
+    transition: all 0.2s ease-out;
+}
+
+.div_button:hover{
+    transform: scale(1.02);
+    
+    box-shadow: 0px 0px 10px 0px rgb(191, 187, 187);
+}
+

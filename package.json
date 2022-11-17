@@ -39,10 +39,12 @@
     "react-scripts": "^5.0.1",
     "react-scroll": "^1.8.8",
     "react-split": "^2.0.14",
+    "react-ts-typewriter": "^0.1.8-b",
     "react-use-websocket": "^4.2.0",
     "redux": "^4.2.0",
     "resize-observer-polyfill": "^1.5.1",
     "styled-components": "^5.3.6",
+    "typeit-react": "^2.6.0",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4",
     "websocket": "^1.0.34"

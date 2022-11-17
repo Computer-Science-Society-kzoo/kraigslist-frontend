@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Login } from "./Login";
 import { Signup } from "./Signup";
 import {
@@ -11,7 +12,7 @@ import {
   Stack,
   Container,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import "./LoginPage.css";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -22,10 +23,6 @@ export function LoginPage(): JSX.Element {
   function createAccountToggle() {
     setCreateAccount(!createAccount);
     setTabIndex(1);
-  }
-
-  function toggleHeight(): string {
-    return createAccount ? "height-520" : "height-336";
   }
 
   return (

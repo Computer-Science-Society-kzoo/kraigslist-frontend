@@ -26,7 +26,7 @@ import { reduxPullNewPosts, selectPullNewPosts } from "../../redux/coreReducer";
 import "./Post.css";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { setCreatePost } from "../../redux/coreReducer";
 import { selectCreatePostSate } from "../../redux/coreReducer";

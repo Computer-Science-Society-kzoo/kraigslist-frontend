@@ -194,10 +194,10 @@ export function ModalPost(): JSX.Element {
                 />
                 <div className="AIAssistContainerMessage">
                   {aiAssistanceLoading && (
-                    <Spinner color="purple.500" size="md" />
+                    <Spinner style={{marginLeft: "12px"}}  color="purple.500" size="md" />
                   )}
-                  {sending && <Spinner color="orange.500" size="md" />}
-                  <div   style={{ marginLeft: "auto" }}>
+                  {sending && <Spinner style={{marginLeft: "12px"}} color="orange.500" size="md" />}
+                  <div   style={{ marginLeft: "auto"}}>
                     <div className="div_button">
                       <Button
                         className="button-85"

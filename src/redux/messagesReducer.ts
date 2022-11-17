@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios';
 import { RootState } from './store';
-import { useCookies } from 'react-cookie';
 
 
 export interface MessageProps {

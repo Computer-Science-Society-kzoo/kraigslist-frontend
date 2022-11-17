@@ -95,6 +95,8 @@ export function MakePost(): JSX.Element {
           }
         )
         .then((response) => {
+          console.log(response.data.data.image.url);
+    
           setImageURL(response.data.data.image.url);
           setIsUploading(false);
         })
@@ -168,7 +170,6 @@ export function MakePost(): JSX.Element {
           console.log(res);
           dispatch(reduxPullNewPosts(!postsPulled))
           messageSuccess("Success!", "You have successfully made a post");
-
         })
         .catch((err) => {
           console.log(err);

@@ -114,29 +114,38 @@ function ProfileInfo(user: User): JSX.Element {
   //   });
   // }
 
+
   async function deleteAccount() {
     //setAuthRedux(false);
+    const realToken = `Bearer ${token.auth}`
     axios
-      .post(`${RestAPIHOST}/api/account/delete`, {
+      .delete(`${RestAPIHOST}/api/account/delete`, {
         headers: {
-          Authorization: `Bearer ${token.auth}`,
-          //Postid: 0
+          Authorization: realToken,
         },
       })
       .then((res) => {
+        removeToken("auth");
+        setAuthRedux(false);
+        toast({
+          title: "Warning",
+          description: "Your account is now deleted.",
+          status: "warning",
+          duration: 1500,
+          isClosable: true,
+        });
       })
       .catch((err) => {
         console.log(err);
+        toast({
+          title: "Error",
+          description: "Something went wrong.",
+          status: "error",
+          duration: 1500,
+          isClosable: true,
+        });
       });
-    setAuthRedux(false);
-    removeToken("auth");
-    toast({
-      title: "Warning",
-      description: "Your account is now deleted.",
-      status: "warning",
-      duration: 1500,
-      isClosable: true,
-    });
+
   }
 
   //function that updates the first name

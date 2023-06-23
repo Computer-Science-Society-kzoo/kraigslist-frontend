@@ -27,7 +27,7 @@ export const RestAPIHOST = (process.env.NODE_ENV === "production") ? ONLINE_REST
 export const WebSocketHOST = (process.env.NODE_ENV === "production") ? "wss://bkl1.kzoocss.org/ws/" : LOCAL_WS_HOST
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-);
+); 
 
 
 
